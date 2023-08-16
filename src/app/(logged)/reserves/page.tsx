@@ -5,7 +5,7 @@ import Title from '@/components/text/Title';
 export default function Reserves() {
   return (
     <Container>
-      <Title title="Pesquisa de Disponibilidade" />
+      <Title title="Busque por reservas" />
       <WhiteBox>
         <p>aehuirehaiurea</p>
       </WhiteBox>

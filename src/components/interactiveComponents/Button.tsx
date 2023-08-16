@@ -38,7 +38,9 @@ export default function Button({
       ? 'hover:bg-primaryDark'
       : ''
   } 
-      px-6 py-3 h-12 rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`;
+    px-6 h-[2.5rem] rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`;
+
+  const defaultTextClasses = 'uppercase font-[700] text-center';
   return (
     <button
       type={buttonType === 'button' ? 'button' : 'submit'}
@@ -47,7 +49,19 @@ export default function Button({
       className={mergeClass ? twMerge(classes, mergeClass) : classes}
     >
       {children}
-      {loading ? <Spinner /> : <p className={textClass}>{label}</p>}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <p
+          className={
+            textClass
+              ? twMerge(defaultTextClasses, textClass)
+              : defaultTextClasses
+          }
+        >
+          {label}
+        </p>
+      )}
     </button>
   );
 }
