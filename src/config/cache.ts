@@ -6,4 +6,4 @@ export const CACHE_PATH = {
   LOCALES: {
     CITIES: 'cities',
   },
-};
+}

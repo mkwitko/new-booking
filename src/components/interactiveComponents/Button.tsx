@@ -1,6 +1,6 @@
-import React from 'react';
-import { twMerge } from 'tailwind-merge';
-import Spinner from '../utilsComponents/Spinner';
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
+import Spinner from '../utilsComponents/Spinner'
 
 export default function B2BButton({
   label,
@@ -13,15 +13,15 @@ export default function B2BButton({
   buttonType = 'button',
   loading = false,
 }: {
-  label: string;
-  onClick?: any;
-  disabled?: boolean;
-  color?: 'primary' | 'light' | 'disabled';
-  mergeClass?: string;
-  textClass?: string;
-  children?: React.ReactNode;
-  buttonType?: 'button' | 'submit' | 'reset';
-  loading?: boolean;
+  label: string
+  onClick?: any
+  disabled?: boolean
+  color?: 'primary' | 'light' | 'disabled'
+  mergeClass?: string
+  textClass?: string
+  children?: React.ReactNode
+  buttonType?: 'button' | 'submit' | 'reset'
+  loading?: boolean
 }) {
   const classes = `${
     color === 'primary'
@@ -38,9 +38,9 @@ export default function B2BButton({
       ? 'hover:bg-primaryDark'
       : ''
   } 
-    px-6 h-[2.5rem] rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`;
+    px-6 h-[2.5rem] rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`
 
-  const defaultTextClasses = 'uppercase font-[700] text-center';
+  const defaultTextClasses = 'uppercase font-[700] text-center'
   return (
     <button
       type={buttonType === 'button' ? 'button' : 'submit'}
@@ -63,5 +63,5 @@ export default function B2BButton({
         </p>
       )}
     </button>
-  );
+  )
 }

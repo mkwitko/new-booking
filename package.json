@@ -6,7 +6,8 @@
     "dev": "next dev -p 2999",
     "build": "next build",
     "start": "next start -p 2999",
-    "lint": "next lint"
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -47,5 +48,9 @@
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.6",
     "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.3"
   }
 }

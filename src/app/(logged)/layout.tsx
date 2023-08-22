@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import Header from '@/components/coreComponents/Header';
-import { LoggedContextProvider } from '@/context/LoggedContext';
-import { useState } from 'react';
+import Header from '@/components/coreComponents/Header'
+import { LoggedContextProvider } from '@/context/LoggedContext'
+import { useState } from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   //   const [open, setOpen] = useState(true);
@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header showRouteIcons={true} />
       <div className="flex">
         <LoggedContextProvider>
-          <div className="w-[16rem] h-[calc(100vh-70px)] bg-primaryDark"></div>
+          <div className="h-[calc(100vh-70px)] w-[16rem] bg-primaryDark"></div>
           {/* <SideBar
             open={open}
             setOpen={setOpen}
@@ -20,5 +20,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </LoggedContextProvider>
       </div>
     </div>
-  );
+  )
 }

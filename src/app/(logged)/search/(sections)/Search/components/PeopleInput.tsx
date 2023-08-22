@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
+import React from 'react'
 
 export default function PeopleInput({
   icon,
@@ -9,28 +9,24 @@ export default function PeopleInput({
   max,
   label,
 }: {
-  icon: string;
-  value: number;
-  set: any;
-  min?: number;
-  max?: number;
-  label: string;
+  icon: string
+  value: number
+  set: any
+  min?: number
+  max?: number
+  label: string
 }) {
-  const minDisabled = min ? value <= min : value <= 0;
-  const maxDisabled = max ? value >= max : false;
+  const minDisabled = min ? value <= min : value <= 0
+  const maxDisabled = max ? value >= max : false
   return (
-    <div className="flex gap-2 items-center">
-      <img
-        className="w-6 h-auto"
-        src={icon}
-        alt=""
-      />
+    <div className="flex items-center gap-2">
+      <img className="h-auto w-6" src={icon} alt="" />
       <p className="w-full">{label}</p>
       <div className="w-full">
         <div className="flex items-center justify-between rounded-b2b border">
           <button
             onClick={() => {
-              set(value - 1);
+              set(value - 1)
             }}
             disabled={minDisabled}
             className="w-full"
@@ -43,7 +39,7 @@ export default function PeopleInput({
           <p>{value}</p>
           <button
             onClick={() => {
-              set(value + 1);
+              set(value + 1)
             }}
             disabled={maxDisabled}
             className="w-full"
@@ -56,5 +52,5 @@ export default function PeopleInput({
         </div>
       </div>
     </div>
-  );
+  )
 }

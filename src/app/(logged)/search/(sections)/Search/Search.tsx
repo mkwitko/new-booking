@@ -1,22 +1,22 @@
-'use client';
+'use client'
 
-import InputContainer from '@/components/coreComponents/containers/InputContainer';
-import Button from '@/components/interactiveComponents/Button';
-import { B2BCombobox } from '@/components/interactiveComponents/ComboBox';
-import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker';
-import { Button as ButtonUI } from '@/components/ui/button';
+import InputContainer from '@/components/coreComponents/containers/InputContainer'
+import Button from '@/components/interactiveComponents/Button'
+import { B2BCombobox } from '@/components/interactiveComponents/ComboBox'
+import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker'
+import { Button as ButtonUI } from '@/components/ui/button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { LoggedContext } from '@/context/LoggedContext';
-import useSearchHook from '@/hooks/search/Search';
-import { useContext } from 'react';
-import PeopleInput from './components/PeopleInput';
+} from '@/components/ui/popover'
+import { LoggedContext } from '@/context/LoggedContext'
+import useSearchHook from '@/hooks/search/Search'
+import { useContext } from 'react'
+import PeopleInput from './components/PeopleInput'
 
 export default function SearchComponent() {
-  const { user, hotelChain, locale } = useContext(LoggedContext);
+  const { user, hotelChain, locale } = useContext(LoggedContext)
 
   const {
     salePoint,
@@ -33,12 +33,12 @@ export default function SearchComponent() {
     setChild,
     rooms,
     setRooms,
-  } = useSearchHook();
+  } = useSearchHook()
 
   return (
     <>
       <div
-        className="flex flex-col w-full gap-4
+        className="flex w-full flex-col gap-4
       xl:flex-row"
       >
         <InputContainer label="Ponto de venda">
@@ -74,7 +74,7 @@ export default function SearchComponent() {
                 className="w-full justify-between"
               />
             </PopoverTrigger>
-            <PopoverContent className="p-4 PopoverContent">
+            <PopoverContent className="PopoverContent p-4">
               <div className="flex flex-col gap-4">
                 <PeopleInput
                   icon="/public/icons/ic-adult.svg"
@@ -115,12 +115,9 @@ export default function SearchComponent() {
             color="light"
             mergeClass="px-0"
           />
-          <Button
-            label="Buscar"
-            mergeClass="px-0"
-          />
+          <Button label="Buscar" mergeClass="px-0" />
         </div>
       </div>
     </>
-  );
+  )
 }
