@@ -1,3 +1,3 @@
 export enum GetMethods {
-  authoritiesDetails = 'authorities-details',
+  'agencies-stores' = 'agencies-stores',
 }

@@ -1,14 +1,11 @@
-import { get } from '@/services/cache'
-import { useState } from 'react'
+import { get } from '@/services/cache';
+import { useState } from 'react';
 
 export default function useCoreHook() {
-  const [data, setData] = useState<any>(null)
-  const [alphaId, setAlphaId] = useState<string>(get('alphaId') || '')
+  const [data, setData] = useState<any>(null);
 
   return {
     data,
     setData,
-    alphaId,
-    setAlphaId,
-  }
+  };
 }

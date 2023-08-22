@@ -17,17 +17,21 @@ export function middleware(request: NextRequest) {
       if (e.match(regex)?.length > 0) isAuth = true;
     });
 
-  //   if (!isAuth) {
-  //     if (request.url.includes('/home')) {
-  //       return NextResponse.redirect(new URL('/auth', request.url));
-  //     }
-  //   }
+  if (!isAuth) {
+    const loggedRoutes = ['/reserves', '/search', '/solicitations'];
+    const hasLoggedRoute = loggedRoutes.some((route) => {
+      return request.url.includes(route);
+    });
+    if (hasLoggedRoute) {
+      return NextResponse.redirect(new URL('/auth', request.url));
+    }
+  }
 
-  //   if (isAuth) {
-  //     if (request.url.includes('/auth')) {
-  //       return NextResponse.redirect(new URL('/home', request.url));
-  //     }
-  //   }
+  if (isAuth) {
+    if (request.url.includes('/auth')) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
 
   return NextResponse.next();
 }

@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-export default function Title({
+export default function B2BTitle({
   title,
   classes,
 }: {

@@ -1,5 +1,3 @@
-'use client';
-
 import Label from '@/components/text/Label';
 
 export default function InputContainer({

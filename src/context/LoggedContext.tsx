@@ -2,15 +2,17 @@
 'use client';
 
 import Classes from '@/classes';
-import UserClass from '@/classes/user/UserClass';
-import { set } from '@/services/cache';
-import { Auth } from 'aws-amplify';
 import React, { useEffect } from 'react';
 
 import '@/config';
+import HotelsChainClass from '@/classes/hotelsChain/HotelsChainClass';
+import LocalesClass from '@/classes/locales/LocalesClass';
+import UserClass from '@/classes/user/UserClass';
 
 interface LoggedContextProps {
   user: UserClass;
+  hotelChain: HotelsChainClass;
+  locale: LocalesClass;
 }
 
 export const LoggedContext = React.createContext({} as LoggedContextProps);
@@ -23,33 +25,27 @@ export function LoggedContextProvider({
   const classes: any = Classes();
   const {
     user,
+    hotelChain,
+    locale,
   }: {
     user: UserClass;
+    hotelChain: HotelsChainClass;
+    locale: LocalesClass;
     coreClass: any;
   } = classes;
 
-  async function getUserSession() {
-    const session = await Auth.currentSession();
-    const { username: alphaId } = session.getAccessToken().payload;
-
-    setAlphaId(alphaId);
-  }
-
   useEffect(() => {
-    getUserSession();
+    hotelChain.getHotelChain();
+    user.getAgenciesStores();
+    locale.getLocales();
   }, []);
-
-  function setAlphaId(alphaId: string) {
-    set('alphaId', alphaId);
-    Object.values(classes).forEach((e: any) => {
-      e.hook.setAlphaId(alphaId);
-    });
-  }
 
   return (
     <LoggedContext.Provider
       value={{
         user,
+        hotelChain,
+        locale,
       }}
     >
       {children}

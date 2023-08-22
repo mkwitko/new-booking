@@ -3,7 +3,7 @@
 import { B2BApi } from '@/infra/api/B2BApi';
 import { CACHE_PATH } from '@/config/cache';
 import useCoreHook from './hook/useCoreHook';
-import { get, set } from '@/services/cache';
+import { get, getLocalStorage, set } from '@/services/cache';
 
 export default class CoreClass {
   url = '';
@@ -18,18 +18,24 @@ export default class CoreClass {
 
   hook: any = useCoreHook();
 
-  getCache(key?: string) {
-    return get(key || this.cachePath);
+  async getCache(key?: string) {
+    const cached = get(key || this.cachePath);
+    if (Object.keys(cached).length === 0) {
+      return getLocalStorage(key || this.cachePath).then((res) => {
+        return res;
+      });
+    }
+    return cached;
   }
 
-  setCache(value: any, shouldUpdate = false, key?: string) {
-    const cache = this.getCache(key || this.cachePath);
-    if (shouldUpdate || !this.hasObject(cache))
+  async setCache(value: any, shouldUpdate = false, key?: string) {
+    const cache = await this.getCache(key || this.cachePath);
+    if (shouldUpdate || !cache || !this.hasObject(cache))
       set(key || this.cachePath, value);
   }
 
   async getHttp<T>(method: typeof this.getMethods, url?: string) {
-    return B2BApi.get(this.makeUrl(method, url || undefined))
+    return B2BApi.get<T>(this.makeUrl(method, url || undefined))
       .then((response) => {
         const { data } = response;
         return data;
@@ -67,33 +73,29 @@ export default class CoreClass {
       });
   }
 
-  async setClass(
+  async setClass<T>(
     shouldUpdate = true,
+    method?: typeof this.getMethods,
     custom: {
       url?: string;
       cachePath?: string;
-    } | null = null,
-    method?: string
+    } | null = null
   ) {
-    const cache = this.getCache();
+    const cache = await this.getCache();
     const request = this.isCustomRequest(custom);
-    if (!this.hasObject(cache) || shouldUpdate) {
-      const response = await this.getHttp(method || '', request.url);
-      this.setCache(response, shouldUpdate, request.cachePath);
+    if (!cache || !this.hasObject(cache) || shouldUpdate) {
+      const response = await this.getHttp<T>(method || '', request.url);
+      console.log('data - ', response.data);
+      await this.setCache(response.data, shouldUpdate, request.cachePath);
       return response;
     } else {
       return cache;
     }
   }
 
-  setAlphaId(method: any) {
-    return this.hook.alphaId + '/' + method;
-  }
-
   private makeUrl(method: string, url?: string) {
     let baseUrl = url || this.url;
-    if (this.hook.alphaId) baseUrl += '/' + this.hook.alphaId + '/';
-    const _url = method !== '' ? baseUrl + method : baseUrl;
+    const _url = method !== '' ? baseUrl + '/' + method : baseUrl;
     return _url;
   }
 

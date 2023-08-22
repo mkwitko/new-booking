@@ -3,7 +3,8 @@ import axios from 'axios';
 import '@/config/awsConfig';
 
 export const B2BApi = axios.create({
-  baseURL: process.env.REACT_APP_API_URL_DEV,
+  baseURL:
+    'https://806df3oywg.execute-api.us-west-2.amazonaws.com/homolog/api/booking/v1',
   responseType: 'json',
 });
 
