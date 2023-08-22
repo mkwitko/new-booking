@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={`${nunito.className} bg-[#f5f7fa] tracking-[0.00938em]`}>
+      <body
+        className={`${nunito.className} bg-[#f5f7fa] tracking-[0.00938em] antialiased`}
+      >
         <div className="w-full text-textPrimary">{children}</div>
       </body>
     </html>

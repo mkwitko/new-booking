@@ -18,7 +18,12 @@ export function middleware(request: NextRequest) {
     })
 
   if (!isAuth) {
-    const loggedRoutes = ['/reserves', '/search', '/solicitations']
+    const loggedRoutes = [
+      '/reserves',
+      '/reserves/new',
+      '/search',
+      '/solicitations',
+    ]
     const hasLoggedRoute = loggedRoutes.some((route) => {
       return request.url.includes(route)
     })
