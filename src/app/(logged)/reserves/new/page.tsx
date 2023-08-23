@@ -6,6 +6,7 @@ import { AiFillInfoCircle } from 'react-icons/ai'
 import { ChevronDown } from 'lucide-react'
 import { Calendar } from './(components)/Calendar'
 import { StarRating } from './(components)/StarRating'
+import { ReserveForm } from './(components)/ReserveForm'
 
 export default function Reserves() {
   return (
@@ -101,6 +102,8 @@ export default function Reserves() {
           para a pesquisa
         </span>
       </div>
+
+      <ReserveForm />
     </Container>
   )
 }
