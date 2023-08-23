@@ -4,6 +4,7 @@ import { B2BApi } from '@/infra/api/B2BApi';
 import { CACHE_PATH } from '@/config/cache';
 import useCoreHook from './hook/useCoreHook';
 import { get, getLocalStorage, set } from '@/services/cache';
+import { AxiosRequestConfig } from 'axios';
 
 export default class CoreClass {
   url = '';
@@ -46,8 +47,13 @@ export default class CoreClass {
       });
   }
 
-  async postHttp(method: typeof this.postMethods, value: any, url?: string) {
-    return B2BApi.post(this.makeUrl(method, url || undefined), value)
+  async postHttp(
+    method: typeof this.postMethods,
+    value: any,
+    url?: string,
+    configs: AxiosRequestConfig = {}
+  ) {
+    return B2BApi.post(this.makeUrl(method, url || undefined), value, configs)
       .then((response) => {
         return response.data;
       })

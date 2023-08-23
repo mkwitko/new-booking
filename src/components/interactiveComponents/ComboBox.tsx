@@ -31,6 +31,7 @@ export function B2BCombobox({
   setValue: (value: string) => void;
   labelTag?: string;
   valueTag?: string;
+  elementAsValue?: boolean;
 }) {
   const [open, setOpen] = React.useState(false);
   const [filtered, setFiltered] = React.useState(options);
@@ -56,11 +57,18 @@ export function B2BCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-full justify-between truncate"
         >
-       <p> {value ? filtered.find((e: any) => {
-            return e[valueTag].toString() === value.toString();
-        })?.[labelTag] : 'Selecione Um'}</p>
+          <p className="truncate w-11/12 text-start text-[0.75rem] capitalize">
+            {' '}
+            {value
+              ? filtered
+                  .find((e: any) => {
+                    return e[valueTag].toString() === value.toString();
+                  })
+                  ?.[labelTag].toLowerCase()
+              : 'Selecione Um'}
+          </p>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -74,7 +82,6 @@ export function B2BCombobox({
                   .toLowerCase()
                   .includes(value.toLowerCase());
               });
-              console.log(filtered);
               setFiltered(filtered);
             }}
             placeholder="Procurar"
@@ -87,6 +94,7 @@ export function B2BCombobox({
                 getOptions()
                   .map((each: any, index: number) => (
                     <CommandItem
+                      className="text-small text-start"
                       value={each[valueTag].toString()}
                       key={each[valueTag] + '_' + index}
                       onSelect={(currentValue: any) => {
@@ -95,7 +103,6 @@ export function B2BCombobox({
                             ? ''
                             : currentValue
                         );
-                        console.log(currentValue);
                         setOpen(false);
                       }}
                     >

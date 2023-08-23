@@ -20,14 +20,7 @@ export default class LocalesClass extends CoreClass {
   async getLocales(): Promise<any> {
     const data: ILocaleCitiesResponse[] =
       await this.setClass<ILocaleCitiesResponse>(false, this.getMethods.cities);
-    this.hook.setData(
-      data.map((e: any) => {
-        return {
-          label: e.cityName,
-          value: e.cityId,
-        };
-      })
-    );
+    this.hook.setData(data);
     return data;
   }
 }

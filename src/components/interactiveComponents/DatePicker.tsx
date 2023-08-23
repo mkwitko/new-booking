@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { addDays, format } from 'date-fns';
+import { addDays, format, parseISO } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 
@@ -14,14 +14,20 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  checkIn: any;
+  setCheckIn: any;
+  checkOut: any;
+  setCheckOut: any;
+}
+
 export function B2BDatePicker({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  });
-
+  checkIn,
+  setCheckIn,
+  checkOut,
+  setCheckOut,
+}: Props) {
   return (
     <div className={cn('grid gap-2', className)}>
       <Popover>
@@ -29,23 +35,20 @@ export function B2BDatePicker({
           <Button
             id="date"
             variant={'outline'}
-            className={cn(
-              'w-full justify-start text-left font-normal',
-              !date && 'text-muted-foreground'
-            )}
+            className={cn('w-full justify-start text-left text-small')}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
+            {checkIn ? (
+              checkOut ? (
                 <>
-                  {format(date.from, 'LLL dd, y')} -{' '}
-                  {format(date.to, 'LLL dd, y')}
+                  {format(checkIn, 'LLL dd, y')} -{' '}
+                  {format(checkOut, 'LLL dd, y')}
                 </>
               ) : (
-                format(date.from, 'LLL dd, y')
+                format(checkIn, 'LLL dd, y')
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Escolha uma Data</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -56,9 +59,20 @@ export function B2BDatePicker({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
+            defaultMonth={checkIn}
+            selected={{
+              from: checkIn,
+              to: checkOut,
+            }}
+            onSelect={(e: any) => {
+              if (e) {
+                setCheckIn(e.from || null);
+                setCheckOut(e.to || null);
+              } else {
+                setCheckIn(null);
+                setCheckOut(null);
+              }
+            }}
             numberOfMonths={2}
           />
         </PopoverContent>

@@ -6,4 +6,8 @@ export const CACHE_PATH = {
   LOCALES: {
     CITIES: 'cities',
   },
+  AVAILABILITY: {
+    HOTELS: 'hotels',
+    SEARCH_QUERY: 'search_query',
+  },
 };
