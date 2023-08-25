@@ -44,7 +44,7 @@ export default function Header({ showRouteIcons = false }: HeaderProps) {
   }
 
   return (
-    <header className="flex h-[70px] w-full flex-row items-center justify-between bg-primaryDark py-6 text-white shadow-xl">
+    <header className="fixed left-0 right-0 top-0 z-50 flex h-[70px] w-full flex-row items-center justify-between bg-primaryDark py-6 text-white shadow-xl">
       <div className="max-width-default flex items-center justify-between">
         <div className="flex flex-row items-center gap-6">
           <Image

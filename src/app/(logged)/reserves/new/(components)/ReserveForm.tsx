@@ -1,9 +1,15 @@
+'use client'
+
 import WhiteBox from '@/components/coreComponents/containers/WhiteBox'
 import * as FormComponents from '@/components/formComponents'
+import { useReservationForm } from '../(form)/useReservationForm'
 
 export function ReserveForm() {
+  const { errors, handleSubmit, isSubmitting, register, setValue, submitForm } =
+    useReservationForm()
+
   return (
-    <form className="w-full space-y-2">
+    <form className="w-full space-y-2" onSubmit={handleSubmit(submitForm)}>
       {/* Dados do Comprador */}
       <WhiteBox classes="gap-0 lg:gap-0">
         <span className="font-semibold uppercase text-primary-500">
@@ -12,17 +18,24 @@ export function ReserveForm() {
 
         <div className="mt-6 grid w-full grid-cols-2 gap-4">
           {/* Combo Box */}
-          <FormComponents.Input type="text" placeholder="Cliente" />
+          <FormComponents.Input
+            type="text"
+            placeholder="Cliente"
+            register={register('name')}
+            errorMessage={errors.name?.message}
+          />
 
           <div className="space-y-2">
             <FormComponents.Checkbox
               label="Autoriza cobrança de taxa de turismo"
               id="allow-turism-taxes"
+              // register={register('allowTurismTaxes')}
             />
 
             <FormComponents.Checkbox
               label="Reserva com garantia de no-show"
               id="allow-no-show-ensurance"
+              // register={register('noShowEnsurance')}
             />
           </div>
         </div>
@@ -33,11 +46,27 @@ export function ReserveForm() {
 
         <div className="mt-4 grid w-full grid-cols-2 gap-4">
           {/* Combo box */}
-          <FormComponents.Input type="text" placeholder="Centro de Custos" />
+          <FormComponents.Input
+            type="text"
+            placeholder="Centro de Custos"
+            errorMessage={errors?.costsCenter?.message}
+            register={register('costsCenter')}
+          />
 
-          <FormComponents.Input type="text" placeholder="Matrícula" />
+          <FormComponents.Input
+            type="text"
+            placeholder="Matrícula"
+            errorMessage={errors?.register?.message}
+            register={register('register')}
+          />
 
-          <FormComponents.Input type="text" id="area" placeholder="Area" />
+          <FormComponents.Input
+            type="text"
+            id="area"
+            placeholder="Area"
+            register={register('area')}
+            errorMessage={errors?.area?.message}
+          />
         </div>
       </WhiteBox>
 
@@ -52,13 +81,33 @@ export function ReserveForm() {
 
         <div className="mt-4 grid w-full grid-cols-2 gap-4">
           {/* Combo Box */}
-          <FormComponents.Input type="text" placeholder="CPF (Opcional)" />
+          <FormComponents.Input
+            type="text"
+            placeholder="CPF (Opcional)"
+            register={register('guestId')}
+            errorMessage={errors?.guestId?.message}
+          />
 
-          <FormComponents.Input type="email" placeholder="Email (Opcional)" />
+          <FormComponents.Input
+            type="email"
+            placeholder="Email (Opcional)"
+            register={register('guestEmail')}
+            errorMessage={errors?.guestEmail?.message}
+          />
 
-          <FormComponents.Input type="text" placeholder="Nome" />
+          <FormComponents.Input
+            type="text"
+            placeholder="Nome"
+            register={register('guestName')}
+            errorMessage={errors?.guestName?.message}
+          />
 
-          <FormComponents.Input type="text" placeholder="Sobrenome" />
+          <FormComponents.Input
+            type="text"
+            placeholder="Sobrenome"
+            register={register('guestSurname')}
+            errorMessage={errors?.guestSurname?.message}
+          />
         </div>
       </WhiteBox>
 
@@ -68,13 +117,48 @@ export function ReserveForm() {
         </span>
 
         <div className="mt-6 grid w-full grid-cols-2 gap-4">
-          <FormComponents.Input placeholder="Método de Pagamento" />
+          {/* <FormComponents.Input
+            placeholder="Método de Pagamento"
+            register={register('paymentMethod')}
+            errorMessage={errors?.paymentMethod?.message}
+          /> */}
 
-          <FormComponents.Input placeholder="Desepesas Autorizadas" disabled />
+          <FormComponents.Select.Root placeholder="Método de Pagamento">
+            <FormComponents.Select.Item
+              text="Cartão de Crédito"
+              value="Cartão de Crédito"
+            />
+            <FormComponents.Select.Item
+              text="Direto ao Hotel"
+              value="Direto ao Hotel"
+            />
+            <FormComponents.Select.Item
+              text="Pagamento Faturado"
+              value="Pagamento Faturado"
+            />
+          </FormComponents.Select.Root>
 
-          <FormComponents.Input placeholder="Cartão de Crédito" disabled />
+          <FormComponents.Input
+            placeholder="Desepesas Autorizadas"
+            register={register('allowedExpenses')}
+            errorMessage={errors?.allowedExpenses?.message}
+            disabled
+          />
 
-          <FormComponents.Input disabled placeholder="CVV" className="w-28" />
+          <FormComponents.Input
+            placeholder="Cartão de Crédito"
+            register={register('creditCard')}
+            errorMessage={errors?.creditCard?.message}
+            disabled
+          />
+
+          <FormComponents.Input
+            disabled
+            placeholder="CVV"
+            className="w-28"
+            register={register('credtiCardSecurityCode')}
+            errorMessage={errors?.credtiCardSecurityCode?.message}
+          />
         </div>
       </WhiteBox>
 
@@ -86,6 +170,8 @@ export function ReserveForm() {
         <FormComponents.Textarea
           placeholder="Observações (Opcional)"
           className="mt-6"
+          // register={register('observations')}
+          // errorMessage={errors?.observations?.message}
         />
       </WhiteBox>
 
@@ -95,19 +181,13 @@ export function ReserveForm() {
       </p>
 
       <div className="flex w-full items-center justify-end gap-4 pt-2">
-        <button
-          type="button"
-          className="flex items-center justify-center rounded-b2b px-3 py-2 font-bold uppercase text-textSecondary"
-        >
+        <FormComponents.Button type="button" variant="ghost">
           Descartar
-        </button>
+        </FormComponents.Button>
 
-        <button
-          type="submit"
-          className="flex items-center justify-center rounded-md bg-primary-400 px-4 py-2 font-semibold uppercase text-white transition-colors hover:bg-primary"
-        >
+        <FormComponents.Button type="submit" variant="primary">
           Confirmar Reserva
-        </button>
+        </FormComponents.Button>
       </div>
     </form>
   )
