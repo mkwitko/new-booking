@@ -1,3 +1,4 @@
+import { get } from '@/services/cache';
 import { useState } from 'react';
 
 export default function UsePeopleHook() {

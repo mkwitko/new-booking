@@ -37,15 +37,14 @@ export function B2BDatePicker({
             variant={'outline'}
             className={cn('w-full justify-start text-left text-small')}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
             {checkIn ? (
               checkOut ? (
                 <>
-                  {format(checkIn, 'LLL dd, y')} -{' '}
-                  {format(checkOut, 'LLL dd, y')}
+                  {format(checkIn, 'dd/MM/yyyy')} |{' '}
+                  {format(checkOut, 'dd/MM/yyyy')}
                 </>
               ) : (
-                format(checkIn, 'LLL dd, y')
+                format(checkIn, 'dd/MM/yyyy')
               )
             ) : (
               <span>Escolha uma Data</span>

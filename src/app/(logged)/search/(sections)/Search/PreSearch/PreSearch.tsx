@@ -36,7 +36,7 @@ export default function PreSearch({
     Search().then((response: any) => {
       availability.hook.setData(response.hotels);
       setIsSearching(false);
-      if (response.hotels.length > 0) setHasSearched(true);
+      if (response.hotels && response.hotels.length > 0) setHasSearched(true);
     });
   };
 

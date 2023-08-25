@@ -16,7 +16,7 @@ export default function B2BButton({
   label: string;
   onClick?: any;
   disabled?: boolean;
-  color?: 'primary' | 'light' | 'disabled';
+  color?: 'primary' | 'light' | 'outlined' | 'disabled';
   mergeClass?: string;
   textClass?: string;
   children?: React.ReactNode;
@@ -28,6 +28,8 @@ export default function B2BButton({
       ? 'bg-primary text-white'
       : color === 'light'
       ? 'text-primary'
+      : color === 'outlined'
+      ? 'text-primary border border-primary'
       : color === 'disabled'
       ? 'text-textDisabled'
       : ''
@@ -36,9 +38,11 @@ export default function B2BButton({
       ? 'opacity-75'
       : color === 'primary'
       ? 'hover:bg-primaryDark'
+      : color === 'outlined'
+      ? 'hover:bg-primary/5'
       : ''
   } 
-    px-6 h-[2.5rem] rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`;
+    px-4 py-1 h-[2rem] rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`;
 
   const defaultTextClasses = 'uppercase font-[700] text-center';
   return (

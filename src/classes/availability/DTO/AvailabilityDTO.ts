@@ -119,7 +119,7 @@ export interface RoomType {
   numberOfUnits: number;
   maxOccupancy: number;
   availability: 'NON' | 'VIP' | 'PUB';
-  averageRates?: AverageRates[];
+  averageRates: AverageRates[];
   temporaryUH: string;
   expandItem: number;
   taxes?: Taxes[];

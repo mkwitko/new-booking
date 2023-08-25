@@ -55,7 +55,7 @@ export function SearchContextProvider({
       enforceAvailability: false,
       adultGuestCount: peopleHook.adult,
       roomsQuantity: roomsHook.rooms,
-      companyId: +salePointHook.salePoint,
+      companyId: +salePointHook.salePoint!,
     };
 
     const hotelCity = cityHook.findCityById(cityHook.city);
@@ -64,6 +64,7 @@ export function SearchContextProvider({
 
     set(CACHE_PATH.AVAILABILITY.SEARCH_QUERY, {
       ...data,
+      companyId: +salePointHook.salePoint!,
       hotelCity,
     });
 

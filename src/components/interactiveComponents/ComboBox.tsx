@@ -60,7 +60,6 @@ export function B2BCombobox({
           className="w-full justify-between truncate"
         >
           <p className="truncate w-11/12 text-start text-[0.75rem] capitalize">
-            {' '}
             {value
               ? filtered
                   .find((e: any) => {
