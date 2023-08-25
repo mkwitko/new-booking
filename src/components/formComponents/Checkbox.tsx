@@ -13,6 +13,7 @@ export function Checkbox({ label, id, ...props }: CheckboxProps) {
         {...props}
         className="h-5 w-5 cursor-pointer rounded border border-slate-500 font-light outline-none ring-0 checked:bg-primary-400 checked:hover:bg-primary focus:ring-0 focus:checked:bg-primary"
       />
+
       <label htmlFor={id}>{label}</label>
     </div>
   )

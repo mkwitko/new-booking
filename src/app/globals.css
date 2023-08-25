@@ -18,7 +18,7 @@ input:not([type=checkbox]):not([type=radio]) {
   margin: 0;
 }
 
-input:not([type=checkbox]):not([type=radio]):focus {
+input:not([type=checkbox]):not([type=radio]):focus, textarea:focus {
   outline: none;
   border: none;
   box-shadow: none;
