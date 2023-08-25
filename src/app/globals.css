@@ -9,3 +9,17 @@
 .PopoverContent {
   width: var(--radix-popover-trigger-width);
 }
+
+input:not([type=checkbox]):not([type=radio]) {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+input:not([type=checkbox]):not([type=radio]):focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}

@@ -3,7 +3,7 @@ import WhiteBox from '@/components/coreComponents/containers/WhiteBox'
 import Title from '@/components/text/Title'
 
 import { AiFillInfoCircle } from 'react-icons/ai'
-import { ChevronDown } from 'lucide-react'
+import { BsChevronDown } from 'react-icons/bs'
 import { Calendar } from './(components)/Calendar'
 import { StarRating } from './(components)/StarRating'
 import { ReserveForm } from './(components)/ReserveForm'
@@ -86,7 +86,7 @@ export default function Reserves() {
             </div>
 
             <div className="ml-auto flex items-center gap-2 text-primary-500">
-              <ChevronDown className="w-5 " />
+              <BsChevronDown className="w-5 " />
               <span className="text-xs font-bold uppercase">
                 Ver mais Tarifas
               </span>
