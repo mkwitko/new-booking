@@ -7,6 +7,7 @@ export function useReservationForm() {
   const {
     register,
     setValue,
+    watch,
     formState: { isSubmitting, errors },
     handleSubmit,
   } = useForm<ReservationFormSchema>({
@@ -18,6 +19,7 @@ export function useReservationForm() {
   }
 
   return {
+    watch,
     errors,
     register,
     setValue,

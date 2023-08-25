@@ -4,9 +4,29 @@ import WhiteBox from '@/components/coreComponents/containers/WhiteBox'
 import * as FormComponents from '@/components/formComponents'
 import { useReservationForm } from '../(form)/useReservationForm'
 
+// Mock Data
+import {
+  AllowedExpenses,
+  AvailableCreditCards,
+  PaymentMethods,
+} from '../(data)'
+
+import { CreditCardOption } from './CreditCardOption'
+import { NewCreditCardOption } from './NewCreditCardOption'
+
 export function ReserveForm() {
-  const { errors, handleSubmit, isSubmitting, register, setValue, submitForm } =
-    useReservationForm()
+  const {
+    errors,
+    watch,
+    handleSubmit,
+    isSubmitting,
+    register,
+    setValue,
+    submitForm,
+  } = useReservationForm()
+
+  const displayCreditCardNameField =
+    watch('paymentMethod') === 'Cartão de Crédito'
 
   return (
     <form className="w-full space-y-2" onSubmit={handleSubmit(submitForm)}>
@@ -16,7 +36,7 @@ export function ReserveForm() {
           Dados do Comprador
         </span>
 
-        <div className="mt-6 grid w-full grid-cols-2 gap-4">
+        <div className="mt-6 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
           {/* Combo Box */}
           <FormComponents.Input
             type="text"
@@ -44,7 +64,7 @@ export function ReserveForm() {
           Informações gerenciais
         </span>
 
-        <div className="mt-4 grid w-full grid-cols-2 gap-4">
+        <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
           {/* Combo box */}
           <FormComponents.Input
             type="text"
@@ -79,7 +99,7 @@ export function ReserveForm() {
           Hóspede 1
         </span>
 
-        <div className="mt-4 grid w-full grid-cols-2 gap-4">
+        <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
           {/* Combo Box */}
           <FormComponents.Input
             type="text"
@@ -116,36 +136,35 @@ export function ReserveForm() {
           Forma de Pagamento
         </span>
 
-        <div className="mt-6 grid w-full grid-cols-2 gap-4">
-          {/* <FormComponents.Input
+        <div className="mt-6 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
+          <FormComponents.Select.Root
             placeholder="Método de Pagamento"
-            register={register('paymentMethod')}
             errorMessage={errors?.paymentMethod?.message}
-          /> */}
-
-          <FormComponents.Select.Root placeholder="Método de Pagamento">
-            <FormComponents.Select.Item
-              text="Cartão de Crédito"
-              value="Cartão de Crédito"
-            />
-            <FormComponents.Select.Item
-              text="Direto ao Hotel"
-              value="Direto ao Hotel"
-            />
-            <FormComponents.Select.Item
-              text="Pagamento Faturado"
-              value="Pagamento Faturado"
-            />
+            onValueChange={(value) => setValue('paymentMethod', value)}
+          >
+            {PaymentMethods.map((method) => (
+              <FormComponents.Select.Item
+                key={method}
+                text={method}
+                value={method}
+              />
+            ))}
           </FormComponents.Select.Root>
 
-          <FormComponents.Input
-            placeholder="Desepesas Autorizadas"
-            register={register('allowedExpenses')}
+          <FormComponents.Select.Root
+            placeholder="Despesas Autorizadas"
             errorMessage={errors?.allowedExpenses?.message}
-            disabled
-          />
+          >
+            {AllowedExpenses.map((expense) => (
+              <FormComponents.Select.Item
+                key={expense}
+                text={expense}
+                value={expense}
+              />
+            ))}
+          </FormComponents.Select.Root>
 
-          <FormComponents.Input
+          {/* <FormComponents.Input
             placeholder="Cartão de Crédito"
             register={register('creditCard')}
             errorMessage={errors?.creditCard?.message}
@@ -158,8 +177,35 @@ export function ReserveForm() {
             className="w-28"
             register={register('credtiCardSecurityCode')}
             errorMessage={errors?.credtiCardSecurityCode?.message}
-          />
+          /> */}
         </div>
+
+        {displayCreditCardNameField && (
+          <div className="mt-4 grid w-full grid-cols-1">
+            <FormComponents.Select.Root
+              placeholder="Informe o cartão de crédito"
+              onValueChange={(value) => console.log(value)}
+            >
+              {AvailableCreditCards.map((card) => (
+                <FormComponents.Select.Item
+                  key={card.id}
+                  text={card.name}
+                  value={card.name}
+                  creditCard
+                >
+                  <CreditCardOption key={card.id} {...card} />
+                </FormComponents.Select.Item>
+              ))}
+              <FormComponents.Select.Item
+                text="Informar Manualmente"
+                value="Informar Manualmente"
+                creditCard
+              >
+                <NewCreditCardOption />
+              </FormComponents.Select.Item>
+            </FormComponents.Select.Root>
+          </div>
+        )}
       </WhiteBox>
 
       <WhiteBox classes="gap-0 lg:gap-0">
@@ -170,8 +216,8 @@ export function ReserveForm() {
         <FormComponents.Textarea
           placeholder="Observações (Opcional)"
           className="mt-6"
-          // register={register('observations')}
-          // errorMessage={errors?.observations?.message}
+          register={register('observations')}
+          errorMessage={errors?.observations?.message}
         />
       </WhiteBox>
 
