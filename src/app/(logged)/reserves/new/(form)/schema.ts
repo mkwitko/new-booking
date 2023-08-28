@@ -16,6 +16,7 @@ export const Schema = z.object({
 
   // Payment Information
   paymentMethod: z.string().nonempty('O método de pagamento é obrigatório'),
+  creditCardName: z.string().nonempty('Selecione um cartão de crédito'),
   allowedExpenses: z.string().nonempty('O tipo de despesa é obrigatório'),
   creditCard: z.string().nonempty('O cartão de crédito é obrigatório'),
   credtiCardSecurityCode: z

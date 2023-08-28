@@ -13,6 +13,7 @@ import {
 
 import { CreditCardOption } from './CreditCardOption'
 import { NewCreditCardOption } from './NewCreditCardOption'
+import { CredtiCard } from './CreditCard'
 
 export function ReserveForm() {
   const {
@@ -27,6 +28,9 @@ export function ReserveForm() {
 
   const displayCreditCardNameField =
     watch('paymentMethod') === 'Cartão de Crédito'
+
+  const displayCreditCardForm =
+    watch('creditCardName') === 'Informar Manualmente'
 
   return (
     <form className="w-full space-y-2" onSubmit={handleSubmit(submitForm)}>
@@ -184,7 +188,8 @@ export function ReserveForm() {
           <div className="mt-4 grid w-full grid-cols-1">
             <FormComponents.Select.Root
               placeholder="Informe o cartão de crédito"
-              onValueChange={(value) => console.log(value)}
+              errorMessage={errors?.creditCardName?.message}
+              onValueChange={(value) => setValue('creditCardName', value)}
             >
               {AvailableCreditCards.map((card) => (
                 <FormComponents.Select.Item
@@ -204,6 +209,38 @@ export function ReserveForm() {
                 <NewCreditCardOption />
               </FormComponents.Select.Item>
             </FormComponents.Select.Root>
+
+            {displayCreditCardForm && (
+              <div className="mt-4 grid w-full grid-cols-2">
+                {/* Cartão de Crédito */}
+                <div className="space-y-4">
+                  <span className="mt-4 block text-xs font-semibold uppercase text-textSecondary">
+                    Dados do cartão de crédito
+                  </span>
+                  <CredtiCard />
+                </div>
+
+                <div className="mt-auto space-y-4">
+                  <FormComponents.Input
+                    placeholder="Nome no cartão"
+                    type="text"
+                  />
+
+                  <FormComponents.Input
+                    placeholder="Número do cartão"
+                    type="text"
+                  />
+
+                  <FormComponents.Input placeholder="Validade" type="text" />
+
+                  <FormComponents.Input
+                    type="text"
+                    placeholder="CVV"
+                    className="w-28"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         )}
       </WhiteBox>
