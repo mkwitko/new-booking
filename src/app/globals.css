@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .max-width-default {
-  @apply mx-auto w-full lg:max-w-[84rem];
+  @apply mx-auto w-full lg:max-w-[92rem];
 }
 
 .PopoverContent {

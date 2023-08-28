@@ -13,12 +13,12 @@ export default function UseDateHook() {
   const checkoutDate = new Date();
   checkoutDate.setDate(checkoutDate.getDate() + 1);
   const [checkIn, setCheckIn] = useState<Date>(
-    searchingQuery.checkinDate
+    searchingQuery && searchingQuery.checkinDate
       ? new Date(searchingQuery.checkinDate)
       : new Date()
   );
   const [checkOut, setCheckOut] = useState<Date>(
-    searchingQuery.checkoutDate
+    searchingQuery && searchingQuery.checkoutDate
       ? new Date(searchingQuery.checkoutDate)
       : checkoutDate
   );

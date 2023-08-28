@@ -10,7 +10,7 @@ export default function UseSalePointHook() {
   } = get(CACHE_PATH.AVAILABILITY.SEARCH_QUERY);
   // Sale Point
   const [salePoint, setSalePoint] = useState<string>(
-    searchingQuery.companyId ? searchingQuery.companyId?.toString() : ''
+    searchingQuery && searchingQuery.companyId ? searchingQuery.companyId?.toString() : ''
   );
 
   console.log(searchingQuery);

@@ -6,16 +6,16 @@ import {
 } from '../ui/accordion'
 
 export default function B2BAccordion({
-  title,
+  header,
   children,
 }: {
-  title: string
+  header: React.ReactNode
   children: React.ReactNode
 }) {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
-        <AccordionTrigger>{title}</AccordionTrigger>
+        <AccordionTrigger>{header}</AccordionTrigger>
         <AccordionContent>{children}</AccordionContent>
       </AccordionItem>
     </Accordion>

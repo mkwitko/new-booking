@@ -44,15 +44,15 @@ export default function Header({ showRouteIcons = false }: HeaderProps) {
   }
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 flex h-[70px] w-full flex-row items-center justify-between bg-primaryDark py-6 text-white shadow-xl">
+    <header className="left-0 right-0 top-0 z-50 flex h-[70px] w-full flex-row items-center justify-between bg-primaryDark p-6 text-white shadow-xl">
       <div className="max-width-default flex items-center justify-between">
-        <div className="flex flex-row items-center gap-6">
+        <div className="flex flex-row items-center justify-center gap-6 max-w-[16rem]">
           <Image
             src={logo}
             alt="Hub"
             width={112}
             height={16}
-            className="w-52"
+            className="w-[10rem]"
           />
         </div>
 

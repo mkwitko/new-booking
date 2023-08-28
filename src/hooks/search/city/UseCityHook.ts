@@ -14,7 +14,7 @@ export default function UseCityHook() {
 
   //   Destination
   const [city, setCity] = useState<string>(
-    searchingQuery.hotelCityId ? searchingQuery.hotelCityId?.toString() : ''
+    searchingQuery && searchingQuery.hotelCityId ? searchingQuery.hotelCityId?.toString() : ''
   );
 
   const findCityById = (id: string | number) => {
