@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export function NewCreditCardOption() {
   return (
-    <div className="grid-cols-credit-card grid gap-4">
+    <div className="grid grid-cols-credit-card gap-4">
       <div className="flex w-full items-center">
         <Image
           width={20}

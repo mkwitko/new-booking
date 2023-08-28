@@ -1,9 +1,9 @@
-import { PopoverTrigger } from '@/components/ui/popover';
+import { PopoverTrigger } from '@/components/ui/popover'
 
 export default function B2BPopoverTrigger({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  return <PopoverTrigger asChild>{children}</PopoverTrigger>;
+  return <PopoverTrigger asChild>{children}</PopoverTrigger>
 }

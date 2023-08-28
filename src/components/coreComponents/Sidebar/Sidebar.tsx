@@ -1,24 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import Image from 'next/image';
-import logo from '@/assets/b2b/Logo.svg';
-import { BiSolidUser } from 'react-icons/bi/';
-import { FaHotel } from 'react-icons/fa6';
-import { GiMultiDirections } from 'react-icons/gi';
-import SingleElement from './SingleElement';
-import Accordion from '@/components/nonInteractiveComponents/Accordion';
+import Image from 'next/image'
+import logo from '@/assets/b2b/Logo.svg'
+import { BiSolidUser } from 'react-icons/bi/'
+import { FaHotel } from 'react-icons/fa6'
+import { GiMultiDirections } from 'react-icons/gi'
+import SingleElement from './SingleElement'
+import Accordion from '@/components/nonInteractiveComponents/Accordion'
 
 export default function SideBar({
   open,
   setOpen,
 }: {
-  open: boolean;
-  setOpen: any;
+  open: boolean
+  setOpen: any
 }) {
   const Menus = [
     {
       title: 'Perfil',
-      src: <BiSolidUser className="w-6 h-6" />,
+      src: <BiSolidUser className="h-6 w-6" />,
       childs: [
         {
           title: 'Pesquisar',
@@ -34,15 +34,17 @@ export default function SideBar({
         },
       ],
     },
-  ];
+  ]
 
   return (
     <div
       className={` ${
-        open ? 'w-[16rem]' : 'w-20 '
-      } bg-primaryDark h-screen p-6 duration-300 text-white`}
+        open ? 'w-[16rem] p-6' : 'w-0 sm:w-16 sm:py-6'
+      } fixed z-50 h-screen  bg-primaryDark text-white duration-300 ease-in`}
     >
-      <div className="flex gap-6 items-center justify-between">
+      <div
+        className="flex items-center justify-between gap-6"
+      >
         {/* <div className="w-1/5">
           <Image
             src={logo}
@@ -59,7 +61,7 @@ export default function SideBar({
       </div>
       <ul>
         {Menus.map((each, index) => {
-          return each.childs ? (
+          return open && each.childs ? (
             <Accordion
               key={index}
               header={
@@ -74,13 +76,9 @@ export default function SideBar({
               <div className="ml-6">
                 {each.childs.map((e, i) => {
                   return (
-                    <SingleElement
-                      key={i}
-                      Menu={e}
-                      index={i}
-                      open={open}
-                    />
-                  );
+                    <SingleElement key={i} Menu={e} index={i} open={open} 
+                    setOpen={setOpen} />
+                  )
                 })}
               </div>
             </Accordion>
@@ -90,11 +88,12 @@ export default function SideBar({
               Menu={each}
               index={index}
               open={open}
+              setOpen={setOpen}
               MenuIcon={each.src}
             />
-          );
+          )
         })}
       </ul>
     </div>
-  );
+  )
 }

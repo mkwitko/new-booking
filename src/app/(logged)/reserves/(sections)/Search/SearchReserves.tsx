@@ -11,25 +11,17 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { LoggedContext } from '@/context/LoggedContext'
-import useSearchHook from '@/hooks/search/Search'
 import { useContext, useState } from 'react'
 import useSearchReservesHook from '@/hooks/reserves/SearchReserves'
+import { SearchContext } from '@/context/SearchContext'
 
 export default function SearchReservesComponent() {
   const { user } = useContext(LoggedContext)
 
   const [moreFilters, setMoreFilters] = useState<boolean>(false)
 
-  const {
-    salePoint,
-    setSalePoint,
-    city,
-    setCity,
-    checkIn,
-    setCheckIn,
-    checkOut,
-    setCheckOut,
-  } = useSearchHook()
+  const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
+    useContext(SearchContext)
 
   const {
     statusList,
@@ -75,8 +67,8 @@ export default function SearchReservesComponent() {
         <InputContainer label="Ponto de venda">
           <B2BCombobox
             options={user?.hook?.data.data}
-            value={salePoint}
-            setValue={setSalePoint}
+            value={salePointHook.salePoint}
+            setValue={salePointHook.setSalePoint}
             labelTag="corporateName"
             valueTag="companyId"
           />
@@ -99,7 +91,7 @@ export default function SearchReservesComponent() {
         </InputContainer>
 
         <InputContainer label="Entrada e Saída">
-          <B2BDatePicker />
+          {/* <B2BDatePicker /> */}
         </InputContainer>
       </div>
 
@@ -109,7 +101,11 @@ export default function SearchReservesComponent() {
           lg:flex-row"
         >
           <InputContainer label="Cidade">
-            <B2BCombobox options={''} value={city} setValue={setCity} />
+            <B2BCombobox
+              options={''}
+              value={cityHook.city}
+              setValue={cityHook.setCity}
+            />
           </InputContainer>
 
           <InputContainer label="Cliente">

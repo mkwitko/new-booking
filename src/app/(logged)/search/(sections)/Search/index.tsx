@@ -1,5 +1,5 @@
-import PreSearch from './PreSearch/PreSearch';
-import PostSearch from './PostSearch/PostSearch';
+import PreSearch from './PreSearch/PreSearch'
+import PostSearch from './PostSearch/PostSearch'
 
 export default function SearchIndex({
   hasSearched,
@@ -7,10 +7,10 @@ export default function SearchIndex({
   isSearching,
   setIsSearching,
 }: {
-  hasSearched: boolean;
-  setHasSearched: any;
-  isSearching: boolean;
-  setIsSearching: any;
+  hasSearched: boolean
+  setHasSearched: any
+  isSearching: boolean
+  setIsSearching: any
 }) {
   return !hasSearched ? (
     <PreSearch
@@ -21,5 +21,5 @@ export default function SearchIndex({
     />
   ) : (
     <PostSearch setHasSearched={setHasSearched} />
-  );
+  )
 }

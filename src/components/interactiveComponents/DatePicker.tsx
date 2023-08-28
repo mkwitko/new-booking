@@ -1,9 +1,9 @@
 'use client'
 
-import * as React from 'react';
-import { addDays, format, parseISO } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
+import * as React from 'react'
+import { addDays, format, parseISO } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
+import { DateRange } from 'react-day-picker'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -15,10 +15,10 @@ import {
 } from '@/components/ui/popover'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  checkIn: any;
-  setCheckIn: any;
-  checkOut: any;
-  setCheckOut: any;
+  checkIn: any
+  setCheckIn: any
+  checkOut: any
+  setCheckOut: any
 }
 
 export function B2BDatePicker({
@@ -62,11 +62,11 @@ export function B2BDatePicker({
             }}
             onSelect={(e: any) => {
               if (e) {
-                setCheckIn(e.from || null);
-                setCheckOut(e.to || null);
+                setCheckIn(e.from || null)
+                setCheckOut(e.to || null)
               } else {
-                setCheckIn(null);
-                setCheckOut(null);
+                setCheckIn(null)
+                setCheckOut(null)
               }
             }}
             numberOfMonths={2}

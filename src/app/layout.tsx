@@ -1,9 +1,9 @@
-import './globals.css';
-import 'react-toastify/dist/ReactToastify.css';
+import './globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 
-import type { Metadata } from 'next';
-import { Nunito } from 'next/font/google';
-import { ToastContainer } from 'react-toastify';
+import type { Metadata } from 'next'
+import { Nunito } from 'next/font/google'
+import { ToastContainer } from 'react-toastify'
 
 const nunito = Nunito({
   subsets: ['latin'],

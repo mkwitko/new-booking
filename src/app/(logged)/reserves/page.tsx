@@ -8,7 +8,7 @@ export default function Reserves() {
     <Container>
       <Title title="Busque por reservas" />
       <WhiteBox>
-        <SearchReservesComponent />
+        {/* <SearchReservesComponent /> */}
       </WhiteBox>
     </Container>
   )

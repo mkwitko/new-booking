@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import InputContainer from '@/components/coreComponents/containers/InputContainer';
-import Button from '@/components/interactiveComponents/Button';
-import { B2BCombobox } from '@/components/interactiveComponents/ComboBox';
-import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker';
-import { Button as ButtonUI } from '@/components/ui/button';
+import InputContainer from '@/components/coreComponents/containers/InputContainer'
+import Button from '@/components/interactiveComponents/Button'
+import { B2BCombobox } from '@/components/interactiveComponents/ComboBox'
+import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker'
+import { Button as ButtonUI } from '@/components/ui/button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { LoggedContext } from '@/context/LoggedContext';
-import { useContext } from 'react';
-import PeopleInput from './components/PeopleInput';
-import { SearchContext } from '@/context/SearchContext';
+} from '@/components/ui/popover'
+import { LoggedContext } from '@/context/LoggedContext'
+import { useContext } from 'react'
+import PeopleInput from './components/PeopleInput'
+import { SearchContext } from '@/context/SearchContext'
 
 export default function PreSearch({
   hasSearched,
@@ -21,50 +21,44 @@ export default function PreSearch({
   isSearching,
   setIsSearching,
 }: {
-  hasSearched: boolean;
-  setHasSearched: (bool: boolean) => void;
-  isSearching: boolean;
-  setIsSearching: (bool: boolean) => void;
+  hasSearched: boolean
+  setHasSearched: (bool: boolean) => void
+  isSearching: boolean
+  setIsSearching: (bool: boolean) => void
 }) {
-  const { user, locale, availability } = useContext(LoggedContext);
+  const { user, locale, availability } = useContext(LoggedContext)
 
   const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
-    useContext(SearchContext);
+    useContext(SearchContext)
 
   const handleSearch = () => {
-    setIsSearching(true);
+    setIsSearching(true)
     Search().then((response: any) => {
-      availability.hook.setData(response.hotels);
-      setIsSearching(false);
-      if (response.hotels && response.hotels.length > 0) setHasSearched(true);
-    });
-  };
+      availability.hook.setData(response.hotels)
+      setIsSearching(false)
+      if (response.hotels && response.hotels.length > 0) setHasSearched(true)
+    })
+  }
 
   return (
     <>
       <div
-        className="flex flex-col w-full gap-4
+        className="flex w-full flex-col gap-4
       xl:flex-row"
       >
-        <InputContainer
-          label="Ponto de venda"
-          mergeClass="xl:max-w-[25%]"
-        >
+        <InputContainer label="Ponto de venda" mergeClass="xl:max-w-[25%]">
           <B2BCombobox
             options={user?.hook?.data}
             value={salePointHook.salePoint}
             setValue={(e) => {
-              salePointHook.setSalePoint(e);
+              salePointHook.setSalePoint(e)
             }}
             labelTag="name"
             valueTag="companyId"
           />
         </InputContainer>
 
-        <InputContainer
-          label="Destino"
-          mergeClass="xl:max-w-[25%]"
-        >
+        <InputContainer label="Destino" mergeClass="xl:max-w-[25%]">
           <B2BCombobox
             options={locale?.hook?.data}
             value={cityHook.city}
@@ -86,10 +80,7 @@ export default function PreSearch({
           />
         </InputContainer>
 
-        <InputContainer
-          label="Pessoas e Quartos"
-          mergeClass="xl:max-w-[25%]"
-        >
+        <InputContainer label="Pessoas e Quartos" mergeClass="xl:max-w-[25%]">
           <Popover>
             <PopoverTrigger asChild>
               <ButtonUI
@@ -97,12 +88,12 @@ export default function PreSearch({
                 role="combobox"
                 className="w-full justify-between truncate"
               >
-                <p className="truncate w-11/12 text-start text-[0.75rem]">
+                <p className="w-11/12 truncate text-start text-[0.75rem]">
                   {`${peopleHook.textAdult}, ${peopleHook.textChild}, ${roomsHook.textRoom}`}
                 </p>
               </ButtonUI>
             </PopoverTrigger>
-            <PopoverContent className="p-4 PopoverContent">
+            <PopoverContent className="PopoverContent p-4">
               <div className="flex flex-col gap-4">
                 <PeopleInput
                   icon="/public/icons/ic-adult.svg"
@@ -139,7 +130,7 @@ export default function PreSearch({
             disabled={isSearching}
           />
         </div>
-        <div className="flex gap-4 items-center justify-end w-1/2">
+        <div className="flex w-1/2 items-center justify-end gap-4">
           <Button
             disabled={isSearching}
             label="Limpar"
@@ -156,5 +147,5 @@ export default function PreSearch({
         </div>
       </div>
     </>
-  );
+  )
 }

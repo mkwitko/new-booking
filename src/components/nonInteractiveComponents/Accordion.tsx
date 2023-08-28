@@ -13,7 +13,7 @@ export default function B2BAccordion({
   children: React.ReactNode
 }) {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion value="item-1" type="single" collapsible>
       <AccordionItem value="item-1">
         <AccordionTrigger>{header}</AccordionTrigger>
         <AccordionContent>{children}</AccordionContent>

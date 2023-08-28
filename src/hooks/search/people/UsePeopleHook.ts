@@ -1,13 +1,13 @@
-import { get } from '@/services/cache';
-import { useState } from 'react';
+import { get } from '@/services/cache'
+import { useState } from 'react'
 
 export default function UsePeopleHook() {
   //  People
-  const [adult, setAdult] = useState<number>(1);
-  const [child, setChild] = useState<number>(0);
+  const [adult, setAdult] = useState<number>(1)
+  const [child, setChild] = useState<number>(0)
 
-  const textAdult = adult + (adult === 1 ? ' adulto' : ' adultos');
-  const textChild = child + (child === 1 ? ' criança' : ' crianças');
+  const textAdult = adult + (adult === 1 ? ' adulto' : ' adultos')
+  const textChild = child + (child === 1 ? ' criança' : ' crianças')
 
   return {
     adult,
@@ -16,5 +16,5 @@ export default function UsePeopleHook() {
     setChild,
     textAdult,
     textChild,
-  };
+  }
 }

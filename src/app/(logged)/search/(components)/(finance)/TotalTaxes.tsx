@@ -1,6 +1,6 @@
-import { Hotels, RoomType } from '@/classes/availability/DTO/AvailabilityDTO';
-import { fCurrency } from '@/utils/FinanceUtil';
-import { twMerge } from 'tailwind-merge';
+import { Hotels, RoomType } from '@/classes/availability/DTO/AvailabilityDTO'
+import { fCurrency } from '@/utils/FinanceUtil'
+import { twMerge } from 'tailwind-merge'
 
 export default function TotalTaxes({
   hotel,
@@ -9,17 +9,17 @@ export default function TotalTaxes({
   rateIndex = 0,
   mergeClasses,
 }: {
-  hotel?: Hotels;
-  room?: RoomType;
-  roomIndex?: number;
-  rateIndex?: number;
-  mergeClasses?: string;
+  hotel?: Hotels
+  room?: RoomType
+  roomIndex?: number
+  rateIndex?: number
+  mergeClasses?: string
 }) {
-  const classes = 'text-small text-textSecondary font-[400]';
+  const classes = 'text-small text-textSecondary font-[400]'
   const condition = hotel
     ? hotel.roomTypes[roomIndex!].averageRates[rateIndex].totalTaxes
-    : room!.averageRates[rateIndex].totalTaxes;
-  const text = fCurrency(condition);
+    : room!.averageRates[rateIndex].totalTaxes
+  const text = fCurrency(condition)
   return (
     condition > 0 && (
       <p
@@ -28,5 +28,5 @@ export default function TotalTaxes({
         {text} em impostos e taxas
       </p>
     )
-  );
+  )
 }

@@ -4,17 +4,17 @@
 import Classes from '@/classes'
 import React, { useEffect } from 'react'
 
-import '@/config';
-import HotelsChainClass from '@/classes/hotelsChain/HotelsChainClass';
-import LocalesClass from '@/classes/locales/LocalesClass';
-import UserClass from '@/classes/user/UserClass';
-import AvailabilityClass from '@/classes/availability/AvailabilityClass';
+import '@/config'
+import HotelsChainClass from '@/classes/hotelsChain/HotelsChainClass'
+import LocalesClass from '@/classes/locales/LocalesClass'
+import UserClass from '@/classes/user/UserClass'
+import AvailabilityClass from '@/classes/availability/AvailabilityClass'
 
 interface LoggedContextProps {
-  user: UserClass;
-  hotelChain: HotelsChainClass;
-  locale: LocalesClass;
-  availability: AvailabilityClass;
+  user: UserClass
+  hotelChain: HotelsChainClass
+  locale: LocalesClass
+  availability: AvailabilityClass
 }
 
 export const LoggedContext = React.createContext({} as LoggedContextProps)
@@ -31,12 +31,12 @@ export function LoggedContextProvider({
     locale,
     availability,
   }: {
-    user: UserClass;
-    hotelChain: HotelsChainClass;
-    locale: LocalesClass;
-    availability: AvailabilityClass;
-    coreClass: any;
-  } = classes;
+    user: UserClass
+    hotelChain: HotelsChainClass
+    locale: LocalesClass
+    availability: AvailabilityClass
+    coreClass: any
+  } = classes
 
   useEffect(() => {
     hotelChain.getHotelChain()

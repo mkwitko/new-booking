@@ -1,7 +1,7 @@
 interface MealsProps {
-  code: string;
-  name: string;
-  iconPath: string;
+  code: string
+  name: string
+  iconPath: string
 }
 
 const meals: MealsProps[] = [
@@ -40,10 +40,10 @@ const meals: MealsProps[] = [
     name: 'PENSÃO COMPLETA',
     iconPath: '/mealIcons/fullMealIncluded.svg',
   },
-];
+]
 
 export function getMealIncludedValue(code: string): MealsProps {
   return meals.find((e: MealsProps) => {
-    return e.code === code;
-  }) as MealsProps;
+    return e.code === code
+  }) as MealsProps
 }

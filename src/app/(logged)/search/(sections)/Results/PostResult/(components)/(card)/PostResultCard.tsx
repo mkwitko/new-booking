@@ -1,34 +1,34 @@
 /* eslint-disable @next/next/no-img-element */
-import { Hotels } from '@/classes/availability/DTO/AvailabilityDTO';
-import Badge from '../Badge';
-import Link from 'next/link';
-import Button from '@/components/interactiveComponents/Button';
-import { fCurrency } from '@/utils/FinanceUtil';
-import CardsPopover from '../(popovers)/CardsPopover';
-import MealPopover from '../(popovers)/MealPopover';
-import PolicyPopover from '../(popovers)/PolicyPopover';
-import TotalTaxes from '@/app/(logged)/search/(components)/(finance)/TotalTaxes';
-import AmountBeforeTax from '@/app/(logged)/search/(components)/(finance)/AmountBeforeTax';
-import TotalAmountAfterTax from '@/app/(logged)/search/(components)/(finance)/TotalAmountAfterTax';
-import TextLimmiter from '@/components/text/TextLimitter';
+import { Hotels } from '@/classes/availability/DTO/AvailabilityDTO'
+import Badge from '../Badge'
+import Link from 'next/link'
+import Button from '@/components/interactiveComponents/Button'
+import { fCurrency } from '@/utils/FinanceUtil'
+import CardsPopover from '../(popovers)/CardsPopover'
+import MealPopover from '../(popovers)/MealPopover'
+import PolicyPopover from '../(popovers)/PolicyPopover'
+import TotalTaxes from '@/app/(logged)/search/(components)/(finance)/TotalTaxes'
+import AmountBeforeTax from '@/app/(logged)/search/(components)/(finance)/AmountBeforeTax'
+import TotalAmountAfterTax from '@/app/(logged)/search/(components)/(finance)/TotalAmountAfterTax'
+import TextLimmiter from '@/components/text/TextLimitter'
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
-  const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
-  const imageToShow = image || 'icons/withoutResult.svg';
+  const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`
+  const imageToShow = image || 'icons/withoutResult.svg'
 
   return (
-    <div className="flex flex-col bg-white p-4 rounded-b2b border border-borderColor/20 h-[35rem] justify-around">
+    <div className="flex h-[35rem] flex-col justify-around rounded-b2b border border-borderColor/20 bg-white p-4">
       {/* TODO trocar para Image do next */}
       <img
-        className="rounded-b2b aspect-[2.144/1] object-cover z-20"
+        className="z-20 aspect-[2.144/1] rounded-b2b object-cover"
         src={
           hotel?.exteriorViewImageURL ? imageToShow : 'icons/withoutResult.svg'
         }
         alt={hotel.name.toLowerCase()}
       />
-      <div className="flex justify-between items-start w-full">
+      <div className="flex w-full items-start justify-between">
         <TextLimmiter
-          className="font-bold capitalize text-primary text-start"
+          className="text-start font-bold capitalize text-primary"
           length={50}
         >
           {hotel.name.toLowerCase()}
@@ -45,8 +45,8 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
             `${hotel.distanceFrom.position.distance.toFixed(2)}km do centro`}
         </p>
       </div>
-      <div className="flex justify-between items-center w-full border-b pb-4">
-        <div className="flex items-start flex-wrap gap-1">
+      <div className="flex w-full items-center justify-between border-b pb-4">
+        <div className="flex flex-wrap items-start gap-1">
           <CardsPopover hotel={hotel} />
           <PolicyPopover hotel={hotel} />
           <MealPopover hotel={hotel} />
@@ -69,24 +69,18 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col items-start text-small gap-1">
+      <div className="flex flex-col items-start gap-1 text-small">
         <TextLimmiter
-          className="text-normal text-textPrimary font-[300] capitalize"
+          className="text-normal font-[300] capitalize text-textPrimary"
           length={60}
         >
           {hotel.roomTypes[0].description.toLowerCase()}
         </TextLimmiter>
         <p>{hotel.roomTypes[0].maxOccupancy} ocupantes</p>
         <>
-          <AmountBeforeTax
-            hotel={hotel}
-            mergeClasses="text-textPrimary"
-          />
-          <TotalTaxes
-            hotel={hotel}
-            mergeClasses="text-textPrimary"
-          />
-          <div className="flex justify-between w-full">
+          <AmountBeforeTax hotel={hotel} mergeClasses="text-textPrimary" />
+          <TotalTaxes hotel={hotel} mergeClasses="text-textPrimary" />
+          <div className="flex w-full justify-between">
             <TotalAmountAfterTax hotel={hotel} />
             <div className="flex gap-2">
               <button
@@ -128,7 +122,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
               </p>
             )} */}
         </>
-        <div className="w-full mt-2">
+        <div className="mt-2 w-full">
           {hotel.roomTypes[0].availability === 'PUB' ? (
             <Link
               href={{
@@ -173,5 +167,5 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

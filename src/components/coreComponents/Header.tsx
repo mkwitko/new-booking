@@ -9,15 +9,20 @@ import { useRouter } from 'next/navigation'
 
 import { motion as m } from 'framer-motion'
 
+import { AiOutlineMenu } from 'react-icons/ai'
 import { BiSolidUser } from 'react-icons/bi'
 
 import { AuthApi } from '@/services/auth/auth-service'
 
 interface HeaderProps {
   showRouteIcons: boolean
+  setOpen?: any
 }
 
-export default function Header({ showRouteIcons = false }: HeaderProps) {
+export default function Header({
+  showRouteIcons = false,
+  setOpen,
+}: HeaderProps) {
   const router = useRouter()
   const [isLogOutButtonVisible, setIsLogOutButtonVisible] =
     useState<boolean>(false)
@@ -44,9 +49,19 @@ export default function Header({ showRouteIcons = false }: HeaderProps) {
   }
 
   return (
-    <header className="left-0 right-0 top-0 z-50 flex h-[70px] w-full flex-row items-center justify-between bg-primaryDark p-6 text-white shadow-xl">
+    <header className="fixed left-0 right-0 top-0 z-50 flex h-[70px] w-full flex-row items-center justify-between bg-primaryDark p-6 text-white shadow-xl">
       <div className="max-width-default flex items-center justify-between">
-        <div className="flex flex-row items-center justify-center gap-6 max-w-[16rem]">
+        <div className="flex max-w-[16rem] flex-row items-center justify-center gap-6">
+          {setOpen && (
+            <button
+              type="button"
+              onClick={() => {
+                setOpen((prevState: any) => !prevState)
+              }}
+            >
+              <AiOutlineMenu />
+            </button>
+          )}
           <Image
             src={logo}
             alt="Hub"

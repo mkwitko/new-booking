@@ -26,12 +26,12 @@ export function B2BCombobox({
   labelTag = 'label',
   valueTag = 'value',
 }: {
-  options: any;
-  value: string;
-  setValue: (value: string) => void;
-  labelTag?: string;
-  valueTag?: string;
-  elementAsValue?: boolean;
+  options: any
+  value: string
+  setValue: (value: string) => void
+  labelTag?: string
+  valueTag?: string
+  elementAsValue?: boolean
 }) {
   const [open, setOpen] = React.useState(false)
   const [filtered, setFiltered] = React.useState(options)
@@ -59,11 +59,11 @@ export function B2BCombobox({
           aria-expanded={open}
           className="w-full justify-between truncate"
         >
-          <p className="truncate w-11/12 text-start text-[0.75rem] capitalize">
+          <p className="w-11/12 truncate text-start text-[0.75rem] capitalize">
             {value
               ? filtered
                   .find((e: any) => {
-                    return e[valueTag].toString() === value.toString();
+                    return e[valueTag].toString() === value.toString()
                   })
                   ?.[labelTag].toLowerCase()
               : 'Selecione Um'}
@@ -79,9 +79,9 @@ export function B2BCombobox({
               const filtered = options.filter((each: any) => {
                 return each[labelTag]
                   .toLowerCase()
-                  .includes(value.toLowerCase());
-              });
-              setFiltered(filtered);
+                  .includes(value.toLowerCase())
+              })
+              setFiltered(filtered)
             }}
             placeholder="Procurar"
           />
@@ -93,16 +93,16 @@ export function B2BCombobox({
                 getOptions()
                   .map((each: any, index: number) => (
                     <CommandItem
-                      className="text-small text-start"
+                      className="text-start text-small"
                       value={each[valueTag].toString()}
                       key={each[valueTag] + '_' + index}
                       onSelect={(currentValue: any) => {
                         setValue(
                           currentValue.toString() === value.toString()
                             ? ''
-                            : currentValue
-                        );
-                        setOpen(false);
+                            : currentValue,
+                        )
+                        setOpen(false)
                       }}
                     >
                       <Check

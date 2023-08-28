@@ -19,8 +19,8 @@ export default class LocalesClass extends CoreClass {
 
   async getLocales(): Promise<any> {
     const data: ILocaleCitiesResponse[] =
-      await this.setClass<ILocaleCitiesResponse>(false, this.getMethods.cities);
-    this.hook.setData(data);
-    return data;
+      await this.setClass<ILocaleCitiesResponse>(false, this.getMethods.cities)
+    this.hook.setData(data)
+    return data
   }
 }

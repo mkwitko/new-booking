@@ -1,39 +1,39 @@
-'use client';
+'use client'
 
 import {
   Hotels,
   IAvailResponse,
-} from '@/classes/availability/DTO/AvailabilityDTO';
-import { CACHE_PATH } from '@/config/cache';
-import { SearchContext } from '@/context/SearchContext';
-import { get } from '@/services/cache';
-import { differenceInDays, set } from 'date-fns';
-import { useContext, useState } from 'react';
-import Image from 'next/image';
-import PostResultList from './(components)/(list)/PostResultList';
-import PostResultCard from './(components)/(card)/PostResultCard';
+} from '@/classes/availability/DTO/AvailabilityDTO'
+import { CACHE_PATH } from '@/config/cache'
+import { SearchContext } from '@/context/SearchContext'
+import { get } from '@/services/cache'
+import { differenceInDays, set } from 'date-fns'
+import { useContext, useState } from 'react'
+import Image from 'next/image'
+import PostResultList from './(components)/(list)/PostResultList'
+import PostResultCard from './(components)/(card)/PostResultCard'
 
 export default function PostResult() {
-  const { dateHook, peopleHook } = useContext(SearchContext);
-  const [cardShowing, setCardShowing] = useState(false);
+  const { dateHook, peopleHook } = useContext(SearchContext)
+  const [cardShowing, setCardShowing] = useState(false)
 
-  const searchingResult: IAvailResponse = get(CACHE_PATH.AVAILABILITY.HOTELS);
+  const searchingResult: IAvailResponse = get(CACHE_PATH.AVAILABILITY.HOTELS)
 
   const [seeMore, setSeeMore] = useState(
-    searchingResult.hotels.map(() => false)
-  );
+    searchingResult.hotels.map(() => false),
+  )
 
   const subtitleText = () => {
     const days = differenceInDays(
       new Date(dateHook.checkOut),
-      new Date(dateHook.checkIn)
-    );
+      new Date(dateHook.checkIn),
+    )
 
-    const daysText = days === 1 ? '1 dia' : `${days} dias`;
-    const peopleText = peopleHook.adult === 1 ? 'pessoa' : 'pessoas';
+    const daysText = days === 1 ? '1 dia' : `${days} dias`
+    const peopleText = peopleHook.adult === 1 ? 'pessoa' : 'pessoas'
 
-    return `${daysText}, ${peopleHook.adult + peopleHook.child} ${peopleText}`;
-  };
+    return `${daysText}, ${peopleHook.adult + peopleHook.child} ${peopleText}`
+  }
 
   const filtering = (e: Hotels) => {
     return (
@@ -41,13 +41,13 @@ export default function PostResult() {
       e.roomTypes.length > 0 &&
       e.roomTypes[0].averageRates &&
       e.roomTypes[0].averageRates.length > 0
-    );
-  };
+    )
+  }
 
   const sortingByAvailability = (a: Hotels, b: Hotels) => {
     const availability: Array<{
-      id: number;
-      name: 'NON' | 'VIP' | 'PUB';
+      id: number
+      name: 'NON' | 'VIP' | 'PUB'
     }> = [
       {
         id: 1,
@@ -61,25 +61,25 @@ export default function PostResult() {
         id: 3,
         name: 'NON',
       },
-    ];
+    ]
     const value1 = availability.find(
-      (e) => e.name === a.roomTypes[0].availability
-    );
+      (e) => e.name === a.roomTypes[0].availability,
+    )
     const value2 = availability.find(
-      (e) => e.name === b.roomTypes[0].availability
-    );
-    return value1!.id < value2!.id ? -1 : value1!.id > value2!.id ? 1 : 0;
-  };
+      (e) => e.name === b.roomTypes[0].availability,
+    )
+    return value1!.id < value2!.id ? -1 : value1!.id > value2!.id ? 1 : 0
+  }
 
   return (
     <div className="w-full">
       <div className="my-8 flex items-center justify-between">
         {/* Titulo Resultados */}
-        <div className="flex gap-4 items-center">
-          <p className="text-primary text-large font-[600]">
+        <div className="flex items-center gap-4">
+          <p className="text-large font-[600] text-primary">
             {`${searchingResult.hotels.length} Resultados`}
           </p>
-          <p className="text-textSecondary font-light">{subtitleText()}</p>
+          <p className="font-light text-textSecondary">{subtitleText()}</p>
         </div>
 
         {/* Alterar visualização */}
@@ -87,7 +87,7 @@ export default function PostResult() {
           <button
             onClick={() => {
               //   rate.setSelectedRates([]);
-              setCardShowing(!cardShowing);
+              setCardShowing(!cardShowing)
             }}
             type="button"
           >
@@ -104,23 +104,20 @@ export default function PostResult() {
       <div
         className={`${
           !cardShowing
-            ? 'grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-12'
-            : 'flex flex-col w-full gap-4 border-borderColor/20'
+            ? 'grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'
+            : 'flex w-full flex-col gap-4 border-borderColor/20'
         }`}
       >
         {searchingResult.hotels
           .filter((e: Hotels) => {
-            return filtering(e);
+            return filtering(e)
           })
           .sort((a: Hotels, b: Hotels) => {
-            return sortingByAvailability(a, b);
+            return sortingByAvailability(a, b)
           })
           .map((hotel: Hotels, index: number) => {
             return !cardShowing ? (
-              <PostResultCard
-                hotel={hotel}
-                key={hotel.id}
-              />
+              <PostResultCard hotel={hotel} key={hotel.id} />
             ) : (
               <PostResultList
                 hotel={hotel}
@@ -129,9 +126,9 @@ export default function PostResult() {
                 setSeeMore={setSeeMore}
                 index={index}
               />
-            );
+            )
           })}
       </div>
     </div>
-  );
+  )
 }

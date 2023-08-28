@@ -14,22 +14,22 @@ const currencyLocales: any = {
   TRY: 'tr-TR',
   INR: 'en-IN',
   NZD: 'en-NZ',
-};
+}
 
 export function fCurrency(value: any, currencyCode = 'BRL') {
   try {
-    const locale = currencyLocales[currencyCode];
+    const locale = currencyLocales[currencyCode]
     const formatter = new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currencyCode,
-    });
-    const formattedValue = formatter.format(value);
+    })
+    const formattedValue = formatter.format(value)
 
     // Remove currency symbol and keep only the numeric part
-    const valueWithoutCurrencySymbol = formattedValue.replace(/[^\d.,-]/g, '');
-    return `${currencyCode} ${valueWithoutCurrencySymbol}`;
+    const valueWithoutCurrencySymbol = formattedValue.replace(/[^\d.,-]/g, '')
+    return `${currencyCode} ${valueWithoutCurrencySymbol}`
   } catch (error) {
-    console.error('Error formatting currency:', error);
-    return '';
+    console.error('Error formatting currency:', error)
+    return ''
   }
 }

@@ -10,4 +10,4 @@ export const CACHE_PATH = {
     HOTELS: 'hotels',
     SEARCH_QUERY: 'search_query',
   },
-};
+}

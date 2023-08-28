@@ -1,76 +1,66 @@
-'use client';
+'use client'
 
-import { getCard } from '@/app/(logged)/search/(utils)/ShowingResultsUtils';
-import { Hotels } from '@/classes/availability/DTO/AvailabilityDTO';
+import { getCard } from '@/app/(logged)/search/(utils)/ShowingResultsUtils'
+import { Hotels } from '@/classes/availability/DTO/AvailabilityDTO'
 import {
   B2BPopover,
   B2BPopoverContent,
   B2BPopoverTrigger,
-} from '@/components/nonInteractiveComponents/Popover';
-import Image from 'next/image';
-import { useState } from 'react';
+} from '@/components/nonInteractiveComponents/Popover'
+import Image from 'next/image'
+import { useState } from 'react'
 
 export default function CardsPopover({ hotel }: { hotel: Hotels }) {
-  const [cardPopover, setCardPopover] = useState(false);
-  const [cardCloudPopover, setCardCloudPopover] = useState<any>(null);
+  const [cardPopover, setCardPopover] = useState(false)
+  const [cardCloudPopover, setCardCloudPopover] = useState<any>(null)
   const hasCards: boolean | undefined =
-    hotel.creditCardBrandsAccepted && hotel.creditCardBrandsAccepted.length > 0;
+    hotel.creditCardBrandsAccepted && hotel.creditCardBrandsAccepted.length > 0
   return (
     <>
-      <B2BPopover
-        open={cardPopover}
-        openChange={setCardPopover}
-      >
+      <B2BPopover open={cardPopover} openChange={setCardPopover}>
         <B2BPopoverTrigger>
           <button
             disabled={!hasCards}
             type="button"
             onMouseEnter={() => {
-              setCardPopover(true);
+              setCardPopover(true)
             }}
             onMouseLeave={() => {
-              setCardPopover(false);
+              setCardPopover(false)
             }}
             className="disabled:opacity-30"
           >
-            <div className="w-6 h-6 relative">
-              <Image
-                fill
-                src="/icons/creditCard.svg"
-                alt="creditCard"
-              />
+            <div className="relative h-6 w-6">
+              <Image fill src="/icons/creditCard.svg" alt="creditCard" />
             </div>
           </button>
         </B2BPopoverTrigger>
         <B2BPopoverContent>
-          <div className="flex flex-col justify-center items-start gap-6 max-w-[25rem]">
-            <p className="text-primary font-bold">Cartões de Crédito</p>
+          <div className="flex max-w-[25rem] flex-col items-start justify-center gap-6">
+            <p className="font-bold text-primary">Cartões de Crédito</p>
             <p className="text-primary">
               Bandeiras de cartão de crédito aceitas para pagamento direto no
               hotel.
             </p>
-            <div className="flex p-2 rounded-b2b gap-2 w-full">
+            <div className="flex w-full gap-2 rounded-b2b p-2">
               {hasCards &&
                 hotel.creditCardBrandsAccepted?.map((e: any) => {
-                  return getCard(e.code);
+                  return getCard(e.code)
                 })}
             </div>
           </div>
         </B2BPopoverContent>
       </B2BPopover>
       {hotel.transactionAcquirer && (
-        <B2BPopover
-          open={cardCloudPopover}
-          openChange={setCardCloudPopover}
-        >
+        <B2BPopover open={cardCloudPopover} openChange={setCardCloudPopover}>
           <B2BPopoverTrigger>
             <button
               type="button"
               onMouseEnter={(e) => {
-                setCardCloudPopover(true);
+                setCardCloudPopover(true)
               }}
               onMouseLeave={() => {
-                setCardCloudPopover(false);
+                setCardCloudPopover(false)
               }}
             >
               <Image
@@ -82,8 +72,8 @@ export default function CardsPopover({ hotel }: { hotel: Hotels }) {
             </button>
           </B2BPopoverTrigger>
           <B2BPopoverContent classes="max-w-[30rem]">
-            <div className="flex flex-col justify-center items-start gap-6">
-              <p className="text-primary font-bold">Gateway de Pagamento</p>
+            <div className="flex flex-col items-start justify-center gap-6">
+              <p className="font-bold text-primary">Gateway de Pagamento</p>
               <p className="text-primary">
                 Hotel habilitado para pagamento online. Necessário cadastro de
                 cartão virtual.
@@ -97,5 +87,5 @@ export default function CardsPopover({ hotel }: { hotel: Hotels }) {
         </B2BPopover>
       )}
     </>
-  );
+  )
 }

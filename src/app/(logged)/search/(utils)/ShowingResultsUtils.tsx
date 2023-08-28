@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/image'
 
 export const getAvailabilityProps = (availability: string) => {
   switch (availability) {
@@ -6,24 +6,24 @@ export const getAvailabilityProps = (availability: string) => {
       return {
         text: 'Não disponível',
         color: 'text-red-500 border-red-500',
-      };
+      }
     case 'PUB':
       return {
         text: 'Disponível',
         color: 'text-green-500 border-green-500',
-      };
+      }
     case 'VIP':
       return {
         text: 'Quarto Vip',
         color: 'text-blue-500 border-blue-500',
-      };
+      }
     default:
       return {
         text: 'Não disponível',
         color: 'text-red-500 border-red-500',
-      };
+      }
   }
-};
+}
 
 export const getCard = (code: string) => {
   if (code === 'AL')
@@ -35,7 +35,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/elo.svg"
         alt="elo"
       />
-    );
+    )
   if (code === 'VI')
     return (
       <Image
@@ -45,7 +45,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/visa.svg"
         alt="visa"
       />
-    );
+    )
   if (code === 'DN')
     return (
       <Image
@@ -55,7 +55,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/diners.svg"
         alt="diners"
       />
-    );
+    )
   if (code === 'AX')
     return (
       <Image
@@ -65,7 +65,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/amex.svg"
         alt="amex"
       />
-    );
+    )
   if (code === 'MC')
     return (
       <Image
@@ -75,7 +75,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/mastercard.svg"
         alt="mastercard"
       />
-    );
+    )
   if (code === 'CC')
     return (
       <Image
@@ -85,7 +85,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/credicard.svg"
         alt="credicard"
       />
-    );
+    )
   if (code === 'GC')
     return (
       <Image
@@ -95,7 +95,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/goodcard.svg"
         alt="goodcard"
       />
-    );
+    )
   if (code === 'HIP')
     return (
       <Image
@@ -105,7 +105,7 @@ export const getCard = (code: string) => {
         src="creditCardsBrands/hipercard.svg"
         alt="hipercard"
       />
-    );
+    )
 
-  return '';
-};
+  return ''
+}

@@ -1,8 +1,8 @@
-import { getAvailabilityProps } from '@/app/(logged)/search/(utils)/ShowingResultsUtils';
-import React from 'react';
+import { getAvailabilityProps } from '@/app/(logged)/search/(utils)/ShowingResultsUtils'
+import React from 'react'
 
 interface BadgeProps {
-  availability: any;
+  availability: any
 }
 
 export default function Badge({ availability }: BadgeProps) {
@@ -10,9 +10,9 @@ export default function Badge({ availability }: BadgeProps) {
     <p
       className={`${
         getAvailabilityProps(availability).color
-      } border rounded-2xl text-[0.6rem] font-bold p-[0.325rem] w-[5.1rem] text-center whitespace-nowrap`}
+      } w-[5.1rem] whitespace-nowrap rounded-2xl border p-[0.325rem] text-center text-[0.6rem] font-bold`}
     >
       {getAvailabilityProps(availability).text}
     </p>
-  );
+  )
 }
