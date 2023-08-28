@@ -17,5 +17,5 @@ export default function InputContainer({
       <Label title={label} />
       {children}
     </div>
-  );
+  )
 }

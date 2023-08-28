@@ -1,6 +1,6 @@
-import Container from '@/components/coreComponents/containers/Container';
-import WhiteBox from '@/components/coreComponents/containers/WhiteBox';
-import Title from '@/components/text/Title';
+import Container from '@/components/coreComponents/containers/Container'
+import WhiteBox from '@/components/coreComponents/containers/WhiteBox'
+import Title from '@/components/text/Title'
 
 export default function Solicitations() {
   return (
@@ -10,5 +10,5 @@ export default function Solicitations() {
         <p>aehuirehaiurea</p>
       </WhiteBox>
     </Container>
-  );
+  )
 }

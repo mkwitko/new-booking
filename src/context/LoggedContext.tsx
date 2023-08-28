@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-'use client';
+'use client'
 
-import Classes from '@/classes';
-import React, { useEffect } from 'react';
+import Classes from '@/classes'
+import React, { useEffect } from 'react'
 
 import '@/config';
 import HotelsChainClass from '@/classes/hotelsChain/HotelsChainClass';
@@ -17,14 +17,14 @@ interface LoggedContextProps {
   availability: AvailabilityClass;
 }
 
-export const LoggedContext = React.createContext({} as LoggedContextProps);
+export const LoggedContext = React.createContext({} as LoggedContextProps)
 
 export function LoggedContextProvider({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const classes: any = Classes();
+  const classes: any = Classes()
   const {
     user,
     hotelChain,
@@ -39,10 +39,10 @@ export function LoggedContextProvider({
   } = classes;
 
   useEffect(() => {
-    hotelChain.getHotelChain();
-    user.getAgenciesStores();
-    locale.getLocales();
-  }, []);
+    hotelChain.getHotelChain()
+    user.getAgenciesStores()
+    locale.getLocales()
+  }, [])
 
   return (
     <LoggedContext.Provider
@@ -55,5 +55,5 @@ export function LoggedContextProvider({
     >
       {children}
     </LoggedContext.Provider>
-  );
+  )
 }

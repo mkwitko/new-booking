@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
 import * as React from 'react';
 import { addDays, format, parseISO } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { DateRange } from 'react-day-picker';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from '@/components/ui/popover'
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   checkIn: any;
@@ -51,10 +51,7 @@ export function B2BDatePicker({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent
-          className="w-full p-0"
-          align="start"
-        >
+        <PopoverContent className="w-full p-0" align="start">
           <Calendar
             initialFocus
             mode="range"
@@ -77,5 +74,5 @@ export function B2BDatePicker({
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }

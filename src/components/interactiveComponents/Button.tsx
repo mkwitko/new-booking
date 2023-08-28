@@ -1,6 +1,6 @@
-import React from 'react';
-import { twMerge } from 'tailwind-merge';
-import Spinner from '../utilsComponents/Spinner';
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
+import Spinner from '../utilsComponents/Spinner'
 
 export default function B2BButton({
   label,
@@ -62,5 +62,5 @@ export default function B2BButton({
         </p>
       )}
     </button>
-  );
+  )
 }

@@ -154,6 +154,9 @@ module.exports = {
         small: '0.75rem',
         extraSmall: '0.625rem',
       },
+      gridTemplateColumns: {
+        'credit-card': '1.25rem, 10rem, 1fr',
+      },
     },
     screens: {
       sm: '576px',
@@ -163,5 +166,5 @@ module.exports = {
       '2xl': '1400px',
     },
   },
-  plugins: [require('tailwindcss-animate')],
-};
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/forms')],
+}

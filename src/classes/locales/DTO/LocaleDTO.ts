@@ -1,24 +1,24 @@
-import { DefaultError } from '@/DTO/DefaultError';
+import { DefaultError } from '@/DTO/DefaultError'
 
 export type localeCitiesData = {
-  cityId: number;
-  cityName: string;
-  stateName: string;
-  stateSymbol: string;
-  countryName: string;
-  countrySymbol: string;
-  iata?: string;
-};
+  cityId: number
+  cityName: string
+  stateName: string
+  stateSymbol: string
+  countryName: string
+  countrySymbol: string
+  iata?: string
+}
 
 export interface ILocaleCitiesCtrl {
-  findLocaleCities(cityName: string): void;
+  findLocaleCities(cityName: string): void
 }
 
 export interface ILocaleCitiesResponse {
-  timestamp?: Date;
-  isLoading?: boolean;
+  timestamp?: Date
+  isLoading?: boolean
   data?: {
-    data: localeCitiesData[];
-  };
-  error?: DefaultError;
+    data: localeCitiesData[]
+  }
+  error?: DefaultError
 }
