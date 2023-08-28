@@ -45,7 +45,9 @@ export default function TextLimmiter({
           <button
             onMouseEnter={() => handlePopoverOpen(showShortText)}
             onMouseLeave={() => handlePopoverClose(showShortText)}
-            className={className}
+            className={`${className} ${
+              showShortText ? 'cursor-pointer' : 'cursor-default'
+            }`}
           >
             {shortenedText}
           </button>

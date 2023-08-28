@@ -132,25 +132,25 @@ export default function PreSearch({
       </div>
 
       <div className="flex w-full items-center justify-between">
-        <div>
+        <div className="w-1/4">
           <Button
+            mergeClass="w-full xl:w-1/2"
             label="Mapa"
             disabled={isSearching}
           />
         </div>
-
-        <div className="flex gap-4 lg:w-1/4">
+        <div className="flex gap-4 items-center justify-end w-1/2">
           <Button
             disabled={isSearching}
-            label="Limpar Filtro"
+            label="Limpar"
             textClass="text-textDisabled"
             color="light"
-            mergeClass="px-0"
+            mergeClass="px-0 w-full xl:w-1/4"
           />
           <Button
             loading={isSearching}
             label="Buscar"
-            mergeClass="px-0"
+            mergeClass="px-2 w-full md:px-0 xl:w-1/4"
             onClick={handleSearch}
           />
         </div>

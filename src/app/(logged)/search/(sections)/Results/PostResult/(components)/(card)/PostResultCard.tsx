@@ -10,6 +10,7 @@ import PolicyPopover from '../(popovers)/PolicyPopover';
 import TotalTaxes from '@/app/(logged)/search/(components)/(finance)/TotalTaxes';
 import AmountBeforeTax from '@/app/(logged)/search/(components)/(finance)/AmountBeforeTax';
 import TotalAmountAfterTax from '@/app/(logged)/search/(components)/(finance)/TotalAmountAfterTax';
+import TextLimmiter from '@/components/text/TextLimitter';
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
   const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
@@ -26,9 +27,12 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         alt={hotel.name.toLowerCase()}
       />
       <div className="flex justify-between items-start w-full">
-        <p className="font-bold capitalize text-primary">
+        <TextLimmiter
+          className="font-bold capitalize text-primary text-start"
+          length={50}
+        >
           {hotel.name.toLowerCase()}
-        </p>
+        </TextLimmiter>
         {<Badge availability={hotel.roomTypes[0].availability} />}
       </div>
       <div>
@@ -66,9 +70,12 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         </div>
       </div>
       <div className="flex flex-col items-start text-small gap-1">
-        <p className="text-normal text-textPrimary font-[300]">
-          {hotel.roomTypes[0].description}
-        </p>
+        <TextLimmiter
+          className="text-normal text-textPrimary font-[300] capitalize"
+          length={60}
+        >
+          {hotel.roomTypes[0].description.toLowerCase()}
+        </TextLimmiter>
         <p>{hotel.roomTypes[0].maxOccupancy} ocupantes</p>
         <>
           <AmountBeforeTax

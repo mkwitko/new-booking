@@ -44,7 +44,10 @@ export default function PostSearch({
           index="right"
         />
       </div>
-      <div className="flex items-center gap-4 text-primary">
+      <div
+        className="flex flex-col items-center justify-center gap-4 text-primary
+      xl:flex-row xl:justify-start"
+      >
         <div className="flex items-center gap-2">
           <BiSolidBed className="w-5 h-5" />
           <p>{roomsHook.textRoom}</p>

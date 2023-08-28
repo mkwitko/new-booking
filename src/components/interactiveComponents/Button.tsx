@@ -44,7 +44,6 @@ export default function B2BButton({
   } 
     px-4 py-1 h-[2rem] rounded-[.325rem] disabled:cursor-not-allowed w-full font-semibold flex items-center justify-center gap-4`;
 
-  const defaultTextClasses = 'uppercase font-[700] text-center';
   return (
     <button
       type={buttonType === 'button' ? 'button' : 'submit'}
@@ -57,11 +56,7 @@ export default function B2BButton({
         <Spinner />
       ) : (
         <p
-          className={
-            textClass
-              ? twMerge(defaultTextClasses, textClass)
-              : defaultTextClasses
-          }
+          className={`text-extraSmall md:text-small lg:text-[1rem] uppercase font-[700] text-center ${textClass}`}
         >
           {label}
         </p>

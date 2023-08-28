@@ -36,15 +36,18 @@ export default function FeedbackSearch({
 
   const result = getSvg();
   return (
-    <div className="flex items-center justify-center h-full w-full gap-4">
-      <div className="w-[25rem] h-[25rem] relative">
+    <div
+      className="flex flex-col mx-4 items-center justify-center h-full w-full 
+    lg:gap-4 lg:flex-row lg:mx-0"
+    >
+      <div className="w-[20rem] h-[20rem]  lg:w-[25rem] lg:h-[25rem] relative">
         <Image
           fill
           src={result.icon}
           alt="Feedback search"
         />
       </div>
-      <p className="w-1/6">{result.text}</p>
+      <p className="w-2/3 text-center lg:w-1/6">{result.text}</p>
     </div>
   );
 }
