@@ -3,22 +3,18 @@
 import InputContainer from '@/components/coreComponents/containers/InputContainer'
 import Button from '@/components/interactiveComponents/Button'
 import { B2BCombobox } from '@/components/interactiveComponents/ComboBox'
-import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker'
-import { Button as ButtonUI } from '@/components/ui/button'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { LoggedContext } from '@/context/LoggedContext'
 import { useContext, useState } from 'react'
 import useSearchReservesHook from '@/hooks/reserves/SearchReserves'
 import { SearchContext } from '@/context/SearchContext'
+import * as FomCoponents from '@/components/formComponents'
+import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker'
+import { AiOutlineArrowUp, AiOutlineArrowDown } from 'react-icons/ai'
 
 export default function SearchReservesComponent() {
-  const { user } = useContext(LoggedContext)
+  const { user, locale } = useContext(LoggedContext)
 
-  const [moreFilters, setMoreFilters] = useState<boolean>(false)
+  const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false)
 
   const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
     useContext(SearchContext)
@@ -43,8 +39,6 @@ export default function SearchReservesComponent() {
     setLocator(numericValue)
   }
 
-  console.log('locator', locator)
-
   return (
     <>
       <div
@@ -52,60 +46,58 @@ export default function SearchReservesComponent() {
       xl:flex-row"
       >
         <InputContainer label="Localizador">
-          <Popover>
-            <PopoverTrigger asChild>
-              {/* trocar o ButtonUI por um componente de input de texto */}
-              <ButtonUI
-                variant="outline"
-                role="combobox"
-                className="w-full justify-between"
-              />
-            </PopoverTrigger>
-          </Popover>
+        <FomCoponents.Input type="number" id="locator" />
         </InputContainer>
 
         <InputContainer label="Ponto de venda">
-          <B2BCombobox
+          {/* <B2BCombobox
             options={user?.hook?.data.data}
             value={salePointHook.salePoint}
             setValue={salePointHook.setSalePoint}
             labelTag="corporateName"
             valueTag="companyId"
-          />
+          /> */}
         </InputContainer>
 
         <InputContainer label="Status">
           <B2BCombobox
-            options={''}
-            value={statusSelected}
+            options={statusList}
+            value={statusSelected || statusList[0].value.toString()}
             setValue={setStatusSelected}
           />
         </InputContainer>
 
         <InputContainer label="Tipo de Data">
           <B2BCombobox
-            options={''}
-            value={dateType}
-            setValue={setStatusSelected}
+            options={dateTypeList}
+            value={dateType || dateTypeList[3].value.toString()}
+            setValue={setDateType}
           />
         </InputContainer>
 
         <InputContainer label="Entrada e Saída">
-          {/* <B2BDatePicker /> */}
+          {/* <B2BDatePicker
+            checkIn={dateHook.checkIn}
+            setCheckIn={dateHook.setCheckIn}
+            checkOut={dateHook.checkOut}
+            setCheckOut={dateHook.setCheckOut}
+          /> */}
         </InputContainer>
       </div>
 
-      {moreFilters && (
+      {seeMoreFilters && (
         <div
           className="flex w-[50%] flex-col items-center justify-start gap-8
           lg:flex-row"
         >
           <InputContainer label="Cidade">
-            <B2BCombobox
-              options={''}
-              value={cityHook.city}
-              setValue={cityHook.setCity}
-            />
+          {/* <B2BCombobox
+            options={locale?.hook?.data}
+            value={cityHook.city}
+            setValue={cityHook.setCity}
+            labelTag="cityName"
+            valueTag="cityId"
+          /> */}
           </InputContainer>
 
           <InputContainer label="Cliente">
@@ -127,12 +119,19 @@ export default function SearchReservesComponent() {
       </div>
 
       <div className="flex w-full justify-center border-t-[0.06rem] border-borderColor">
-        <p
-          className="mt-6 cursor-pointer text-xs font-semibold uppercase text-primaryDark"
-          onClick={() => setMoreFilters(!moreFilters)}
-        >
-          {moreFilters ? 'FILTRO SIMPLES' : 'FILTRO AVANÇADO'}
-        </p>
+        <div className="mt-6 flex cursor-pointer">
+          {seeMoreFilters ? (
+            <AiOutlineArrowUp className="h-auto w-4 text-primary" />
+          ) : (
+            <AiOutlineArrowDown className="h-auto w-4 text-primary" />
+          )}
+          <p
+            className="pl-2 text-xs font-semibold uppercase text-primary"
+            onClick={() => setSeeMoreFilters(!seeMoreFilters)}
+          >
+            {seeMoreFilters ? 'FILTRO SIMPLES' : 'FILTRO AVANÇADO'}
+          </p>
+        </div>
       </div>
     </>
   )
