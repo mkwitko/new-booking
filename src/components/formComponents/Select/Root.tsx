@@ -20,8 +20,8 @@ export function Root({
   return (
     <div className="w-full space-y-1">
       <Select.Root {...props}>
-        <Select.Trigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded border border-slate-200 p-2 text-sm outline-none focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2 hover:bg-primary/5">
-          <Select.Value placeholder={placeholder} />
+        <Select.Trigger className="flex h-10 w-full cursor-pointer items-center justify-between gap-2 truncate rounded border border-slate-200 p-2 text-xs outline-none focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2 hover:bg-primary/5 md:text-sm">
+          <Select.Value placeholder={placeholder} className="truncate" />
           <Select.Icon>
             <BsChevronDown className="h-3 w-3" />
           </Select.Icon>
@@ -32,7 +32,7 @@ export function Root({
             side="bottom"
             position="popper"
             sideOffset={8}
-            className="z-10 w-[--radix-select-trigger-width] overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm"
+            className="z-10 w-[--radix-select-trigger-width] overflow-hidden truncate rounded-md border border-slate-200 bg-white shadow-sm"
           >
             <Select.Viewport>{children}</Select.Viewport>
           </Select.Content>

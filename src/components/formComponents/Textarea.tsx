@@ -18,7 +18,7 @@ export function Textarea({
       <textarea
         rows={5}
         className={twMerge(
-          'w-full resize-none rounded border border-slate-200 p-2 text-sm transition-colors placeholder:text-sm focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2 hover:bg-primary/5',
+          'w-full resize-none rounded border border-slate-200 p-2 text-xs transition-colors placeholder:text-xs focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2 hover:bg-primary/5 md:text-sm md:placeholder:text-sm',
           className,
         )}
         {...register}
