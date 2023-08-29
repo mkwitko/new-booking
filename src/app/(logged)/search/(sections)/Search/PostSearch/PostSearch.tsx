@@ -45,22 +45,25 @@ export default function PostSearch({
       </div>
       <div
         className="flex flex-wrap items-center justify-center gap-4 text-primary
-      md:justify-start"
+      md:justify-start text-small md:text-[1rem]"
       >
         <div className="flex items-center gap-2">
-          <BiSolidBed className="h-5 w-5" />
+          <BiSolidBed className="h-4 w-4  md:h-5 md:w-5" />
           <p>{roomsHook.textRoom}</p>
         </div>
         <div className="flex items-center gap-2">
-          <GiPerson className="h-5 w-5" />
+          <GiPerson className="h-4 w-4  md:h-5 md:w-5" />
           <p>{peopleHook.textAdult}</p>
         </div>
         <div className="flex items-center gap-2 capitalize">
-          <ImLocation className="h-5 w-5" />
+          <ImLocation className="h-4 w-4  md:h-5 md:w-5" />
           <p>{`${searchingQuery.hotelCity.cityName.toLowerCase()}, ${
             searchingQuery.hotelCity.stateSymbol
           }`}</p>
         </div>
+        {/* <div className=" sm:ml-auto block md:hidden">
+        <Filter setHasSearched={setHasSearched} />
+      </div> */}
       </div>
       <div className="ml-auto hidden md:block">
         <Filter setHasSearched={setHasSearched} />
@@ -80,10 +83,10 @@ const Filter = ({ setHasSearched }: any) => {
       }
     >
       <span className="flex flex-row items-center">
-        <p className="mr-1 font-light text-textSecondary">
+        <p className="mr-1 font-light text-textSecondary hidden lg:block">
           Clique para abrir o filtro
         </p>
-        <BiFilter />
+        <BiFilter className='w-6 h-6' />
       </span>
     </button>
   )

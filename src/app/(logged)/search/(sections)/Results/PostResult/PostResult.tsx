@@ -76,10 +76,10 @@ export default function PostResult() {
       <div className="my-8 flex items-center justify-between">
         {/* Titulo Resultados */}
         <div className="flex items-center gap-4">
-          <p className="text-large font-[600] text-primary">
+          <p className="font-[600] text-primary md:text-large">
             {`${searchingResult.hotels.length} Resultados`}
           </p>
-          <p className="font-light text-textSecondary">{subtitleText()}</p>
+          <p className="font-light text-textSecondary text-small md:text-[1rem]">{subtitleText()}</p>
         </div>
 
         {/* Alterar visualização */}
@@ -91,12 +91,13 @@ export default function PostResult() {
             }}
             type="button"
           >
+            <div className='relative w-4 h-4 md:w-6 md:h-6'>
             <Image
-              width={24}
-              height={24}
+            fill    
               src={`/icons${!cardShowing ? '/viewList.svg' : '/viewCard.svg'}`}
               alt="Change between card and list view"
             />
+            </div>
           </button>
         </div>
       </div>
@@ -104,7 +105,7 @@ export default function PostResult() {
       <div
         className={`${
           !cardShowing
-            ? 'grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'
+            ? 'grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'
             : 'flex w-full flex-col gap-4 border-borderColor/20'
         }`}
       >

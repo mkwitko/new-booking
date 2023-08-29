@@ -28,7 +28,7 @@ export default function PolicyPopover({ hotel }: { hotel: Hotels }) {
           </div>
         </button>
       </B2BPopoverTrigger>
-      <B2BPopoverContent align="start" classes="max-w-[60rem]">
+      <B2BPopoverContent align="start" classes="max-w-[18rem] sm:max-w-[30rem] lg:max-w-[40rem] xl:max-w-[60rem]">
         <div className="flex flex-col items-start justify-center gap-4">
           <p className="font-bold text-primary">Política da UH</p>
           <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-4">

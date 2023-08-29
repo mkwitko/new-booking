@@ -32,10 +32,9 @@ export default function PostResultList({
   return (
     <div className="flex w-full items-center rounded-b2b bg-white p-4">
       <div className="flex w-full flex-col">
-        <div className="flex w-full items-center justify-between border-b px-4 pb-4">
+        <div className="flex flex-col gap-4 md:flex-row md:gap-0 w-full items-center justify-between border-b px-4 pb-4">
           {/* Arrow And Hotel Name */}
-          <div className="flex">
-            <div className="flex w-full flex-col gap-4">
+          <div className="flex w-full flex-col gap-4 md:w-3/4">
               <div>
                 {/* <p className="font-bold uppercase text-textSecondary text-xs">
                 {labelSystemIdentity(hotel.systemId)}
@@ -52,24 +51,23 @@ export default function PostResultList({
                     )}km do centro`}
                 </p>
               </div>
-              <div className="my-2 flex w-full flex-row items-start">
+              <div className="my-2 flex w-full justify-center md:justify-start flex-row items-start">
                 {hotel.roomTypes[0].availability && (
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col items-center gap-4 w-full justify-between sm:justify-start sm:flex-row">
                     <div className="flex items-center gap-2">
                       <Badge availability={hotel.roomTypes[0].availability} />
-                      <p className="text-normal font-[300] capitalize text-textPrimary">
+                      <p className="text-small md:text-normal font-[300] capitalize text-textPrimary">
                         {hotel.roomTypes[0].description.toLowerCase()}
                       </p>
                     </div>
-                    <div className="flex items-center gap-1 divide-x">
-                      <div className="flex items-center pr-2">
+                    <div className="flex flex-wrap justify-center items-end md:items-center divide-x">
+                      <div className="flex items-center pr-4 md:pr-2 ">
                         <CardsPopover hotel={hotel} />
                       </div>
-                      <div className="flex items-center px-2">
-                        {' '}
+                      <div className="flex items-center px-4 md:px-2">
                         <MealPopover hotel={hotel} mealTitle />
                       </div>
-                      <div className="flex items-center pl-2">
+                      <div className="flex items-center pl-4 md:pl-2">
                         <PolicyPopover hotel={hotel} />
                       </div>
                     </div>
@@ -77,10 +75,11 @@ export default function PostResultList({
                 )}
               </div>
             </div>
-          </div>
           {/* Prices and Reservation Button */}
           {seeApartamentTaxes.findIndex((e: boolean) => e) === -1 && (
-            <ListPricing hotel={hotel} />
+           <div className='w-full md:w-1/4'>
+             <ListPricing hotel={hotel} />
+           </div>
           )}
         </div>
         {/* Room Type */}

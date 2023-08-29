@@ -36,13 +36,13 @@ export default function CardsPopover({ hotel }: { hotel: Hotels }) {
           </button>
         </B2BPopoverTrigger>
         <B2BPopoverContent>
-          <div className="flex max-w-[25rem] flex-col items-start justify-center gap-6">
+          <div className="flex max-w-[20rem] sm:max-w-[25rem] flex-col items-start justify-center gap-6">
             <p className="font-bold text-primary">Cartões de Crédito</p>
             <p className="text-primary">
               Bandeiras de cartão de crédito aceitas para pagamento direto no
               hotel.
             </p>
-            <div className="flex w-full gap-2 rounded-b2b p-2">
+            <div className="flex flex-wrap w-full gap-2 rounded-b2b p-2">
               {hasCards &&
                 hotel.creditCardBrandsAccepted?.map((e: any) => {
                   return getCard(e.code)

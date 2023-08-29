@@ -41,7 +41,7 @@ export default function MealPopover({
                   />
                 </div>
                 {mealTitle && (
-                  <p className="text-small font-[400] capitalize text-textPrimary">
+                  <p className="hidden sm:block text-small font-[400] capitalize text-textPrimary">
                     {mealIncluded.name.toLowerCase()}
                   </p>
                 )}

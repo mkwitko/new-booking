@@ -36,7 +36,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         {<Badge availability={hotel.roomTypes[0].availability} />}
       </div>
       <div>
-        <p className="text-small">
+        <p className="text-extraSmall sm:text-small">
           {hotel.location.address}, {hotel.location.neighborhood}
         </p>
         <p className="text-small">
@@ -64,7 +64,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
               // className="w-full"
               color="light"
               label="Ver hotel"
-              textClass="text-small"
+              textClass="text-extraSmall sm:text-small"
             />
           </Link>
         </div>
