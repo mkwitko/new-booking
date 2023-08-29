@@ -1,41 +1,41 @@
-'use client'
+"use client";
 
-import Container from '@/components/coreComponents/containers/Container'
-import WhiteBox from '@/components/coreComponents/containers/WhiteBox'
-import Title from '@/components/text/Title'
-import '@/config/awsConfig'
-import { SearchContextProvider } from '@/context/SearchContext'
-import SearchIndex from './(sections)/Search'
-import PostResult from './(sections)/Results/PostResult/PostResult'
-import { useState } from 'react'
-import FeedbackSearch from './(components)/(feedback)/SearchFeedback'
-import { IAvailResponse } from '@/classes/availability/DTO/AvailabilityDTO'
-import { CACHE_PATH } from '@/config/cache'
-import { get } from '@/services/cache'
-import { GoFilter } from 'react-icons/go'
+import Container from "@/components/coreComponents/containers/Container";
+import WhiteBox from "@/components/coreComponents/containers/WhiteBox";
+import Title from "@/components/text/Title";
+import "@/config/awsConfig";
+import { SearchContextProvider } from "@/context/SearchContext";
+import SearchIndex from "./(sections)/Search";
+import PostResult from "./(sections)/Results/PostResult/PostResult";
+import { useState } from "react";
+import FeedbackSearch from "./(components)/(feedback)/SearchFeedback";
+import { IAvailResponse } from "@/classes/availability/DTO/AvailabilityDTO";
+import { CACHE_PATH } from "@/config/cache";
+import { get } from "@/services/cache";
+import { GoFilter } from "react-icons/go";
 
 export default function Search() {
-  const [hasSearched, setHasSearched] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const searchingResult: IAvailResponse = get(CACHE_PATH.AVAILABILITY.HOTELS)
+  const searchingResult: IAvailResponse = get(CACHE_PATH.AVAILABILITY.HOTELS);
 
   const getFeedbackSearchType = () => {
     if (isSearching) {
-      return 'processing'
+      return "processing";
     }
     if (hasSearched) {
-      if (searchingResult.hotels.length === 0) return 'noResults'
-      return 'default'
+      if (searchingResult.hotels.length === 0) return "noResults";
+      return "default";
     }
-    return 'default'
-  }
+    return "default";
+  };
 
   return (
     <Container>
       <Title title="Pesquisa de Disponibilidade" />
       <SearchContextProvider>
-      <WhiteBox>
+        <WhiteBox>
           <SearchIndex
             hasSearched={hasSearched}
             setHasSearched={setHasSearched}
@@ -43,20 +43,7 @@ export default function Search() {
             setIsSearching={setIsSearching}
           />
         </WhiteBox>
-        {hasSearched && (
-           <>
-            <PostResult />
-            <button
-            onClick={() => {}}
-            className="fixed right-0 top-0 mt-[6rem] bg-primary hover:bg-primaryDark p-2 rounded-l-[10px] w-[36px] h-[106px] max-h-[106px]"
-            type="button"
-          >
-            <p className="-rotate-90 text-white mb-3">Filtros</p>
-            <GoFilter className="-rotate-90 -mb-6 w-6 h-6 text-white" />
-          </button>
-           </>
-        )}
-       
+        {hasSearched && <PostResult />}
       </SearchContextProvider>
       {hasSearched && searchingResult.hotels.length > 0 ? (
         <></>
@@ -64,10 +51,10 @@ export default function Search() {
         <FeedbackSearch
           type={getFeedbackSearchType()}
           complementaryText={`${
-            getFeedbackSearchType() === 'default' ? 'hotéis' : ''
+            getFeedbackSearchType() === "default" ? "hotéis" : ""
           }`}
         />
       )}
     </Container>
-  )
+  );
 }

@@ -1,9 +1,11 @@
-export default function ModalContent({children}: {
-    children: React.ReactNode
+import { DialogContent } from "@/components/ui/dialog";
+
+export default function ModalContent({
+  children,
+  mergeClasses = "",
+}: {
+  children: React.ReactNode;
+  mergeClasses?: string;
 }) {
-  return (
-   <>
-    {children}
-   </>
-  )
+  return <DialogContent className={mergeClasses}>{children}</DialogContent>;
 }
