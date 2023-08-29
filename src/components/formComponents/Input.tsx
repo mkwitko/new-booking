@@ -20,14 +20,14 @@ export function Input({
       <div
         data-disabled={disabled}
         className={twMerge(
-          'h-10 w-full rounded border border-slate-200 p-2 text-sm transition-colors focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2 hover:bg-primary/5 data-[disabled=true]:cursor-auto data-[disabled=true]:opacity-50 data-[disabled=true]:hover:bg-white',
+          'flex h-10 w-full items-center border border-slate-200 bg-white text-textPrimary rounded-md p-2 transition-colors focus-within:ring-2 focus-within:ring-slate-400 focus-within:ring-offset-2 hover:bg-primary/5 data-[disabled=true]:cursor-auto data-[disabled=true]:opacity-50 data-[disabled=true]:hover:bg-white md:text-sm',
           className,
         )}
       >
         <input
           type="text"
           disabled={disabled}
-          className="w-full border-none bg-transparent p-0 text-sm outline-none placeholder:text-sm placeholder:text-textPrimary focus:outline-none focus:ring-0"
+          className="w-full border-none bg-transparent p-0 text-xs outline-none placeholder:text-xs placeholder:text-textPrimary focus:outline-none focus:ring-0 md:text-sm md:placeholder:text-sm"
           {...register}
           {...props}
         />

@@ -39,6 +39,9 @@ module.exports = {
           'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #110E2C 87.50%), url("/img/LoginBackground.png")',
         'overlay-shadow-gradient':
           'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #110E2C 87.50%)',
+        'default-card': 'linear-gradient(#71C0E9, #135476)',
+        'visa-card': 'linear-gradient(#F5F5F5, #CECECE)',
+        'master-card': 'linear-gradient(#F5F5F5, #CECECE)',
       },
       boxShadow: {
         b2b: 'rgba(0, 0, 0, 0.15) 0px 7px 10px',
