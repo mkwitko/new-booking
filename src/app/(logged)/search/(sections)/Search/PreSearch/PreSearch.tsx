@@ -69,8 +69,6 @@ export default function PreSearch({
           />
         </InputContainer>
 
-        <Input />
-
         <InputContainer
           label="Data de Entrada e Saída"
           mergeClass="xl:max-w-[25%]"
