@@ -30,6 +30,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
+    "credit-card-type": "^9.1.0",
     "date-fns": "^2.30.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.16",
@@ -53,10 +54,10 @@
     "zod": "^3.22.0"
   },
   "devDependencies": {
-    "aws-crt": "^1.18.0",
-    "encoding": "^0.1.13",
     "@rocketseat/eslint-config": "^2.1.0",
     "@tailwindcss/forms": "^0.5.5",
+    "aws-crt": "^1.18.0",
+    "encoding": "^0.1.13",
     "prettier-plugin-tailwindcss": "^0.5.3"
   }
 }

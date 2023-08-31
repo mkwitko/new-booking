@@ -7,20 +7,18 @@ import {
 import { CACHE_PATH } from "@/config/cache";
 import { SearchContext } from "@/context/SearchContext";
 import { get } from "@/services/cache";
-import { differenceInDays, set } from "date-fns";
+import { differenceInDays } from "date-fns";
 import { useContext, useState } from "react";
 import Image from "next/image";
 import PostResultList from "./(components)/(list)/PostResultList";
 import PostResultCard from "./(components)/(card)/PostResultCard";
 import { GoFilter } from "react-icons/go";
-import ModalTrigger from "@/components/nonInteractiveComponents/Modal/ModalTrigger";
 import * as B2BModal from "@/components/nonInteractiveComponents/Modal";
 import { Input } from "@/components/formComponents";
 
 export default function PostResult() {
   const { dateHook, peopleHook } = useContext(SearchContext);
   const [cardShowing, setCardShowing] = useState(false);
-  const [filterModal, setFilterModal] = useState(false);
 
   const searchingResult: IAvailResponse = get(CACHE_PATH.AVAILABILITY.HOTELS);
 

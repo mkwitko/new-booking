@@ -1,20 +1,23 @@
-'use client'
+"use client";
 
-import WhiteBox from '@/components/coreComponents/containers/WhiteBox'
-import * as FormComponents from '@/components/formComponents'
-import { useReservationForm } from '../(form)/useReservationForm'
+import WhiteBox from "@/components/coreComponents/containers/WhiteBox";
+import * as FormComponents from "@/components/formComponents";
+import { useReservationForm } from "../(form)/useReservationForm";
 
 // Mock Data
 import {
   AllowedExpenses,
   AvailableCreditCards,
   PaymentMethods,
-} from '../(data)'
+} from "../(data)";
 
-import { CreditCardOption } from './CreditCardOption'
-import { NewCreditCardOption } from './NewCreditCardOption'
-import { CredtiCard } from './CreditCard'
-import { useState } from 'react'
+import { CreditCardOption } from "./CreditCardOption";
+import { NewCreditCardOption } from "./NewCreditCardOption";
+import { CredtiCard } from "./CreditCard";
+import { useContext, useState } from "react";
+import B2BButton from "@/components/interactiveComponents/Button";
+import Link from "next/link";
+import { SearchContext } from "@/context/SearchContext";
 
 export function ReserveForm() {
   const {
@@ -31,16 +34,17 @@ export function ReserveForm() {
     expirationDateToDisplay,
     guestIdToDisplay,
     nameToDisplay,
-  } = useReservationForm()
+  } = useReservationForm();
 
-  const [displayCardBackside, setDisplayCardBackside] = useState<boolean>(false)
-  const NUMBER_OF_GUESTS = 1
+  const [displayCardBackside, setDisplayCardBackside] =
+    useState<boolean>(false);
+  const NUMBER_OF_GUESTS = 1;
 
-  console.log(errors)
+  const { hotelHook } = useContext(SearchContext);
 
   return (
     <form
-      className="w-full space-y-2"
+      className="w-full space-y-4"
       onSubmit={handleSubmit(submitForm)}
       noValidate
     >
@@ -55,7 +59,7 @@ export function ReserveForm() {
           <FormComponents.Input
             type="text"
             placeholder="Cliente"
-            register={register('purchaser.name')}
+            register={register("purchaser.name")}
             errorMessage={errors.purchaser?.name?.message}
           />
 
@@ -63,13 +67,13 @@ export function ReserveForm() {
             <FormComponents.Checkbox
               label="Autoriza cobrança de taxa de turismo"
               id="allow-turism-taxes"
-              register={register('purchaser.allowTurismTaxes')}
+              register={register("purchaser.allowTurismTaxes")}
             />
 
             <FormComponents.Checkbox
               label="Reserva com garantia de no-show"
               id="allow-no-show-ensurance"
-              register={register('purchaser.noShowEnsurance')}
+              register={register("purchaser.noShowEnsurance")}
             />
           </div>
         </div>
@@ -84,21 +88,21 @@ export function ReserveForm() {
             type="text"
             placeholder="Centro de Custos"
             errorMessage={errors?.managemntInformation?.costsCenter?.message}
-            register={register('managemntInformation.costsCenter')}
+            register={register("managemntInformation.costsCenter")}
           />
 
           <FormComponents.Input
             type="text"
             placeholder="Matrícula"
             errorMessage={errors?.managemntInformation?.register?.message}
-            register={register('managemntInformation.register')}
+            register={register("managemntInformation.register")}
           />
 
           <FormComponents.Input
             type="text"
             id="area"
             placeholder="Area"
-            register={register('managemntInformation.area')}
+            register={register("managemntInformation.area")}
             errorMessage={errors?.managemntInformation?.area?.message}
           />
         </div>
@@ -160,7 +164,7 @@ export function ReserveForm() {
           <FormComponents.Select.Root
             placeholder="Método de Pagamento"
             errorMessage={errors?.payment?.method?.message}
-            onValueChange={(value) => setValue('payment.method', value)}
+            onValueChange={(value) => setValue("payment.method", value)}
           >
             {PaymentMethods.map((method) => (
               <FormComponents.Select.Item
@@ -175,7 +179,7 @@ export function ReserveForm() {
             placeholder="Despesas Autorizadas"
             errorMessage={errors?.payment?.allowedExpenses?.message}
             onValueChange={(value) =>
-              setValue('payment.allowedExpenses', value)
+              setValue("payment.allowedExpenses", value)
             }
           >
             {AllowedExpenses.map((expense) => (
@@ -194,14 +198,14 @@ export function ReserveForm() {
               placeholder="Informe o cartão de crédito"
               errorMessage={errors?.payment?.selectedCreditCard?.message}
               onValueChange={(value) =>
-                setValue('payment.selectedCreditCard', value)
+                setValue("payment.selectedCreditCard", value)
               }
             >
               {AvailableCreditCards.map((card) => (
                 <FormComponents.Select.Item
                   key={card.id}
                   text={card.name}
-                  value={card.name}
+                  value={card.id}
                   creditCard
                 >
                   <CreditCardOption key={card.id} {...card} />
@@ -225,11 +229,11 @@ export function ReserveForm() {
                   </span>
                   <CredtiCard
                     expirationDate={watch(
-                      'payment.newCreditCard.expirationDate',
+                      "payment.newCreditCard.expirationDate",
                     )}
-                    name={watch('payment.newCreditCard.name')}
-                    number={watch('payment.newCreditCard.number')}
-                    securityCode={watch('payment.newCreditCard.securityCode')}
+                    name={watch("payment.newCreditCard.name")}
+                    number={watch("payment.newCreditCard.number")}
+                    securityCode={watch("payment.newCreditCard.securityCode")}
                     showBackside={displayCardBackside}
                   />
                 </div>
@@ -239,7 +243,7 @@ export function ReserveForm() {
                     placeholder="Nome no cartão"
                     maxLength={25}
                     value={nameToDisplay}
-                    register={register('payment.newCreditCard.name')}
+                    register={register("payment.newCreditCard.name")}
                     errorMessage={errors?.payment?.newCreditCard?.name?.message}
                     type="text"
                   />
@@ -249,7 +253,7 @@ export function ReserveForm() {
                     maxLength={19}
                     pattern="[0-9]{16}"
                     value={creditCardNumberToDisplay}
-                    register={register('payment.newCreditCard.number')}
+                    register={register("payment.newCreditCard.number")}
                     errorMessage={
                       errors?.payment?.newCreditCard?.number?.message
                     }
@@ -260,7 +264,7 @@ export function ReserveForm() {
                     placeholder="Validade"
                     maxLength={5}
                     value={expirationDateToDisplay}
-                    register={register('payment.newCreditCard.expirationDate')}
+                    register={register("payment.newCreditCard.expirationDate")}
                     errorMessage={
                       errors?.payment?.newCreditCard?.expirationDate?.message
                     }
@@ -274,7 +278,7 @@ export function ReserveForm() {
                     errorMessage={
                       errors?.payment?.newCreditCard?.securityCode?.message
                     }
-                    register={register('payment.newCreditCard.securityCode')}
+                    register={register("payment.newCreditCard.securityCode")}
                     maxLength={3}
                     onFocus={() => setDisplayCardBackside(true)}
                     onBlur={() => setDisplayCardBackside(false)}
@@ -294,33 +298,32 @@ export function ReserveForm() {
         <FormComponents.Textarea
           placeholder="Observações (Opcional)"
           className="mt-6"
-          register={register('observations')}
+          register={register("observations")}
           errorMessage={errors?.observations?.message}
         />
       </WhiteBox>
 
       <p className="block text-xs md:text-right">
-        Ao confirmar você afirma estar de acordo com a{' '}
+        Ao confirmar você afirma estar de acordo com a{" "}
         <span className="font-bold">política do hotel</span>
       </p>
 
-      <div className="flex w-full flex-col items-center gap-4 pt-2 md:flex-row md:justify-end">
-        <FormComponents.Button
-          type="button"
-          variant="ghost"
-          className="w-full md:w-auto"
-        >
-          Descartar
-        </FormComponents.Button>
-
-        <FormComponents.Button
-          type="submit"
-          variant="primary"
-          className="w-full md:w-auto"
-        >
-          Confirmar Reserva
-        </FormComponents.Button>
+      <div className="flex w-full flex-col items-center gap-4 pt-2 md:flex-row md:items-end md:justify-end">
+        <Link href="/search">
+          <B2BButton
+            onClick={() => {
+              hotelHook.resetCurrentHotel();
+            }}
+            label="Descartar"
+            color="disabled"
+          />
+        </Link>
+        <B2BButton
+          mergeClass="w-1/6"
+          buttonType="submit"
+          label="Confirmar Reserva"
+        />
       </div>
     </form>
-  )
+  );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import { add, addDays, format } from "date-fns";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,40 +15,27 @@ import {
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   checkIn: any;
   setCheckIn: any;
-  checkOut: any;
-  setCheckOut: any;
+  checkOut?: any;
+  setCheckOut?: any;
+  children: React.ReactNode;
+  onChange?: (e: any) => void;
+  open?: boolean;
 }
 
-export function B2BDatePicker({
+export function GeneralB2BDatePicker({
   className,
   checkIn,
   setCheckIn,
   checkOut,
   setCheckOut,
+  children,
+  onChange,
+  open,
 }: Props) {
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant={"outline"}
-            className={cn("w-full justify-start text-left text-small")}
-          >
-            {checkIn ? (
-              checkOut ? (
-                <>
-                  {format(checkIn, "dd/MM/yyyy")} |{" "}
-                  {format(checkOut, "dd/MM/yyyy")}
-                </>
-              ) : (
-                format(checkIn, "dd/MM/yyyy")
-              )
-            ) : (
-              <span>Escolha uma Data</span>
-            )}
-          </Button>
-        </PopoverTrigger>
+      <Popover open={open}>
+        <PopoverTrigger asChild>{children}</PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
           <Calendar
             initialFocus
@@ -62,6 +49,7 @@ export function B2BDatePicker({
               if (e) {
                 setCheckIn(e.from || null);
                 setCheckOut(e.to || null);
+                if (onChange) onChange(e);
               } else {
                 setCheckIn(null);
                 setCheckOut(null);

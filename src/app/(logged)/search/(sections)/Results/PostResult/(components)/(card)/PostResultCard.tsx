@@ -1,20 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
-import { Hotels } from '@/classes/availability/DTO/AvailabilityDTO'
-import Badge from '../Badge'
-import Link from 'next/link'
-import Button from '@/components/interactiveComponents/Button'
-import { fCurrency } from '@/utils/FinanceUtil'
-import CardsPopover from '../(popovers)/CardsPopover'
-import MealPopover from '../(popovers)/MealPopover'
-import PolicyPopover from '../(popovers)/PolicyPopover'
-import TotalTaxes from '@/app/(logged)/search/(components)/(finance)/TotalTaxes'
-import AmountBeforeTax from '@/app/(logged)/search/(components)/(finance)/AmountBeforeTax'
-import TotalAmountAfterTax from '@/app/(logged)/search/(components)/(finance)/TotalAmountAfterTax'
-import TextLimmiter from '@/components/text/TextLimitter'
+import { Hotels } from "@/classes/availability/DTO/AvailabilityDTO";
+import Badge from "../Badge";
+import Link from "next/link";
+import Button from "@/components/interactiveComponents/Button";
+import CardsPopover from "../(popovers)/CardsPopover";
+import MealPopover from "../(popovers)/MealPopover";
+import PolicyPopover from "../(popovers)/PolicyPopover";
+import TotalTaxes from "@/app/(logged)/search/(components)/(finance)/TotalTaxes";
+import AmountBeforeTax from "@/app/(logged)/search/(components)/(finance)/AmountBeforeTax";
+import TotalAmountAfterTax from "@/app/(logged)/search/(components)/(finance)/TotalAmountAfterTax";
+import TextLimmiter from "@/components/text/TextLimitter";
+import { useContext } from "react";
+import { SearchContext } from "@/context/SearchContext";
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
-  const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`
-  const imageToShow = image || 'icons/withoutResult.svg'
+  const { hotelHook } = useContext(SearchContext);
+  const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
+  const imageToShow = image || "icons/withoutResult.svg";
 
   return (
     <div className="flex h-[35rem] flex-col justify-around rounded-b2b border border-borderColor/20 bg-white p-4">
@@ -22,7 +24,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
       <img
         className="z-20 aspect-[2.144/1] rounded-b2b object-cover"
         src={
-          hotel?.exteriorViewImageURL ? imageToShow : 'icons/withoutResult.svg'
+          hotel?.exteriorViewImageURL ? imageToShow : "icons/withoutResult.svg"
         }
         alt={hotel.name.toLowerCase()}
       />
@@ -54,7 +56,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         <div className="flex items-start gap-2">
           <Link
             href={{
-              pathname: '/hotel/detail',
+              pathname: "/hotel/detail",
             }}
           >
             <Button
@@ -123,27 +125,24 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
             )} */}
         </>
         <div className="mt-2 w-full">
-          {hotel.roomTypes[0].availability === 'PUB' ? (
+          {hotel.roomTypes[0].availability === "PUB" ? (
             <Link
               href={{
-                pathname: '/booking/payment',
+                pathname: "/search/new",
               }}
             >
               <Button
                 onClick={() => {
-                  // set('currentApartament', hotel.roomTypes[0]);
-                  // findAvail(hotel.id);
+                  hotelHook.handleSetCurrentHotel(hotel);
                 }}
-                //   className="w-full"
                 color="primary"
-                //   variant="contained"
                 label="Reservar"
               />
             </Link>
-          ) : hotel.roomTypes[0].availability === 'VIP' ? (
+          ) : hotel.roomTypes[0].availability === "VIP" ? (
             <Link
               href={{
-                pathname: '/booking/payment',
+                pathname: "/booking/payment",
               }}
             >
               <Button
@@ -167,5 +166,5 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

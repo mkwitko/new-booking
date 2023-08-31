@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import InputContainer from '@/components/coreComponents/containers/InputContainer'
-import Button from '@/components/interactiveComponents/Button'
-import { B2BCombobox } from '@/components/interactiveComponents/ComboBox'
-import { LoggedContext } from '@/context/LoggedContext'
-import { useContext, useState } from 'react'
-import useSearchReservesHook from '@/hooks/reserves/SearchReserves'
-import { SearchContext } from '@/context/SearchContext'
-import * as FomCoponents from '@/components/formComponents'
-import { B2BDatePicker } from '@/components/interactiveComponents/DatePicker'
-import { AiOutlineArrowUp, AiOutlineArrowDown } from 'react-icons/ai'
+import InputContainer from "@/components/coreComponents/containers/InputContainer";
+import Button from "@/components/interactiveComponents/Button";
+import { B2BCombobox } from "@/components/interactiveComponents/ComboBox";
+import { LoggedContext } from "@/context/LoggedContext";
+import { useContext, useState } from "react";
+import useSearchReservesHook from "@/hooks/reserves/SearchReserves";
+import { SearchContext } from "@/context/SearchContext";
+import * as FomCoponents from "@/components/formComponents";
+import { B2BDatePicker } from "@/components/interactiveComponents/DatePicker";
+import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 
 export default function SearchReservesComponent() {
-  const { user, locale } = useContext(LoggedContext)
+  const { user, locale } = useContext(LoggedContext);
 
-  const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false)
+  const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false);
 
   const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
-    useContext(SearchContext)
+    useContext(SearchContext);
 
   const {
     statusList,
@@ -30,14 +30,14 @@ export default function SearchReservesComponent() {
     setDateType,
     client,
     setClient,
-  } = useSearchReservesHook()
+  } = useSearchReservesHook();
 
   const handleInputLocatorChange = (event: any) => {
-    const inputValue = event.target.value
-    const numericValue = inputValue.replace(/[^0-9]/g, '')
+    const inputValue = event.target.value;
+    const numericValue = inputValue.replace(/[^0-9]/g, "");
 
-    setLocator(numericValue)
-  }
+    setLocator(numericValue);
+  };
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function SearchReservesComponent() {
       xl:flex-row"
       >
         <InputContainer label="Localizador">
-        <FomCoponents.Input type="number" id="locator" />
+          <FomCoponents.Input type="number" id="locator" />
         </InputContainer>
 
         <InputContainer label="Ponto de venda">
@@ -91,7 +91,7 @@ export default function SearchReservesComponent() {
           lg:flex-row"
         >
           <InputContainer label="Cidade">
-          {/* <B2BCombobox
+            {/* <B2BCombobox
             options={locale?.hook?.data}
             value={cityHook.city}
             setValue={cityHook.setCity}
@@ -101,7 +101,7 @@ export default function SearchReservesComponent() {
           </InputContainer>
 
           <InputContainer label="Cliente">
-            <B2BCombobox options={''} value={client} setValue={setClient} />
+            <B2BCombobox options={""} value={client} setValue={setClient} />
           </InputContainer>
         </div>
       )}
@@ -129,10 +129,10 @@ export default function SearchReservesComponent() {
             className="pl-2 text-xs font-semibold uppercase text-primary"
             onClick={() => setSeeMoreFilters(!seeMoreFilters)}
           >
-            {seeMoreFilters ? 'FILTRO SIMPLES' : 'FILTRO AVANÇADO'}
+            {seeMoreFilters ? "FILTRO SIMPLES" : "FILTRO AVANÇADO"}
           </p>
         </div>
       </div>
     </>
-  )
+  );
 }
