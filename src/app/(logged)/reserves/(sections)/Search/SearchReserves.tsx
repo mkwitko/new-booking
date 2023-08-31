@@ -46,7 +46,7 @@ export default function SearchReservesComponent() {
       xl:flex-row"
       >
         <InputContainer label="Localizador">
-        <FomCoponents.Input type="number" id="locator" />
+          <FomCoponents.Input type="number" id="locator" />
         </InputContainer>
 
         <InputContainer label="Ponto de venda">

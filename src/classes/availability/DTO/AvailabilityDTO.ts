@@ -172,6 +172,7 @@ export interface currencyRates {
 }
 
 export interface IAvailResponse {
+  status?: number | null
   timestamp: Date
   currencyRates: currencyRates
   hotels: Hotels[]

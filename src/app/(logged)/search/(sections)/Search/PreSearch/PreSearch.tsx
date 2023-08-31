@@ -11,10 +11,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { LoggedContext } from "@/context/LoggedContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import PeopleInput from "./components/PeopleInput";
 import { SearchContext } from "@/context/SearchContext";
-import { Input } from "@/components/formComponents";
+import { Map } from "@/components/interactiveComponents/map/Map";
+import MapInfos from "./components/MapInfos";
+import { MapContextProvider } from "./contexts/MapContext";
+
 
 export default function PreSearch({
   hasSearched,
@@ -27,6 +30,9 @@ export default function PreSearch({
   isSearching: boolean;
   setIsSearching: (bool: boolean) => void;
 }) {
+  
+  const [showMap, setShowMap] = useState(false);
+
   const { user, locale, availability } = useContext(LoggedContext);
 
   const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
@@ -123,30 +129,42 @@ export default function PreSearch({
         </InputContainer>
       </div>
 
-      <div className="flex w-full items-center justify-between">
-        <div className="w-1/4">
-          <Button
-            mergeClass="w-full xl:w-1/2"
-            label="Mapa"
-            disabled={isSearching}
-          />
-        </div>
-        <div className="flex w-1/2 items-center justify-end gap-4">
-          <Button
-            disabled={isSearching}
-            label="Limpar"
-            textClass="text-textDisabled"
-            color="light"
-            mergeClass="px-0 w-full xl:w-1/4"
-          />
-          <Button
-            loading={isSearching}
-            label="Buscar"
-            mergeClass="px-2 w-full md:px-0 xl:w-1/4"
-            onClick={handleSearch}
-          />
-        </div>
-      </div>
+      <MapContextProvider>
+          {showMap && (
+            <Map setShowMap={setShowMap}/>
+          )}
+
+          <div className="flex w-full items-center justify-between">
+            {!showMap && (
+              <div className="w-1/4">
+                <Button
+                  mergeClass="w-full xl:w-1/2"
+                  label="Mapa"
+                  disabled={isSearching}
+                  onClick={() => setShowMap(!showMap)}
+                />
+              </div>
+            )}
+            {showMap && (
+              <MapInfos />
+            )}
+            <div className="flex w-1/2 items-center justify-end gap-4">
+              <Button
+                disabled={isSearching}
+                label="Limpar"
+                textClass="text-textDisabled"
+                color="light"
+                mergeClass="px-0 w-full xl:w-1/4"
+              />
+              <Button
+                loading={isSearching}
+                label="Buscar"
+                mergeClass="px-2 w-full md:px-0 xl:w-1/4"
+                onClick={handleSearch}
+              />
+            </div>
+          </div>
+      </MapContextProvider>
     </>
   );
 }

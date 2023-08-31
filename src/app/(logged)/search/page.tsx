@@ -24,6 +24,9 @@ export default function Search() {
     if (isSearching) {
       return "processing";
     }
+    if (searchingResult?.status !== null) {
+      return "error"
+    }
     if (hasSearched) {
       if (Array.isArray(searchingResult.hotels) && searchingResult.hotels.length === 0) return "noResults";
       return "default";
