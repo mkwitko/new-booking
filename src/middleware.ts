@@ -23,6 +23,7 @@ export function middleware(request: NextRequest) {
       '/reserves/new',
       '/search',
       '/solicitations',
+      '/hotel/details',
     ]
     const hasLoggedRoute = loggedRoutes.some((route) => {
       return request.url.includes(route)
