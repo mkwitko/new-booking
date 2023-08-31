@@ -28,6 +28,8 @@ export default class AvailabilityClass extends CoreClass {
         'X-Company-Id': companyId,
       },
     })
+    console.log('response -', response)
+
     this.hook.setData(response)
     this.setCache(response, true)
     return response

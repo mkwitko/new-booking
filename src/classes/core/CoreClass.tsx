@@ -91,7 +91,6 @@ export default class CoreClass {
     const request = this.isCustomRequest(custom)
     if (!cache || !this.hasObject(cache) || shouldUpdate) {
       const response = await this.getHttp<T>(method || '', request.url)
-      console.log('data - ', response.data)
       await this.setCache(response.data, shouldUpdate, request.cachePath)
       return response
     } else {
