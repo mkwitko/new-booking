@@ -27,7 +27,7 @@ export function Input({
         <input
           type="text"
           disabled={disabled}
-          className="w-full border-none bg-transparent p-0 text-small capitalize text-textPrimary outline-none placeholder:text-sm placeholder:text-textPrimary focus:outline-none focus:ring-0 enabled:cursor-pointer"
+          className="w-full border-none bg-transparent p-0 text-small text-textPrimary outline-none placeholder:text-sm placeholder:text-textPrimary focus:outline-none focus:ring-0 enabled:cursor-pointer"
           {...register}
           {...props}
         />

@@ -25,7 +25,7 @@ export default function Search() {
       return "processing";
     }
     if (hasSearched) {
-      if (searchingResult.hotels.length === 0) return "noResults";
+      if (Array.isArray(searchingResult.hotels) && searchingResult.hotels.length === 0) return "noResults";
       return "default";
     }
     return "default";
@@ -45,7 +45,7 @@ export default function Search() {
         </WhiteBox>
         {hasSearched && <PostResult />}
       </SearchContextProvider>
-      {hasSearched && searchingResult.hotels.length > 0 ? (
+      {hasSearched && Array.isArray(searchingResult.hotels) && searchingResult.hotels.length > 0 ? (
         <></>
       ) : (
         <FeedbackSearch

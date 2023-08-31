@@ -13,9 +13,8 @@ import Image from "next/image";
 import PostResultList from "./(components)/(list)/PostResultList";
 import PostResultCard from "./(components)/(card)/PostResultCard";
 import { GoFilter } from "react-icons/go";
-import ModalTrigger from "@/components/nonInteractiveComponents/Modal/ModalTrigger";
 import * as B2BModal from "@/components/nonInteractiveComponents/Modal";
-import { Input } from "@/components/formComponents";
+import { Filter } from "./(components)/(Filter)";
 
 export default function PostResult() {
   const { dateHook, peopleHook } = useContext(SearchContext);
@@ -39,6 +38,8 @@ export default function PostResult() {
 
     return `${daysText}, ${peopleHook.adult + peopleHook.child} ${peopleText}`;
   };
+
+  // console.log(searchingResult.)
 
   const filtering = (e: Hotels) => {
     return (
@@ -151,13 +152,8 @@ export default function PostResult() {
             <GoFilter className="-mb-6 h-6 w-6 -rotate-90 text-white" />
           </button>
         </B2BModal.ModalTrigger>
-        <B2BModal.ModalContent mergeClasses="right-0 top-0 max-w-[20rem] h-[40rem] fixed mt-[6rem]">
-          <div className="flex flex-col justify-center">
-            <div className="flex w-full justify-end">
-              <p>Limpar Filtro</p>
-            </div>
-            <Input />
-          </div>
+        <B2BModal.ModalContent mergeClasses="right-0 top-0 max-w-[20rem] fixed mt-[6rem] py-0 rounded-lg px-4">
+          <Filter />
         </B2BModal.ModalContent>
       </B2BModal.Modal>
     </div>

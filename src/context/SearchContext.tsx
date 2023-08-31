@@ -60,10 +60,14 @@ export function SearchContextProvider({
 
     const hotelCity = cityHook.findCityById(cityHook.city)
 
-    const response = availability.searchAvail(data)
+    const response = await availability.searchAvail(data)
+
+    const avaliableNeighborhoods: Array<string> = response.hotels.map((hotel) => hotel.location.neighborhood)
+      .filter((neighborhood, index, self) => index === self.indexOf(neighborhood))
 
     set(CACHE_PATH.AVAILABILITY.SEARCH_QUERY, {
       ...data,
+      avaliableNeighborhoods,
       companyId: +salePointHook.salePoint,
       hotelCity,
     })

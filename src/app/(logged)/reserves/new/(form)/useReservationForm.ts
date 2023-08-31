@@ -45,7 +45,7 @@ export function useReservationForm() {
     : ''
 
   function submitForm(data: ReservationFormSchema) {
-    console.log(data)
+    // console.log(data)
   }
 
   return {

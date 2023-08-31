@@ -11,7 +11,6 @@ export const B2BApiFetch = async (url: string, method: string, body?: any) => {
         'Content-Type': 'application/json',
         Authorization: await Auth.currentSession().then((result) => {
           const token = result.getIdToken().getJwtToken()
-          console.log(token)
           return token
         }),
       },

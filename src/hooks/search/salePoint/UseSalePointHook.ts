@@ -15,8 +15,6 @@ export default function UseSalePointHook() {
       : '',
   )
 
-  console.log(searchingQuery)
-
   return {
     salePoint,
     setSalePoint,
