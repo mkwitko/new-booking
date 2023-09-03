@@ -2,14 +2,14 @@
 
 import React from 'react'
 import { kmFormatter } from '@/utils/MapUtils';
-import { useMapContext } from '../contexts/MapContext';
 
-export default function MapInfos() {
-  const  {
-    radius,
-    placeLatLng,
-  } = useMapContext();
-
+export function MapInfos({
+  radius,
+  placeLatLng,
+}: {
+  radius: number,
+  placeLatLng: { coords: { lat: number, lng: number }, label: string }
+}) {
   return (
     <>
         <div className="flex flex-row">

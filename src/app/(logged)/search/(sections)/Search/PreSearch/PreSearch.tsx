@@ -15,9 +15,8 @@ import { useContext, useState } from "react";
 import PeopleInput from "./components/PeopleInput";
 import { SearchContext } from "@/context/SearchContext";
 import { Map } from "@/components/interactiveComponents/map/Map";
-import MapInfos from "./components/MapInfos";
-import { MapContextProvider } from "./contexts/MapContext";
-
+import { MapInfos } from "./components/MapInfos";
+import { formaterCityName, getAddressCoords } from "@/utils/MapUtils";
 
 export default function PreSearch({
   hasSearched,
@@ -35,8 +34,19 @@ export default function PreSearch({
 
   const { user, locale, availability } = useContext(LoggedContext);
 
-  const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
+  const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, mapHook, Search } =
     useContext(SearchContext);
+
+  const setCityToShowInMap = () => {
+    const city = cityHook.findCityById(cityHook.city)
+    const adressCoords = getAddressCoords(formaterCityName(city))
+    mapHook.setMapCenter(adressCoords)
+
+    console.log('cityHook.city: ', cityHook.city)
+    console.log('city: ', city)
+    console.log('adressCoords: ', adressCoords)
+    console.log('mapCenter: ', mapHook.mapCenter)
+  }
 
   const handleSearch = () => {
     setIsSearching(true);
@@ -129,42 +139,58 @@ export default function PreSearch({
         </InputContainer>
       </div>
 
-      <MapContextProvider>
-          {showMap && (
-            <Map setShowMap={setShowMap}/>
-          )}
+      {showMap && (
+        <Map
+          setShowMap={setShowMap}
+          radius={mapHook.radius}
+          center={mapHook.center}
+          centerMap={mapHook.centerMap}
+          circleCenter={mapHook.circleCenter}
+          moveToLocation={mapHook.moveToLocation}
+          setMap={mapHook.setMap}
+          setPlaceLatLng={mapHook.setPlaceLatLng}
+          setMapLatLng={mapHook.setMapLatLng}
+          setRadius={mapHook.setRadius}
+          city={cityHook.findCityById(cityHook.city)}
+        />
+      )}
 
-          <div className="flex w-full items-center justify-between">
-            {!showMap && (
-              <div className="w-1/4">
-                <Button
-                  mergeClass="w-full xl:w-1/2"
-                  label="Mapa"
-                  disabled={isSearching}
-                  onClick={() => setShowMap(!showMap)}
-                />
-              </div>
-            )}
-            {showMap && (
-              <MapInfos />
-            )}
-            <div className="flex w-1/2 items-center justify-end gap-4">
-              <Button
-                disabled={isSearching}
-                label="Limpar"
-                textClass="text-textDisabled"
-                color="light"
-                mergeClass="px-0 w-full xl:w-1/4"
-              />
-              <Button
-                loading={isSearching}
-                label="Buscar"
-                mergeClass="px-2 w-full md:px-0 xl:w-1/4"
-                onClick={handleSearch}
-              />
-            </div>
+      <div className="flex w-full items-center justify-between">
+        {!showMap && (
+          <div className="w-1/4">
+            <Button
+              mergeClass="w-full xl:w-1/2"
+              label="Mapa"
+              disabled={isSearching}
+              onClick={() => {
+                setCityToShowInMap()
+                setShowMap(!showMap)
+              }}
+            />
           </div>
-      </MapContextProvider>
+        )}
+        {showMap && (
+          <MapInfos
+            radius={mapHook.radius}
+            placeLatLng={mapHook.placeLatLng}
+          />
+        )}
+        <div className="flex w-1/2 items-center justify-end gap-4">
+          <Button
+            disabled={isSearching}
+            label="Limpar"
+            textClass="text-textDisabled"
+            color="light"
+            mergeClass="px-0 w-full xl:w-1/4"
+          />
+          <Button
+            loading={isSearching}
+            label="Buscar"
+            mergeClass="px-2 w-full md:px-0 xl:w-1/4"
+            onClick={handleSearch}
+          />
+        </div>
+      </div>
     </>
   );
 }

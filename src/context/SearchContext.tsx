@@ -14,7 +14,7 @@ import { LoggedContext } from './LoggedContext'
 import { set } from '@/services/cache'
 import { CACHE_PATH } from '@/config/cache'
 import UseCityHook from '@/hooks/search/city/UseCityHook'
-import { useMapContext } from '@/app/(logged)/search/(sections)/Search/PreSearch/contexts/MapContext'
+import UseMapHook from '@/hooks/search/map/UseMapHook'
 
 interface SearchContextProps {
   salePointHook: any
@@ -22,6 +22,7 @@ interface SearchContextProps {
   dateHook: any
   peopleHook: any
   roomsHook: any
+  mapHook: any
   Search: () => Promise<IAvailResponse>
 }
 
@@ -48,7 +49,7 @@ export function SearchContextProvider({
 
   const roomsHook = UseRoomsHook()
 
-  const {radius, mapLatLng} = useMapContext()
+  const mapHook = UseMapHook()
 
   async function Search() {
     const data: availPayload = {
@@ -61,18 +62,14 @@ export function SearchContextProvider({
       companyId: +salePointHook.salePoint,
     }
 
-    
-    if (mapLatLng && mapLatLng.lat) {
+    //
+    if (mapHook.mapLatLng && mapHook.mapLatLng.lat) {
       data.position = {
-        latitude: String(mapLatLng.lat),
-        longitude: String(mapLatLng.lng),
-        distance: radius / 1000,
+        latitude: String(mapHook.mapLatLng.lat),
+        longitude: String(mapHook.mapLatLng.lng),
+        distance: mapHook.radius / 1000,
       };
     }
-
-    console.log('radius', radius)
-    console.log('mapLatLng', mapLatLng)
-    console.log('data', data)
     
     const hotelCity = cityHook.findCityById(cityHook.city)
 
@@ -95,6 +92,7 @@ export function SearchContextProvider({
         dateHook,
         peopleHook,
         roomsHook,
+        mapHook,
         Search,
       }}
     >
