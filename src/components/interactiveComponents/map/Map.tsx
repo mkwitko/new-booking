@@ -5,27 +5,27 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Box, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import MapCircle from "./MapCircle";
+import { mapStyle } from "@/utils/MapUtils";
+import { isMobile } from "@/utils/B2BUtils";
 import { SearchContext } from "@/context/SearchContext";
+import { useContext } from "react";
 
 export function Map({ setShowMap }: { setShowMap: (value: boolean) => void }) {
-  const { mapHook } = React.useContext(SearchContext);
+  const { mapHook, cityHook } = useContext(SearchContext);
   const {
     radius,
-    placeLatLng,
-    mapLatLng,
-    getAddress,
     center,
     centerMap,
     circleCenter,
     moveToLocation,
-    handleChangeMap,
-    handleChangeRadius,
-    handleChangePlaceLatLng,
-    handleChangeMapLatLng,
+    setMap,
+    setPlaceLatLng,
+    setMapLatLng,
+    setRadius,
   } = mapHook;
-
+  const { findCityById } = cityHook;
   function onMapLoad(map: google.maps.Map) {
-    handleChangeMap(map);
+    setMap(map);
   }
 
   return (
@@ -43,9 +43,10 @@ export function Map({ setShowMap }: { setShowMap: (value: boolean) => void }) {
           onClick={() => {
             setShowMap(false);
             setShowMap(false);
-            handleChangePlaceLatLng({ coords: { lat: 0, lng: 0 }, label: "" });
-            handleChangeMapLatLng({ lat: 0, lng: 0 });
+            setPlaceLatLng({ coords: { lat: 0, lng: 0 }, label: "" });
+            setMapLatLng({ lat: 0, lng: 0 });
           }}
+          className="rounded-full bg-errorDark shadow-lg"
         >
           <Close className="text-white" />
         </IconButton>
@@ -62,8 +63,13 @@ export function Map({ setShowMap }: { setShowMap: (value: boolean) => void }) {
           }
           onLoad={(map: any) => onMapLoad(map)}
           mapContainerClassName="w-full h-full rounded-tr-lg rounded-tl-lg"
-          mapContainerStyle={{ width: "100%", height: "100%" }}
-          //TODO trocar o centerMap pela lat lng da cidade pré selecionada ou abrir a cidade de porto alegre
+          mapContainerStyle={{
+            width: "100%",
+            height: "100%",
+            borderTopLeftRadius: "0.625rem",
+            borderTopRightRadius: "0.625rem",
+          }}
+          // trocar o centerMap pela lat lng da cidade pré selecionada ou abrir a cidade de porto alegre
           center={centerMap}
           zoom={13}
           options={{
@@ -72,13 +78,14 @@ export function Map({ setShowMap }: { setShowMap: (value: boolean) => void }) {
             mapTypeControl: false,
             zoomControl: true,
             streetViewControl: false,
-            fullscreenControl: false,
+            fullscreenControl: isMobile(),
+            styles: mapStyle,
           }}
         >
           <MapCircle
             center={circleCenter}
             radius={radius}
-            onRadiusChange={(rad) => handleChangeRadius(rad)}
+            onRadiusChange={(rad) => setRadius(rad)}
           />
           <Marker position={center} />
         </GoogleMap>
