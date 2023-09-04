@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BackgroundImage from '@/assets/images/teste.jpg'
 import { ChevronLeft } from "lucide-react";
-import { StarRating } from "../../reserves/new/(components)/StarRating";
+import { StarRating } from "../../search/[id]/(components)/StarRating";
 
 export default function Page() {
   return (

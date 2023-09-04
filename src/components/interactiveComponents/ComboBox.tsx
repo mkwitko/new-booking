@@ -72,7 +72,7 @@ export function B2BCombobox({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="PopoverContent p-0">
-        <Command>
+        <Command onValueChange={(value) => console.log('value', value)}>
           <CommandInput
             onChangeCapture={(e: any) => {
               const { value } = e.target

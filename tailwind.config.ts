@@ -158,7 +158,7 @@ module.exports = {
         extraSmall: '0.625rem',
       },
       gridTemplateColumns: {
-        'credit-card': '1.25rem, 10rem, 1fr',
+        'credit-card': '1.25rem, 1fr, 1fr',
       },
     },
     screens: {

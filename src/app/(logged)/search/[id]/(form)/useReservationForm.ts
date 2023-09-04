@@ -3,8 +3,7 @@ import { useForm } from "react-hook-form";
 import type { ReservationFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMasks } from "@/hooks/useMasks";
-import { AvailableCreditCards } from "../(data)";
-import creditCardType from "credit-card-type";
+import { get } from "@/services/cache";
 
 export function useReservationForm() {
   const {
@@ -26,40 +25,48 @@ export function useReservationForm() {
   const displayCreditCardNameField =
     watch("payment.method") === "Cartão de Crédito";
 
-  const displayCreditCardForm =
+  const displayNewCreditCardForm =
     watch("payment.selectedCreditCard") === "Informar Manualmente";
 
-  const creditCardNumberToDisplay = watch("payment.newCreditCard.number")
-    ? createCreditCardNumberMask(watch("payment.newCreditCard.number")) || ""
+  const displayGuaranteeForm = 
+    watch("payment.method") === "Direto ao Hotel"
+
+  const creditCardNumberToDisplay = watch("creditCard.cardName")
+    ? createCreditCardNumberMask(watch("creditCard.cardName")) || ""
     : "";
 
-  const expirationDateToDisplay = watch("payment.newCreditCard.expirationDate")
-    ? createExpirationDateMask(watch("payment.newCreditCard.expirationDate")) ||
+  const creditCardExpirationDateToDisplay = watch("creditCard.expiry")
+    ? createExpirationDateMask(watch("creditCard.expiry")) ||
       ""
     : "";
+
+  const creditCardNameToDisplay = watch("creditCard.cardName")
+  ? watch("creditCard.cardName")?.toUpperCase()
+  : "";
 
   const guestIdToDisplay = (data: string | null | undefined): string => {
     return data ? createCPFMask(data) || "" : "";
   };
 
-  const nameToDisplay = watch("payment.newCreditCard.name")
-    ? watch("payment.newCreditCard.name")?.toUpperCase()
-    : "";
+  if (watch('payment.method') === 'Direto ao Hotel') {
+    setValue('payment.allowedExpenses', 'Direto ao Hotel')
+  }
 
   function submitForm(values: ReservationFormSchema) {
-    const methodIsDirect = values.payment.method === "direto";
-    const billing = JSON.parse(values.payment.allowedExpenses);
-    values.payment.allowedExpenses = billing;
+    console.log(values);
+    // const methodIsDirect = values.payment.method === "direto";
+    // const billing = JSON.parse(values.payment.allowedExpenses);
+    // values.payment.allowedExpenses = billing;
 
-    values.purchaser.name = JSON.parse(values.purchaser.name);
+    // values.purchaser.name = JSON.parse(values.purchaser.name);
 
-    const creditCard: any = values.payment.selectedCreditCard
-      ? AvailableCreditCards.find(
-          (card) => card.id === values.payment.selectedCreditCard,
-        )
-      : values.payment.newCreditCard;
+    // const creditCard: any = values.payment.selectedCreditCard
+    //   ? AvailableCreditCards.find(
+    //       (card) => card.id === values.payment.selectedCreditCard,
+    //     )
+    //   : values.payment.newCreditCard;
 
-    const creditCardData: any = {};
+    // const creditCardData: any = {};
 
     // if (Object.keys(creditCard).length > 0) {
     //   const isVcn = !!creditCard.rcnToken;
@@ -111,12 +118,13 @@ export function useReservationForm() {
     watch,
     errors,
     register,
-    expirationDateToDisplay,
+    creditCardExpirationDateToDisplay,
     creditCardNumberToDisplay,
-    displayCreditCardForm,
+    creditCardNameToDisplay,
+    displayNewCreditCardForm,
     displayCreditCardNameField,
     guestIdToDisplay,
-    nameToDisplay,
+    displayGuaranteeForm,
     setValue,
     handleSubmit,
     submitForm,

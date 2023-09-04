@@ -1,4 +1,3 @@
-import { twMerge } from "tailwind-merge";
 import { ComponentProps } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
@@ -19,7 +18,7 @@ export function Checkbox({
   ...props
 }: CheckboxProps) {
   return (
-    <div className={twMerge("flex items-center gap-2", className)}>
+    <div className="flex items-center gap-2">
       <input
         onChange={onChange}
         checked={checked}

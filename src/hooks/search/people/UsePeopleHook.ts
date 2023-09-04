@@ -1,3 +1,4 @@
+import { CACHE_PATH } from '@/config/cache'
 import { get } from '@/services/cache'
 import { useState } from 'react'
 
@@ -9,6 +10,11 @@ export default function UsePeopleHook() {
   const textAdult = adult + (adult === 1 ? ' adulto' : ' adultos')
   const textChild = child + (child === 1 ? ' criança' : ' crianças')
 
+  const cachedData = get(CACHE_PATH.AVAILABILITY.SEARCH_QUERY)
+  
+  const numberOfGuests = cachedData.adultGuestCount
+  const companyId = cachedData.companyId
+
   return {
     adult,
     setAdult,
@@ -16,5 +22,7 @@ export default function UsePeopleHook() {
     setChild,
     textAdult,
     textChild,
+    numberOfGuests,
+    companyId,
   }
 }

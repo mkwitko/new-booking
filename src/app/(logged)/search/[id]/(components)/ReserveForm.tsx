@@ -6,18 +6,18 @@ import { useReservationForm } from "../(form)/useReservationForm";
 
 // Mock Data
 import {
-  AllowedExpenses,
-  AvailableCreditCards,
   PaymentMethods,
 } from "../(data)";
 
 import { CreditCardOption } from "./CreditCardOption";
 import { NewCreditCardOption } from "./NewCreditCardOption";
 import { CredtiCard } from "./CreditCard";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import B2BButton from "@/components/interactiveComponents/Button";
 import Link from "next/link";
 import { SearchContext } from "@/context/SearchContext";
+import { LoggedContext } from "@/context/LoggedContext";
+import { B2BApi } from "@/infra/api/B2BApi";
 
 export function ReserveForm() {
   const {
@@ -26,21 +26,42 @@ export function ReserveForm() {
     handleSubmit,
     isSubmitting,
     register,
+    // billings,
     setValue,
     submitForm,
-    creditCardNumberToDisplay,
-    displayCreditCardForm,
+    displayGuaranteeForm,
+    displayNewCreditCardForm,
     displayCreditCardNameField,
-    expirationDateToDisplay,
     guestIdToDisplay,
-    nameToDisplay,
+
+    creditCardExpirationDateToDisplay,
+    creditCardNumberToDisplay,
+    creditCardNameToDisplay,
   } = useReservationForm();
 
   const [displayCardBackside, setDisplayCardBackside] =
     useState<boolean>(false);
-  const NUMBER_OF_GUESTS = 1;
 
-  const { hotelHook } = useContext(SearchContext);
+  const [creditCards, setCreditCards] = useState<any[] | null>(null)
+
+  const { hotelHook, peopleHook } = useContext(SearchContext);
+  const { user } = useContext(LoggedContext)
+  const data = [{ value: 'Pedro', label: "Pedro" }, { value: 'Mauricio', label: "Mauricio" }]
+  const disableAllowedExpensesField = displayGuaranteeForm
+  const {billings, companyId } = hotelHook.currentHotel
+
+  const NUMBER_OF_GUESTS = peopleHook.numberOfGuests;
+
+  function handleChangePurchaseName(value: string) {
+    setValue('consumer', value)
+  }
+
+  useEffect(() => {
+    B2BApi.get('/cards', { headers: { 'X-Company-Id': companyId }})
+    .then((res) => {
+      setCreditCards(res.data.cardList)
+    })
+  }, [companyId])
 
   return (
     <form
@@ -55,25 +76,31 @@ export function ReserveForm() {
         </span>
 
         <div className="mt-6 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
-          {/* Combo Box */}
-          <FormComponents.Input
-            type="text"
-            placeholder="Cliente"
-            register={register("purchaser.name")}
-            errorMessage={errors.purchaser?.name?.message}
+          <div className="w-full mt-auto">
+          <FormComponents.Combobox 
+            items={data}
+            comboBoxValue={watch('consumer')}
+            comboBoxSetValue={handleChangePurchaseName}
           />
+
+          {errors.consumer && (
+            <p className="text-xs text-red-500 mt-2">
+              {errors.consumer?.message}
+            </p>
+          )}
+          </div>
 
           <div className="space-y-2">
             <FormComponents.Checkbox
               label="Autoriza cobrança de taxa de turismo"
               id="allow-turism-taxes"
-              register={register("purchaser.allowTurismTaxes")}
+              register={register("chargeTurismTaxes")}
             />
 
             <FormComponents.Checkbox
               label="Reserva com garantia de no-show"
               id="allow-no-show-ensurance"
-              register={register("purchaser.noShowEnsurance")}
+              register={register("chargeNoShow")}
             />
           </div>
         </div>
@@ -82,16 +109,16 @@ export function ReserveForm() {
           Informações gerenciais
         </span>
 
-        <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-1">
           {/* Combo box */}
           <FormComponents.Input
             type="text"
             placeholder="Centro de Custos"
-            errorMessage={errors?.managemntInformation?.costsCenter?.message}
-            register={register("managemntInformation.costsCenter")}
+            errorMessage={errors?.centerCost?.message}
+            register={register("centerCost")}
           />
 
-          <FormComponents.Input
+          {/* <FormComponents.Input
             type="text"
             placeholder="Matrícula"
             errorMessage={errors?.managemntInformation?.register?.message}
@@ -104,7 +131,7 @@ export function ReserveForm() {
             placeholder="Area"
             register={register("managemntInformation.area")}
             errorMessage={errors?.managemntInformation?.area?.message}
-          />
+          /> */}
         </div>
       </WhiteBox>
 
@@ -119,16 +146,16 @@ export function ReserveForm() {
               Hóspede {index + 1}
             </span>
 
-            <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
               {/* Combo Box */}
-              <FormComponents.Input
+              {/* <FormComponents.Input
                 type="text"
                 placeholder="CPF (Opcional)"
                 maxLength={14}
                 value={guestIdToDisplay(watch(`guests.${index}.id`))}
                 register={register(`guests.${index}.id`)}
                 errorMessage={errors?.guests?.[index]?.id?.message}
-              />
+              /> */}
 
               <FormComponents.Input
                 type="email"
@@ -140,8 +167,8 @@ export function ReserveForm() {
               <FormComponents.Input
                 type="text"
                 placeholder="Nome"
-                register={register(`guests.${index}.name`)}
-                errorMessage={errors?.guests?.[index]?.name?.message}
+                register={register(`guests.${index}.givenName`)}
+                errorMessage={errors?.guests?.[index]?.givenName?.message}
               />
 
               <FormComponents.Input
@@ -176,17 +203,18 @@ export function ReserveForm() {
           </FormComponents.Select.Root>
 
           <FormComponents.Select.Root
-            placeholder="Despesas Autorizadas"
+            disabled={disableAllowedExpensesField}
+            placeholder={disableAllowedExpensesField ? "Direto ao Hotel" :"Despesas Autorizadas"}
             errorMessage={errors?.payment?.allowedExpenses?.message}
             onValueChange={(value) =>
               setValue("payment.allowedExpenses", value)
             }
           >
-            {AllowedExpenses.map((expense) => (
+            {billings && billings.map((expense: { id: number, description: string }) => (
               <FormComponents.Select.Item
-                key={expense}
-                text={expense}
-                value={expense}
+                key={expense.id}
+                text={expense.description}
+                value={expense.description}
               />
             ))}
           </FormComponents.Select.Root>
@@ -195,20 +223,27 @@ export function ReserveForm() {
         {displayCreditCardNameField && (
           <div className="mt-4 grid w-full grid-cols-1">
             <FormComponents.Select.Root
+              disabled={!creditCards}
               placeholder="Informe o cartão de crédito"
               errorMessage={errors?.payment?.selectedCreditCard?.message}
               onValueChange={(value) =>
                 setValue("payment.selectedCreditCard", value)
               }
             >
-              {AvailableCreditCards.map((card) => (
+              {creditCards && creditCards.map((card: any) => (
                 <FormComponents.Select.Item
-                  key={card.id}
-                  text={card.name}
-                  value={card.id}
+                  key={card.tokenized}
+                  text={card.entity}
+                  value={card.entity}
                   creditCard
                 >
-                  <CreditCardOption key={card.id} {...card} />
+                  <CreditCardOption 
+                    flag={card.brand}  
+                    cvv="123"
+                    id={card.tokenized}
+                    name={card.entity}
+                    number={card.cardNumber}
+                  />
                 </FormComponents.Select.Item>
               ))}
               <FormComponents.Select.Item
@@ -220,7 +255,7 @@ export function ReserveForm() {
               </FormComponents.Select.Item>
             </FormComponents.Select.Root>
 
-            {displayCreditCardForm && (
+            {displayNewCreditCardForm && (
               <div className="mt-4 grid w-full grid-cols-1 gap-y-4 md:grid-cols-2">
                 {/* Cartão de Crédito */}
                 <div className="space-y-4">
@@ -229,11 +264,11 @@ export function ReserveForm() {
                   </span>
                   <CredtiCard
                     expirationDate={watch(
-                      "payment.newCreditCard.expirationDate",
+                      "creditCard.expiry",
                     )}
-                    name={watch("payment.newCreditCard.name")}
-                    number={watch("payment.newCreditCard.number")}
-                    securityCode={watch("payment.newCreditCard.securityCode")}
+                    name={watch("creditCard.cardName")}
+                    number={watch("creditCard.cardNumber")}
+                    securityCode={watch("creditCard.cardCVV")}
                     showBackside={displayCardBackside}
                   />
                 </div>
@@ -242,9 +277,9 @@ export function ReserveForm() {
                   <FormComponents.Input
                     placeholder="Nome no cartão"
                     maxLength={25}
-                    value={nameToDisplay}
-                    register={register("payment.newCreditCard.name")}
-                    errorMessage={errors?.payment?.newCreditCard?.name?.message}
+                    value={creditCardNameToDisplay}
+                    register={register("creditCard.cardName")}
+                    errorMessage={errors?.creditCard?.cardName?.message}
                     type="text"
                   />
 
@@ -253,9 +288,9 @@ export function ReserveForm() {
                     maxLength={19}
                     pattern="[0-9]{16}"
                     value={creditCardNumberToDisplay}
-                    register={register("payment.newCreditCard.number")}
+                    register={register("creditCard.cardNumber")}
                     errorMessage={
-                      errors?.payment?.newCreditCard?.number?.message
+                      errors?.creditCard?.cardNumber?.message
                     }
                     type="text"
                   />
@@ -263,10 +298,10 @@ export function ReserveForm() {
                   <FormComponents.Input
                     placeholder="Validade"
                     maxLength={5}
-                    value={expirationDateToDisplay}
-                    register={register("payment.newCreditCard.expirationDate")}
+                    value={creditCardExpirationDateToDisplay}
+                    register={register("creditCard.expiry")}
                     errorMessage={
-                      errors?.payment?.newCreditCard?.expirationDate?.message
+                      errors?.creditCard?.expiry?.message
                     }
                     type="text"
                   />
@@ -276,9 +311,9 @@ export function ReserveForm() {
                     placeholder="CVV"
                     className="w-28"
                     errorMessage={
-                      errors?.payment?.newCreditCard?.securityCode?.message
+                      errors?.creditCard?.cardCVV?.message
                     }
-                    register={register("payment.newCreditCard.securityCode")}
+                    register={register("creditCard.cardCVV")}
                     maxLength={3}
                     onFocus={() => setDisplayCardBackside(true)}
                     onBlur={() => setDisplayCardBackside(false)}
@@ -290,6 +325,73 @@ export function ReserveForm() {
         )}
       </WhiteBox>
 
+      {displayGuaranteeForm && (
+        <WhiteBox classes="gap-0 lg:gap-0">
+          <span className="font-semibold uppercase text-primary-500">
+            Informar Garantia
+          </span>
+
+          <div className="mt-4 grid w-full grid-cols-1 gap-y-4 md:grid-cols-2">
+            <CredtiCard
+              expirationDate={watch(
+                "creditCard.expiry",
+              )}
+              name={watch("creditCard.cardName")}
+              number={watch("creditCard.cardNumber")}
+              securityCode={watch("creditCard.cardCVV")}
+              showBackside={displayCardBackside}
+            />
+
+            <div className="mt-auto space-y-4">
+              <FormComponents.Input
+                placeholder="Nome no cartão"
+                maxLength={25}
+                value={creditCardNameToDisplay}
+                register={register("creditCard.cardName")}
+                errorMessage={errors?.creditCard?.cardName?.message}
+                type="text"
+              />
+
+              <FormComponents.Input
+                placeholder="Número do cartão"
+                maxLength={19}
+                pattern="[0-9]{16}"
+                value={creditCardNumberToDisplay}
+                register={register("creditCard.cardNumber")}
+                errorMessage={
+                  errors?.creditCard?.cardNumber?.message
+                }
+                type="text"
+              />
+
+              <FormComponents.Input
+                placeholder="Validade"
+                maxLength={5}
+                value={creditCardExpirationDateToDisplay}
+                register={register("creditCard.expiry")}
+                errorMessage={
+                  errors?.creditCard?.expiry?.message
+                }
+                type="text"
+              />
+
+              <FormComponents.Input
+                type="text"
+                placeholder="CVV"
+                className="w-28"
+                errorMessage={
+                  errors?.creditCard?.cardCVV?.message
+                }
+                register={register("creditCard.cardCVV")}
+                maxLength={3}
+                onFocus={() => setDisplayCardBackside(true)}
+                onBlur={() => setDisplayCardBackside(false)}
+              />
+            </div>
+          </div>
+        </WhiteBox>
+      )}
+
       <WhiteBox classes="gap-0 lg:gap-0">
         <span className="font-semibold uppercase text-primary-500">
           Forma de Pagamento
@@ -298,8 +400,8 @@ export function ReserveForm() {
         <FormComponents.Textarea
           placeholder="Observações (Opcional)"
           className="mt-6"
-          register={register("observations")}
-          errorMessage={errors?.observations?.message}
+          register={register("comments")}
+          errorMessage={errors?.comments?.message}
         />
       </WhiteBox>
 
