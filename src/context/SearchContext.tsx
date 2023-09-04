@@ -15,6 +15,7 @@ import { set } from "@/services/cache";
 import { CACHE_PATH } from "@/config/cache";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
 import useHotelHook from "@/hooks/search/hotel/useHotelHook";
+import useMapHook from "@/hooks/search/map/useMapHook";
 
 interface SearchContextProps {
   salePointHook: any;
@@ -23,6 +24,7 @@ interface SearchContextProps {
   peopleHook: any;
   roomsHook: any;
   hotelHook: any;
+  mapHook: any;
   Search: (checkIn?: any, checkOut?: any) => Promise<IAvailResponse>;
 }
 
@@ -50,6 +52,8 @@ export function SearchContextProvider({
   const roomsHook = UseRoomsHook();
 
   const hotelHook = useHotelHook();
+
+  const mapHook = useMapHook();
 
   async function Search(checkIn?: any, checkOut?: any) {
     const data: availPayload = {
@@ -84,6 +88,7 @@ export function SearchContextProvider({
         peopleHook,
         roomsHook,
         hotelHook,
+        mapHook,
         Search,
       }}
     >
