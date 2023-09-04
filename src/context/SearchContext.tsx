@@ -15,15 +15,17 @@ import { set } from "@/services/cache";
 import { CACHE_PATH } from "@/config/cache";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
 import UseMapHook from "@/hooks/search/map/UseMapHook";
+import useHotelHook from "@/hooks/search/hotel/useHotelHook";
 
 interface SearchContextProps {
+  hotelHook: any;
   salePointHook: any;
   cityHook: any;
   dateHook: any;
   peopleHook: any;
   roomsHook: any;
   mapHook: any;
-  Search: () => Promise<IAvailResponse>;
+  Search: (checkin?: Date, checkout?: Date) => Promise<IAvailResponse>;
 }
 
 export const SearchContext = React.createContext({} as SearchContextProps);
@@ -38,6 +40,8 @@ export function SearchContextProvider({
   children: React.ReactNode;
 }) {
   const { availability } = useContext(LoggedContext);
+
+  const hotelHook = useHotelHook();
 
   const salePointHook = UseSalePointHook();
 
@@ -87,6 +91,7 @@ export function SearchContextProvider({
   return (
     <SearchContext.Provider
       value={{
+        hotelHook,
         salePointHook,
         cityHook,
         dateHook,
