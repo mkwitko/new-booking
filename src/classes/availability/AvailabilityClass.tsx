@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import CoreClass from "../core/CoreClass";
-import { IAvailResponse, availPayload } from "./DTO/AvailabilityDTO";
+import { Hotels, IAvailResponse, availPayload } from "./DTO/AvailabilityDTO";
 import useAvailabilityHook from "./hook/useAvailabilityHook";
 import { DeleteMethods } from "./methods/delete";
 import { GetMethods } from "./methods/get";
@@ -29,10 +29,50 @@ export default class AvailabilityClass extends CoreClass {
       },
     });
 
+    const filteredHotels = response.hotels
+      .filter((hotel: Hotels) => {
+        return (
+          hotel.roomTypes &&
+          hotel.roomTypes.length > 0 &&
+          hotel.roomTypes[0].averageRates &&
+          hotel.roomTypes[0].averageRates.length > 0
+        );
+      })
+      .sort(this.sortingByAvailability);
+
+    response.hotels = filteredHotels;
+
     this.hook.setData(response);
     this.setCache(response, true);
     return response;
   }
+
+  private sortingByAvailability = (a: Hotels, b: Hotels) => {
+    const availability: Array<{
+      id: number;
+      name: "NON" | "VIP" | "PUB";
+    }> = [
+      {
+        id: 1,
+        name: "PUB",
+      },
+      {
+        id: 2,
+        name: "VIP",
+      },
+      {
+        id: 3,
+        name: "NON",
+      },
+    ];
+    const value1 = availability.find(
+      (e) => e.name === a.roomTypes[0].availability,
+    );
+    const value2 = availability.find(
+      (e) => e.name === b.roomTypes[0].availability,
+    );
+    return value1!.id < value2!.id ? -1 : value1!.id > value2!.id ? 1 : 0;
+  };
 
   private validateSearchAvail(data: availPayload) {
     if (!data.companyId) toast.error("Selecione um ponto de venda");

@@ -1,12 +1,15 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const Schema = z.object({
   name: z.string().nullable().default(null).optional(),
   onlyWithGateway: z.boolean().nullable().default(false).optional(),
-  priceRange: z.object({
-    min: z.number().nullable().default(null).optional(),
-    max: z.number().nullable().default(null).optional(),
-  }).default({ min: null, max: null }).optional(),
+  priceRange: z
+    .object({
+      min: z.number().default(0),
+      max: z.number().default(10000),
+    })
+    .default({ min: 0, max: 10000 }),
+  withBreakfast: z.boolean().default(false),
   onlyAvailable: z.boolean().nullable().default(false).optional(),
   distanceRange: z.number().nullable().default(null).optional(),
   address: z.string().nullable().default(null).optional(),
@@ -16,7 +19,12 @@ export const Schema = z.object({
     virtualCard: z.boolean().nullable().default(false).optional(),
   }),
   freeCancellation: z.boolean().nullable().default(false).optional(),
-  neighborhoods: z.array(z.record(z.string(), z.boolean().nullable().default(false).optional()))
-})
+  neighborhoods: z.array(
+    z.record(z.string(), z.boolean().nullable().default(false).optional()),
+  ),
+  integratedSystems: z.array(
+    z.record(z.string(), z.boolean().nullable().default(false).optional()),
+  ),
+});
 
-export type FilterForm = z.infer<typeof Schema>
+export type FilterForm = z.infer<typeof Schema>;

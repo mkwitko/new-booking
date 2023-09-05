@@ -26,12 +26,12 @@ export function Checkbox({
         id={id}
         {...props}
         {...register}
-        className="h-4 w-4 cursor-pointer rounded border border-slate-500 font-light outline-none ring-0 checked:bg-primary-400 checked:hover:bg-primary focus:ring-0 focus:checked:bg-primary md:h-5 md:w-5"
+        className="h-3 w-3 cursor-pointer rounded border border-slate-500 font-light outline-none ring-0 checked:bg-primary-400 checked:hover:bg-primary focus:ring-0 focus:checked:bg-primary "
       />
 
       {label && (
-        <label htmlFor={id} className="text-xs md:text-sm">
-          {label}
+        <label htmlFor={id} className="text-small capitalize">
+          {label.toLowerCase()}
         </label>
       )}
     </div>
