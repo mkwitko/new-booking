@@ -7,7 +7,7 @@ import { SolicitationsContextProvider } from '@/context/SolicitationsContext'
 export default function Solicitations() {
   return (
     <Container>
-      <Title title="Pesquisa de Disponibilidade" />
+      <Title title="Solicitações" />
       <WhiteBox>
         <SolicitationsContextProvider>
           <SearchSolicitationsComponent />
