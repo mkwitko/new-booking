@@ -11,13 +11,19 @@ import { GoFilter } from "react-icons/go";
 import * as B2BModal from "@/components/nonInteractiveComponents/Modal";
 import { Filter } from "./(components)/(Filter)";
 import { LoggedContext } from "@/context/LoggedContext";
+import { BiAddToQueue } from "react-icons/bi";
+import Quotation from "./(components)/(Quotation)/Quotation";
+import B2BButton from "@/components/interactiveComponents/Button";
+import Pdf from "./(components)/(Pdf)/Pdf";
 
 export default function PostResult() {
   const { availability } = useContext(LoggedContext);
-  const { dateHook, peopleHook } = useContext(SearchContext);
+  const { dateHook, peopleHook, quotationHook } = useContext(SearchContext);
   const [cardShowing, setCardShowing] = useState(false);
 
   const [open, setOpen] = useState(false);
+  const [openQuotation, setOpenQuotation] = useState(false);
+  const [openPdf, setOpenPdf] = useState(false);
 
   const [seeMore, setSeeMore] = useState(
     availability.hook.data.map(() => false),
@@ -34,8 +40,6 @@ export default function PostResult() {
 
     return `${daysText}, ${peopleHook.adult + peopleHook.child} ${peopleText}`;
   };
-
-  // console.log(searchingResult.)
 
   return (
     <div className="w-full">
@@ -109,6 +113,38 @@ export default function PostResult() {
           <Filter open={open} setOpen={setOpen} />
         </B2BModal.ModalContent>
       </B2BModal.Modal>
+
+      {quotationHook.quotation.length > 0 && (
+        <>
+          <B2BModal.Modal open={openQuotation} setOpen={setOpenQuotation}>
+            <B2BModal.ModalTrigger>
+              <button
+                onClick={() => {}}
+                className="fixed right-0 top-0 mt-[13rem] h-[44px] max-h-[44px] w-[36px] rounded-l-[10px] bg-primaryLight p-2 hover:bg-primaryLight-700"
+                type="button"
+              >
+                <span className="fixed right-8 z-10 inline-flex h-4 w-4 items-center justify-center rounded-full bg-warning px-2 py-1 text-xs font-bold leading-none text-red-100">
+                  {quotationHook.quotation.length}
+                </span>
+                <BiAddToQueue className="h-6 w-6 -rotate-90 text-white" />
+              </button>
+            </B2BModal.ModalTrigger>
+            <B2BModal.ModalContent mergeClasses="right-0 top-0 max-w-[20rem] fixed mt-[6rem] py-0 rounded-lg px-4">
+              <Quotation
+                open={openQuotation}
+                setOpen={setOpenQuotation}
+                openPdf={openPdf}
+                setOpenPdf={setOpenPdf}
+              />
+            </B2BModal.ModalContent>
+          </B2BModal.Modal>
+          <B2BModal.Modal open={openPdf} setOpen={setOpenPdf}>
+            <B2BModal.ModalContent mergeClasses="right-0 top-0 max-w-[30rem] h-[22.5rem] fixed mt-[6rem] py-0 rounded-lg px-4">
+              <Pdf setOpenPdf={setOpenPdf} />
+            </B2BModal.ModalContent>
+          </B2BModal.Modal>
+        </>
+      )}
     </div>
   );
 }

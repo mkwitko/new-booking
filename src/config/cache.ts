@@ -1,5 +1,8 @@
 export const CACHE_PATH = {
   HOTELCHAIN: "hotels-chain",
+  FILTER: {
+    FILTER: "filter",
+  },
   USER: {
     AGENCIES_STORES: "agencies_stores",
   },

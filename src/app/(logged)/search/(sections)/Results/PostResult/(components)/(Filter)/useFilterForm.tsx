@@ -11,7 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import { CACHE_PATH } from "@/config/cache";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { get } from "@/services/cache";
+import { get, set } from "@/services/cache";
 import { LoggedContext } from "@/context/LoggedContext";
 
 export function useFilterForm({
@@ -21,12 +21,15 @@ export function useFilterForm({
 }) {
   const { availability } = useContext(LoggedContext);
 
+  const filtering: FilterForm = get(CACHE_PATH.FILTER.FILTER);
+
   useEffect(() => {
     const searchingResult: IAvailResponse = get(CACHE_PATH.AVAILABILITY.HOTELS);
     setHotels(searchingResult.hotels);
   }, []);
 
   function filterHotels(data: FilterForm) {
+    set(CACHE_PATH.FILTER.FILTER, data);
     const filteredHotels =
       hotels &&
       hotels.filter((hotel) => {
@@ -130,7 +133,6 @@ export function useFilterForm({
         return true;
       });
 
-    console.log("filtered - ", filteredHotels);
     availability.hook.setData(filteredHotels);
     setOpen(false);
   }
@@ -174,6 +176,26 @@ export function useFilterForm({
   const { register, handleSubmit, formState, watch, setValue } =
     useForm<FilterForm>({
       resolver: zodResolver(Schema),
+      defaultValues: {
+        name: filtering?.name || "",
+        onlyWithGateway: filtering?.onlyWithGateway || false,
+        priceRange: {
+          min: filtering?.priceRange?.min || 0,
+          max: filtering?.priceRange?.max || 0,
+        },
+        address: filtering?.address || "",
+        withBreakfast: filtering?.withBreakfast || false,
+        paymentMethods: {
+          billed: filtering?.paymentMethods?.billed || false,
+          directPayment: filtering?.paymentMethods?.directPayment || false,
+          virtualCard: filtering?.paymentMethods?.virtualCard || false,
+        },
+        freeCancellation: filtering?.freeCancellation || false,
+        onlyAvailable: filtering?.onlyAvailable || false,
+        distanceRange: filtering?.distanceRange || 0,
+        neighborhoods: filtering?.neighborhoods || false,
+        integratedSystems: filtering?.integratedSystems || false,
+      },
     });
 
   const resetNeighborhoods = () => {
