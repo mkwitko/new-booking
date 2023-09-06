@@ -17,6 +17,7 @@ import { useContext } from "react";
 import { SearchContext } from "@/context/SearchContext";
 import { BiSolidAddToQueue } from "react-icons/bi";
 import { MdOutlinePlaylistRemove } from "react-icons/md";
+import { integratedSistems } from "@/utils/IntegratedSystems";
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
   const { hotelHook, quotationHook } = useContext(SearchContext);
@@ -33,14 +34,19 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         }
         alt={hotel.name.toLowerCase()}
       />
-      <div className="flex w-full items-start justify-between">
-        <TextLimmiter
-          className="text-start font-bold capitalize text-primary"
-          length={50}
-        >
-          {hotel.name.toLowerCase()}
-        </TextLimmiter>
-        {<Badge availability={hotel.roomTypes[0].availability} />}
+      <div className="flex flex-col gap-2">
+        <p className="text-xs font-bold uppercase text-textSecondary">
+          {integratedSistems.find((e) => e.systemId === hotel.systemId)?.label}
+        </p>
+        <div className="flex w-full items-start justify-between">
+          <TextLimmiter
+            className="text-start font-bold capitalize text-primary"
+            length={50}
+          >
+            {hotel.name.toLowerCase()}
+          </TextLimmiter>
+          {<Badge availability={hotel.roomTypes[0].availability} />}
+        </div>
       </div>
       <div>
         <p className="text-extraSmall sm:text-small">

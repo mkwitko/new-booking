@@ -1,4 +1,4 @@
-import { findRateName } from "@/app/(logged)/search/(utils)/Rates";
+import { findRate, findRateName } from "@/app/(logged)/search/(utils)/Rates";
 import { Hotels } from "@/classes/availability/DTO/AvailabilityDTO";
 import B2BButton from "@/components/interactiveComponents/Button";
 import { SearchContext } from "@/context/SearchContext";
@@ -23,6 +23,7 @@ export default function ListPricing({
   hasButtons?: boolean;
   mergeClasses?: string;
 }) {
+  const comissioned = findRate(hotel, roomIndex, rateIndex)?.commissioned;
   const defaultClasses =
     "flex justify-between w-full md:flex-col items-end gap-2";
   const { hotelHook, quotationHook } = useContext(SearchContext);
@@ -41,12 +42,27 @@ export default function ListPricing({
         </p>
         {hotel.roomTypes[roomIndex].averageRates[rateIndex]
           .totalAmountAfterTax && (
-          <p className="text-small font-semibold text-primary md:text-[1rem]">
-            {fCurrency(
-              hotel.roomTypes[roomIndex].averageRates[rateIndex]
-                .totalAmountAfterTax,
-            )}
-          </p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-small font-semibold text-primary md:text-[1rem]">
+              {fCurrency(
+                hotel.roomTypes[roomIndex].averageRates[rateIndex]
+                  .totalAmountAfterTax,
+              )}
+            </p>
+            <div
+              className={`${
+                comissioned ? "bg-blue-300" : "bg-green-300"
+              } flex h-5 w-5 items-center justify-center rounded-full`}
+            >
+              <p
+                className={`${
+                  comissioned ? "text-blue-800" : "text-green-800"
+                } text-small font-bold`}
+              >
+                {comissioned ? "C" : "N"}
+              </p>
+            </div>
+          </div>
         )}
       </div>
       {hasButtons && (
