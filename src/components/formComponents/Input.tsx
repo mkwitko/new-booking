@@ -6,6 +6,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 interface InputProps extends ComponentProps<"input"> {
   errorMessage?: string | undefined;
   register?: UseFormRegisterReturn<string>;
+  value?: any;
   setValue: (value: number) => void
 }
 
@@ -14,6 +15,7 @@ export function Input({
   disabled = false,
   register,
   errorMessage = undefined,
+  value,
   setValue,
   ...props
 }: InputProps) {

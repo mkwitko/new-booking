@@ -205,13 +205,16 @@ export interface IAvailVipQuery {
   companyId: number
 }
 
+export type BookingPolicyType = 'ACCEPT' | 'PENDING' | 'DENIED';
+export type BookingDateType = 'CHECKIN' | 'CHECKOUT' | 'ISSUANCE';
+
 export interface IRequestQuery {
   query: {
     bookingId?: number
     startDate: string
     endDate: string
-    bookingDateType: 'CHECKIN' | 'CHECKOUT' | 'ISSUANCE'
-    bookingPolicyType: 'ACCEPT' | 'PENDING' | 'DENIED'
+    bookingDateType: BookingDateType
+    bookingPolicyType: BookingPolicyType
   }
   companyId: number
 }

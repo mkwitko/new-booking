@@ -8,7 +8,7 @@ export default function UseReservesHook() {
     { value: 2, label: 'MODIFICADO' },
     { value: 3, label: 'TODOS' },
   ]
-  const [statusSelected, setStatusSelected] = useState<string>('')
+  const [statusSelected, setStatusSelected] = useState<string>(statusList[0].value.toString())
 
   // DateType
   const dateTypeList = [
@@ -17,7 +17,7 @@ export default function UseReservesHook() {
     { value: 2, label: 'CANCELADO' },
     { value: 3, label: 'EMISSÃO' },
   ]
-  const [dateType, setDateType] = useState<string>('')
+  const [dateType, setDateType] = useState<string>(dateTypeList[0].value.toString())
 
   // Localizador
   const [locator, setLocator] = useState()

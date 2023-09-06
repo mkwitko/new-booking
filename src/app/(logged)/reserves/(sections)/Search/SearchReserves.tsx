@@ -82,7 +82,7 @@ export default function SearchReservesComponent() {
 
       {seeMoreFilters && (
         <div
-          className="flex w-[50%] flex-col items-center justify-start gap-8
+          className="flex w-full flex-col items-center justify-start gap-10
           lg:flex-row"
         >
           <InputContainer label="Cidade">
