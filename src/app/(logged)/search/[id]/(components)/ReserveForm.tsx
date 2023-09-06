@@ -16,7 +16,6 @@ import { useContext, useEffect, useState } from "react";
 import B2BButton from "@/components/interactiveComponents/Button";
 import Link from "next/link";
 import { SearchContext } from "@/context/SearchContext";
-import { LoggedContext } from "@/context/LoggedContext";
 import { B2BApi } from "@/infra/api/B2BApi";
 
 export function ReserveForm() {
@@ -43,10 +42,9 @@ export function ReserveForm() {
     useState<boolean>(false);
 
   const [creditCards, setCreditCards] = useState<any[] | null>(null)
+  const [availableCustomers, setAvailableCustomers] = useState<any[] | null>(null)
 
   const { hotelHook, peopleHook } = useContext(SearchContext);
-  const { user } = useContext(LoggedContext)
-  const data = [{ value: 'Pedro', label: "Pedro" }, { value: 'Mauricio', label: "Mauricio" }]
   const disableAllowedExpensesField = displayGuaranteeForm
   const {billings, companyId } = hotelHook.currentHotel
 
@@ -61,6 +59,13 @@ export function ReserveForm() {
     .then((res) => {
       setCreditCards(res.data.cardList)
     })
+
+    B2BApi.get('/customers', { headers: { 'X-Company-Id': companyId }})
+    .then((res) => {
+      console.log(res)
+      setAvailableCustomers(res.data.data)
+    })
+
   }, [companyId])
 
   return (
@@ -77,11 +82,15 @@ export function ReserveForm() {
 
         <div className="mt-6 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="w-full mt-auto">
-          <FormComponents.Combobox 
-            items={data}
-            comboBoxValue={watch('consumer')}
-            comboBoxSetValue={handleChangePurchaseName}
-          />
+            {availableCustomers && (
+              <FormComponents.Combobox 
+                items={availableCustomers}
+                comboBoxValue={watch('consumer')}
+                comboBoxSetValue={handleChangePurchaseName}
+                costumLabel="name"
+                costumValue="name"
+              />
+            )}
 
           {errors.consumer && (
             <p className="text-xs text-red-500 mt-2">
@@ -226,15 +235,20 @@ export function ReserveForm() {
               disabled={!creditCards}
               placeholder="Informe o cartão de crédito"
               errorMessage={errors?.payment?.selectedCreditCard?.message}
-              onValueChange={(value) =>
-                setValue("payment.selectedCreditCard", value)
-              }
+              onValueChange={(value) => {
+                const selectedCreditCard = creditCards?.find((card: any) => card.tokenized === value)
+
+                console.log(selectedCreditCard)
+
+                setValue("creditCard.cardNumber", selectedCreditCard.cardNumber)
+                setValue("creditCard.cardName", selectedCreditCard.entity)
+              }}
             >
               {creditCards && creditCards.map((card: any) => (
                 <FormComponents.Select.Item
                   key={card.tokenized}
                   text={card.entity}
-                  value={card.entity}
+                  value={card.tokenized}
                   creditCard
                 >
                   <CreditCardOption 
