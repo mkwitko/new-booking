@@ -25,6 +25,7 @@ export function B2BCombobox({
   setValue,
   labelTag = 'label',
   valueTag = 'value',
+  disable,
 }: {
   options: any
   value: string
@@ -32,6 +33,7 @@ export function B2BCombobox({
   labelTag?: string
   valueTag?: string
   elementAsValue?: boolean
+  disable?: boolean
 }) {
   const [open, setOpen] = React.useState(false)
   const [filtered, setFiltered] = React.useState(options)
@@ -54,6 +56,7 @@ export function B2BCombobox({
     >
       <PopoverTrigger asChild>
         <Button
+          disabled={disable}
           variant="outline"
           role="combobox"
           aria-expanded={open}

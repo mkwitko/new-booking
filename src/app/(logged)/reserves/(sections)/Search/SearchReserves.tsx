@@ -5,38 +5,29 @@ import Button from "@/components/interactiveComponents/Button";
 import { B2BCombobox } from "@/components/interactiveComponents/ComboBox";
 import { LoggedContext } from "@/context/LoggedContext";
 import { useContext, useState } from "react";
-import useSearchReservesHook from "@/hooks/reserves/SearchReserves";
-import { SearchContext } from "@/context/SearchContext";
 import * as FomCoponents from "@/components/formComponents";
 import { B2BDatePicker } from "@/components/interactiveComponents/DatePicker";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
+import { ReservesContext } from "@/context/ReservesContext";
+import { customerResponseData } from "@/DTO/customers/CustomerDTO";
 
 export default function SearchReservesComponent() {
   const { user, locale } = useContext(LoggedContext);
 
   const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false);
 
-  const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
-    useContext(SearchContext);
-
+  //   FIXME - Hooks que forem repetidos, vamos passar para o loggedContext
   const {
-    statusList,
-    statusSelected,
-    setStatusSelected,
-    locator,
-    setLocator,
-    dateTypeList,
-    dateType,
-    setDateType,
-    client,
-    setClient,
-  } = useSearchReservesHook();
+    salePointHook,
+    cityHook,
+    dateHook,
+    reservesHook,
+    Search,
+    customerHook,
+  } = useContext(ReservesContext);
 
-  const handleInputLocatorChange = (event: any) => {
-    const inputValue = event.target.value;
-    const numericValue = inputValue.replace(/[^0-9]/g, "");
-
-    setLocator(numericValue);
+  const handleSearch = () => {
+    Search();
   };
 
   return (
@@ -46,42 +37,59 @@ export default function SearchReservesComponent() {
       xl:flex-row"
       >
         <InputContainer label="Localizador">
-          <FomCoponents.Input type="number" id="locator" />
+          <FomCoponents.Input
+            type="number"
+            id="locator"
+            setValue={(e) => reservesHook.setLocator(e)}
+          />
         </InputContainer>
 
         <InputContainer label="Ponto de venda">
-          {/* <B2BCombobox
-            options={user?.hook?.data.data}
+          <B2BCombobox
+            options={user?.hook?.data}
             value={salePointHook.salePoint}
-            setValue={salePointHook.setSalePoint}
+            setValue={(e) => {
+              salePointHook.setSalePoint(e);
+              customerHook.getAgencyCustomers(e);
+            }}
             labelTag="corporateName"
             valueTag="companyId"
-          /> */}
+            disable={reservesHook.locator}
+          />
         </InputContainer>
 
         <InputContainer label="Status">
           <B2BCombobox
-            options={statusList}
-            value={statusSelected || statusList[0].value.toString()}
-            setValue={setStatusSelected}
+            options={reservesHook.statusList}
+            value={
+              reservesHook.statusSelected ||
+              reservesHook.statusList[0].value.toString()
+            }
+            setValue={reservesHook.setStatusSelected}
+            disable={reservesHook.locator}
           />
         </InputContainer>
 
         <InputContainer label="Tipo de Data">
           <B2BCombobox
-            options={dateTypeList}
-            value={dateType || dateTypeList[3].value.toString()}
-            setValue={setDateType}
+            options={reservesHook.dateTypeList}
+            value={
+              reservesHook.dateType ||
+              reservesHook.dateTypeList[3].value.toString()
+            }
+            setValue={reservesHook.setDateType}
+            disable={reservesHook.locator}
           />
         </InputContainer>
 
         <InputContainer label="Entrada e Saída">
-          {/* <B2BDatePicker
+          <B2BDatePicker
             checkIn={dateHook.checkIn}
             setCheckIn={dateHook.setCheckIn}
             checkOut={dateHook.checkOut}
             setCheckOut={dateHook.setCheckOut}
-          /> */}
+            disable={reservesHook.locator}
+          />
         </InputContainer>
       </div>
 
@@ -91,17 +99,32 @@ export default function SearchReservesComponent() {
           lg:flex-row"
         >
           <InputContainer label="Cidade">
-            {/* <B2BCombobox
-            options={locale?.hook?.data}
-            value={cityHook.city}
-            setValue={cityHook.setCity}
-            labelTag="cityName"
-            valueTag="cityId"
-          /> */}
+            <B2BCombobox
+              options={locale?.hook?.data}
+              value={cityHook.city}
+              setValue={cityHook.setCity}
+              labelTag="cityName"
+              valueTag="cityId"
+              disable={reservesHook.locator}
+            />
           </InputContainer>
 
           <InputContainer label="Cliente">
-            <B2BCombobox options={""} value={client} setValue={setClient} />
+            <B2BCombobox
+              options={
+                customerHook.agencyCustomers
+                  ? customerHook.agencyCustomers.map(
+                      (prop: customerResponseData, index: number) => ({
+                        value: prop.alphaId,
+                        label: prop.name,
+                      }),
+                    )
+                  : []
+              }
+              value={reservesHook.client}
+              setValue={reservesHook.setClient}
+              disable={reservesHook.locator}
+            />
           </InputContainer>
         </div>
       )}
@@ -114,7 +137,7 @@ export default function SearchReservesComponent() {
             color="light"
             mergeClass="px-0"
           />
-          <Button label="Buscar" mergeClass="px-0" />
+          <Button label="Buscar" mergeClass="px-0" onClick={handleSearch} />
         </div>
       </div>
 
