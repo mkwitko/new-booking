@@ -1,4 +1,3 @@
-import { useMasks } from '@/hooks/useMasks'
 import Image from 'next/image'
 
 interface CreditCardOptionProps {
@@ -21,7 +20,15 @@ export function CreditCardOption({
   flag,
 }: CreditCardOptionProps) {
   const svgPath = creditCardSvgPath[flag]
-  const { createCreditCardNumberMask } = useMasks()
+  
+  const creditCardFormatted = (number: string) => {
+    const firstPart = number.substring(0, 4)
+    const secondPart = number.substring(4, 8)
+    const thirdPart = number.substring(8, 12)
+    const fourthPart = number.substring(12, 16)
+
+    return `${firstPart} ${secondPart} ${thirdPart} ${fourthPart}`.toUpperCase()
+  }
 
   return (
     <div className="md:grid-cols-credit-card grid grid-cols-2 gap-4">
@@ -38,7 +45,7 @@ export function CreditCardOption({
       <span className="text-xs text-textPrimary md:text-sm">{name}</span>
 
       <span className="text-xs text-textPrimary md:text-sm">
-        {createCreditCardNumberMask(number)}
+        {creditCardFormatted(number)}
       </span>
     </div>
   )

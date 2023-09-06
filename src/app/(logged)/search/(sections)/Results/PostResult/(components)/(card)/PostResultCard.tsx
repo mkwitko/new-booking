@@ -67,14 +67,14 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         <div className="flex items-start gap-2">
           <Link
             href={{
-              pathname: "/hotel/detail",
+              pathname: "/search/details",
             }}
           >
+            {/* FIXME - Utilizar cacheamento em serviço e a key utilizar do CACHE PATH */}
             <Button
               onClick={() => {
-                //   findAvail(hotel.id);
+                localStorage.setItem("current_hotel", JSON.stringify(hotel));
               }}
-              // className="w-full"
               color="light"
               label="Ver hotel"
               textClass="text-extraSmall sm:text-small lg:text-small"
