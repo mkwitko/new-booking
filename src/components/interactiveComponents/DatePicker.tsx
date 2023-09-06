@@ -17,6 +17,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   setCheckIn: any;
   checkOut: any;
   setCheckOut: any;
+  disable?: boolean;
 }
 
 export function B2BDatePicker({
@@ -25,6 +26,7 @@ export function B2BDatePicker({
   setCheckIn,
   checkOut,
   setCheckOut,
+  disable,
 }: Props) {
   return (
     <div className={cn("grid gap-2", className)}>
@@ -34,6 +36,7 @@ export function B2BDatePicker({
             id="date"
             variant={"outline"}
             className={cn("w-full justify-start text-left text-small")}
+            disabled={disable}
           >
             {checkIn ? (
               checkOut ? (

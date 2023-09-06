@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function useSearchReservesHook() {
+export default function UseReservesHook() {
   // Status
   const statusList = [
     { value: 0, label: 'CONFIRMADO' },
@@ -20,10 +20,10 @@ export default function useSearchReservesHook() {
   const [dateType, setDateType] = useState<string>('')
 
   // Localizador
-  const [locator, setLocator] = useState<number>()
+  const [locator, setLocator] = useState()
 
   // Client
-  const [client, setClient] = useState<string>('')
+  const [client, setClient] = useState<any>()
 
   return {
     statusList,

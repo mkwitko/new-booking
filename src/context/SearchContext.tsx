@@ -14,8 +14,8 @@ import { LoggedContext } from "./LoggedContext";
 import { set } from "@/services/cache";
 import { CACHE_PATH } from "@/config/cache";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
-import UseMapHook from "@/hooks/search/map/UseMapHook";
 import useHotelHook from "@/hooks/search/hotel/useHotelHook";
+import UseMapHook from "@/hooks/search/map/useMapHook";
 
 interface SearchContextProps {
   hotelHook: any;
