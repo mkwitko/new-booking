@@ -6,6 +6,8 @@ import { fCurrency } from "@/utils/FinanceUtil";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext } from "react";
+import { BiSolidAddToQueue } from "react-icons/bi";
+import { MdOutlinePlaylistRemove } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 
 export default function ListPricing({
@@ -23,7 +25,7 @@ export default function ListPricing({
 }) {
   const defaultClasses =
     "flex justify-between w-full md:flex-col items-end gap-2";
-  const { hotelHook } = useContext(SearchContext);
+  const { hotelHook, quotationHook } = useContext(SearchContext);
   return (
     <div
       className={`${
@@ -49,8 +51,17 @@ export default function ListPricing({
       </div>
       {hasButtons && (
         <div className="flex flex-row-reverse items-center gap-4 md:flex-row">
-          <button className="relative h-8 w-8" type="button">
-            <Image src="/icons/icQuotation.svg" alt="Quotation" fill />
+          <button
+            type="button"
+            onClick={() => {
+              quotationHook.handleAddQuotation(hotel, roomIndex, rateIndex);
+            }}
+          >
+            {quotationHook.findQuotation(hotel, roomIndex, rateIndex) ? (
+              <MdOutlinePlaylistRemove size={24} className="text-primary" />
+            ) : (
+              <BiSolidAddToQueue size={24} className="text-primary" />
+            )}
           </button>
           {hotel.roomTypes[roomIndex].availability === "PUB" ||
           hotel.roomTypes[roomIndex].availability === "VIP" ? (

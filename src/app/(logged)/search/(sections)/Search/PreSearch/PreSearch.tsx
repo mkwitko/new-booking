@@ -11,11 +11,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { LoggedContext } from "@/context/LoggedContext";
-import { useContext, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import PeopleInput from "./components/PeopleInput";
 import { SearchContext } from "@/context/SearchContext";
 import { Map } from "@/components/interactiveComponents/map/Map";
 import MapInfos from "./components/MapInfos";
+import { set } from "@/services/cache";
+import { CACHE_PATH } from "@/config/cache";
 
 export default function PreSearch({
   hasSearched,
@@ -35,9 +37,27 @@ export default function PreSearch({
   const { salePointHook, cityHook, dateHook, peopleHook, roomsHook, Search } =
     useContext(SearchContext);
 
+  const [salesPoints, setSalesPoints] = useState("");
+  const [cities, setCities] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+
+  useEffect(() => {
+    setSalesPoints(salePointHook.salePoint);
+    setCities(cityHook.city);
+    setCheckIn(dateHook.checkIn);
+    setCheckOut(dateHook.checkOut);
+  }, [
+    salePointHook.salePoint,
+    cityHook.city,
+    dateHook.checkIn,
+    dateHook.checkOut,
+  ]);
+
   const handleSearch = () => {
     setIsSearching(true);
     Search().then((response: any) => {
+      set(CACHE_PATH.FILTER.FILTER);
       availability.hook.setData(response.hotels);
       setIsSearching(false);
       if (response.hotels && response.hotels.length > 0) setHasSearched(true);
@@ -52,8 +72,8 @@ export default function PreSearch({
       >
         <InputContainer label="Ponto de venda" mergeClass="xl:max-w-[25%]">
           <B2BCombobox
-            options={user?.hook?.data}
-            value={salePointHook.salePoint}
+            options={user?.hook.data}
+            value={salesPoints}
             setValue={(e) => {
               salePointHook.setSalePoint(e);
             }}
@@ -64,8 +84,8 @@ export default function PreSearch({
 
         <InputContainer label="Destino" mergeClass="xl:max-w-[25%]">
           <B2BCombobox
-            options={locale?.hook?.data}
-            value={cityHook.city}
+            options={locale?.hook.data}
+            value={cities}
             setValue={cityHook.setCity}
             labelTag="cityName"
             valueTag="cityId"
@@ -77,8 +97,8 @@ export default function PreSearch({
           mergeClass="xl:max-w-[25%]"
         >
           <B2BDatePicker
-            checkIn={dateHook.checkIn}
-            setCheckIn={dateHook.setCheckIn}
+            checkIn={checkIn}
+            setCheckIn={checkOut}
             checkOut={dateHook.checkOut}
             setCheckOut={dateHook.setCheckOut}
           />

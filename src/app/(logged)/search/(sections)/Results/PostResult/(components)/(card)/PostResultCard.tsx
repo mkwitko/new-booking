@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { Hotels } from "@/classes/availability/DTO/AvailabilityDTO";
+import {
+  AverageRates,
+  Hotels,
+} from "@/classes/availability/DTO/AvailabilityDTO";
 import Badge from "../Badge";
 import Link from "next/link";
 import Button from "@/components/interactiveComponents/Button";
@@ -12,9 +15,11 @@ import TotalAmountAfterTax from "@/app/(logged)/search/(components)/(finance)/To
 import TextLimmiter from "@/components/text/TextLimitter";
 import { useContext } from "react";
 import { SearchContext } from "@/context/SearchContext";
+import { BiSolidAddToQueue } from "react-icons/bi";
+import { MdOutlinePlaylistRemove } from "react-icons/md";
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
-  const { hotelHook } = useContext(SearchContext);
+  const { hotelHook, quotationHook } = useContext(SearchContext);
   const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
   const imageToShow = image || "icons/withoutResult.svg";
 
@@ -66,7 +71,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
               // className="w-full"
               color="light"
               label="Ver hotel"
-              textClass="text-extraSmall sm:text-small"
+              textClass="text-extraSmall sm:text-small lg:text-small"
             />
           </Link>
         </div>
@@ -88,30 +93,14 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
               <button
                 type="button"
                 onClick={() => {
-                  // handleRateSelection(
-                  //   hotel.roomTypes[0].averageRates,
-                  //   hotel.name,
-                  //   hotel.roomTypes[0].description,
-                  //   hotel.roomTypes[0].availability
-                  // );
+                  quotationHook.handleAddQuotation(hotel);
                 }}
               >
-                {/* <img
-                    className="w-6 h-auto"
-                    src={
-                      selectedRates.some(
-                        (selectedRate: any) =>
-                          hotel &&
-                          hotel.roomTypes &&
-                          hotel.roomTypes[0].averageRates &&
-                          selectedRate.rateId ===
-                            `${hotel.roomTypes[0].description}-${hotel.roomTypes[0].averageRates[0]?.rateId}`
-                      )
-                        ? quotationRemove
-                        : quotation
-                    }
-                    alt="quotation"
-                  /> */}
+                {quotationHook.findQuotation(hotel) ? (
+                  <MdOutlinePlaylistRemove size={24} className="text-primary" />
+                ) : (
+                  <BiSolidAddToQueue size={24} className="text-primary" />
+                )}
               </button>
             </div>
           </div>
