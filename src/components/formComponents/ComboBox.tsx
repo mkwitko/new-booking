@@ -21,6 +21,8 @@ import {
 interface ComboboxProps extends React.ComponentProps<'input'> {
   comboBoxValue: string | undefined | null,
   comboBoxSetValue: (value: string) => void,
+  costumLabel?: string |null,
+  costumValue?: string | null,
   items: any
 }
 
@@ -32,9 +34,11 @@ interface ComboboxProps extends React.ComponentProps<'input'> {
  * 
  * @param comboBoxValue Valor do combobox
  * @param comboBoxSetValue Função para setar o valor do combobox
+ * @param costumLabel Nome personalizado para a label do combobox
+ * @param costumValue Nome personalizado para o valor do combobox
  * @param items Lista de ítems a serem exibidos no combobox
  */
-export function Combobox({ comboBoxValue, comboBoxSetValue, items }: ComboboxProps) {
+export function Combobox({ comboBoxValue, comboBoxSetValue, items, costumLabel = null, costumValue = null }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [filter, setFilter] = React.useState<string | null>(null)
 
@@ -45,10 +49,10 @@ export function Combobox({ comboBoxValue, comboBoxSetValue, items }: ComboboxPro
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full mt-auto justify-between"
+          className="w-full mt-auto justify-between text-xs px-2"
         >
           {comboBoxValue
-            ? items.find((item: any) => item.value === comboBoxValue)?.label
+            ? items.find((item: any) => item[costumValue || "value"] === costumValue || comboBoxValue)?.[costumLabel || "label"]
             : "Cliente"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -59,23 +63,23 @@ export function Combobox({ comboBoxValue, comboBoxSetValue, items }: ComboboxPro
           <CommandEmpty>Nenhum registro encontrado</CommandEmpty>
           <CommandGroup>
             {items.map((item: any) => {
-              if (filter && !item.label.toLowerCase().includes(filter.toLowerCase())) return null
+              if (filter && !item[costumLabel || "label"].toLowerCase().includes(filter.toLowerCase())) return null
 
               return (
                 <CommandItem
-                  key={item.value}
+                  key={item[costumValue || "value"]}
                   onSelect={() => {
-                    comboBoxSetValue(item.value)
+                    comboBoxSetValue(item[costumValue || "value"])
                     setOpen(false)
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      comboBoxValue === item.label ? "opacity-100" : "opacity-0"
+                      comboBoxValue === item[costumLabel || "label"] ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {item.label}
+                  {item[costumLabel || "label"]}
                 </CommandItem>
               )
             })}

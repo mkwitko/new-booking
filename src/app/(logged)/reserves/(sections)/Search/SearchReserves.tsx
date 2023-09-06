@@ -16,11 +16,18 @@ export default function SearchReservesComponent() {
 
   const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false);
 
-  const { salePointHook, cityHook, dateHook, reservesHook, Search, customerHook } =
-    useContext(ReservesContext);
+  //   FIXME - Hooks que forem repetidos, vamos passar para o loggedContext
+  const {
+    salePointHook,
+    cityHook,
+    dateHook,
+    reservesHook,
+    Search,
+    customerHook,
+  } = useContext(ReservesContext);
 
   const handleSearch = () => {
-    Search()
+    Search();
   };
  
   return (
@@ -30,7 +37,7 @@ export default function SearchReservesComponent() {
       xl:flex-row"
       >
         <InputContainer label="Localizador">
-          <FomCoponents.Input 
+          <FomCoponents.Input
             type="number"
             id="locator"
             setValue={(e) => reservesHook.setLocator(e)}
@@ -42,8 +49,8 @@ export default function SearchReservesComponent() {
             options={user?.hook?.data}
             value={salePointHook.salePoint}
             setValue={(e) => {
-              salePointHook.setSalePoint(e)
-              customerHook.getAgencyCustomers(e)
+              salePointHook.setSalePoint(e);
+              customerHook.getAgencyCustomers(e);
             }}
             labelTag="corporateName"
             valueTag="companyId"
@@ -54,7 +61,10 @@ export default function SearchReservesComponent() {
         <InputContainer label="Status">
           <B2BCombobox
             options={reservesHook.statusList}
-            value={reservesHook.statusSelected || reservesHook.statusList[0].value.toString()}
+            value={
+              reservesHook.statusSelected ||
+              reservesHook.statusList[0].value.toString()
+            }
             setValue={reservesHook.setStatusSelected}
             disable={reservesHook.locator}
           />
@@ -63,7 +73,10 @@ export default function SearchReservesComponent() {
         <InputContainer label="Tipo de Data">
           <B2BCombobox
             options={reservesHook.dateTypeList}
-            value={reservesHook.dateType || reservesHook.dateTypeList[3].value.toString()}
+            value={
+              reservesHook.dateType ||
+              reservesHook.dateTypeList[3].value.toString()
+            }
             setValue={reservesHook.setDateType}
             disable={reservesHook.locator}
           />
@@ -100,15 +113,18 @@ export default function SearchReservesComponent() {
             <B2BCombobox
               options={
                 customerHook.agencyCustomers
-                  ? customerHook.agencyCustomers.map((prop: customerResponseData, index: number) => ({
-                      value: prop.alphaId,
-                      label: prop.name,
-                    }))
+                  ? customerHook.agencyCustomers.map(
+                      (prop: customerResponseData, index: number) => ({
+                        value: prop.alphaId,
+                        label: prop.name,
+                      }),
+                    )
                   : []
               }
               value={reservesHook.client}
               setValue={reservesHook.setClient}
-              disable={reservesHook.locator}/>
+              disable={reservesHook.locator}
+            />
           </InputContainer>
         </div>
       )}
@@ -121,11 +137,7 @@ export default function SearchReservesComponent() {
             color="light"
             mergeClass="px-0"
           />
-          <Button
-            label="Buscar"
-            mergeClass="px-0"
-            onClick={handleSearch}
-          />
+          <Button label="Buscar" mergeClass="px-0" onClick={handleSearch} />
         </div>
       </div>
 

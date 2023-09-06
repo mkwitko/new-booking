@@ -5,9 +5,7 @@ import * as FormComponents from "@/components/formComponents";
 import { useReservationForm } from "../(form)/useReservationForm";
 
 // Mock Data
-import {
-  PaymentMethods,
-} from "../(data)";
+import { PaymentMethods } from "../(data)";
 
 import { CreditCardOption } from "./CreditCardOption";
 import { NewCreditCardOption } from "./NewCreditCardOption";
@@ -16,7 +14,6 @@ import { useContext, useEffect, useState } from "react";
 import B2BButton from "@/components/interactiveComponents/Button";
 import Link from "next/link";
 import { SearchContext } from "@/context/SearchContext";
-import { LoggedContext } from "@/context/LoggedContext";
 import { B2BApi } from "@/infra/api/B2BApi";
 
 export function ReserveForm() {
@@ -42,26 +39,36 @@ export function ReserveForm() {
   const [displayCardBackside, setDisplayCardBackside] =
     useState<boolean>(false);
 
-  const [creditCards, setCreditCards] = useState<any[] | null>(null)
+  const [creditCards, setCreditCards] = useState<any[] | null>(null);
+  const [availableCustomers, setAvailableCustomers] = useState<any[] | null>(
+    null,
+  );
 
   const { hotelHook, peopleHook } = useContext(SearchContext);
-  const { user } = useContext(LoggedContext)
-  const data = [{ value: 'Pedro', label: "Pedro" }, { value: 'Mauricio', label: "Mauricio" }]
-  const disableAllowedExpensesField = displayGuaranteeForm
-  const {billings, companyId } = hotelHook.currentHotel
+  const disableAllowedExpensesField = displayGuaranteeForm;
+  const { billings, companyId } = hotelHook.currentHotel;
 
   const NUMBER_OF_GUESTS = peopleHook.numberOfGuests;
 
   function handleChangePurchaseName(value: string) {
-    setValue('consumer', value)
+    setValue("consumer", value);
   }
 
+  //   TODO - Criar classses
   useEffect(() => {
-    B2BApi.get('/cards', { headers: { 'X-Company-Id': companyId }})
-    .then((res) => {
-      setCreditCards(res.data.cardList)
-    })
-  }, [companyId])
+    B2BApi.get("/cards", { headers: { "X-Company-Id": companyId } }).then(
+      (res) => {
+        setCreditCards(res.data.cardList);
+      },
+    );
+
+    B2BApi.get("/customers", { headers: { "X-Company-Id": companyId } }).then(
+      (res) => {
+        console.log(res);
+        setAvailableCustomers(res.data.data);
+      },
+    );
+  }, [companyId]);
 
   return (
     <form
@@ -76,18 +83,22 @@ export function ReserveForm() {
         </span>
 
         <div className="mt-6 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="w-full mt-auto">
-          <FormComponents.Combobox 
-            items={data}
-            comboBoxValue={watch('consumer')}
-            comboBoxSetValue={handleChangePurchaseName}
-          />
+          <div className="mt-auto w-full">
+            {availableCustomers && (
+              <FormComponents.Combobox
+                items={availableCustomers}
+                comboBoxValue={watch("consumer")}
+                comboBoxSetValue={handleChangePurchaseName}
+                costumLabel="name"
+                costumValue="name"
+              />
+            )}
 
-          {errors.consumer && (
-            <p className="text-xs text-red-500 mt-2">
-              {errors.consumer?.message}
-            </p>
-          )}
+            {errors.consumer && (
+              <p className="mt-2 text-xs text-red-500">
+                {errors.consumer?.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -204,19 +215,24 @@ export function ReserveForm() {
 
           <FormComponents.Select.Root
             disabled={disableAllowedExpensesField}
-            placeholder={disableAllowedExpensesField ? "Direto ao Hotel" :"Despesas Autorizadas"}
+            placeholder={
+              disableAllowedExpensesField
+                ? "Direto ao Hotel"
+                : "Despesas Autorizadas"
+            }
             errorMessage={errors?.payment?.allowedExpenses?.message}
             onValueChange={(value) =>
               setValue("payment.allowedExpenses", value)
             }
           >
-            {billings && billings.map((expense: { id: number, description: string }) => (
-              <FormComponents.Select.Item
-                key={expense.id}
-                text={expense.description}
-                value={expense.description}
-              />
-            ))}
+            {billings &&
+              billings.map((expense: { id: number; description: string }) => (
+                <FormComponents.Select.Item
+                  key={expense.id}
+                  text={expense.description}
+                  value={expense.description}
+                />
+              ))}
           </FormComponents.Select.Root>
         </div>
 
@@ -226,26 +242,37 @@ export function ReserveForm() {
               disabled={!creditCards}
               placeholder="Informe o cartão de crédito"
               errorMessage={errors?.payment?.selectedCreditCard?.message}
-              onValueChange={(value) =>
-                setValue("payment.selectedCreditCard", value)
-              }
+              onValueChange={(value) => {
+                const selectedCreditCard = creditCards?.find(
+                  (card: any) => card.tokenized === value,
+                );
+
+                console.log(selectedCreditCard);
+
+                setValue(
+                  "creditCard.cardNumber",
+                  selectedCreditCard.cardNumber,
+                );
+                setValue("creditCard.cardName", selectedCreditCard.entity);
+              }}
             >
-              {creditCards && creditCards.map((card: any) => (
-                <FormComponents.Select.Item
-                  key={card.tokenized}
-                  text={card.entity}
-                  value={card.entity}
-                  creditCard
-                >
-                  <CreditCardOption 
-                    flag={card.brand}  
-                    cvv="123"
-                    id={card.tokenized}
-                    name={card.entity}
-                    number={card.cardNumber}
-                  />
-                </FormComponents.Select.Item>
-              ))}
+              {creditCards &&
+                creditCards.map((card: any) => (
+                  <FormComponents.Select.Item
+                    key={card.tokenized}
+                    text={card.entity}
+                    value={card.tokenized}
+                    creditCard
+                  >
+                    <CreditCardOption
+                      flag={card.brand}
+                      cvv="123"
+                      id={card.tokenized}
+                      name={card.entity}
+                      number={card.cardNumber}
+                    />
+                  </FormComponents.Select.Item>
+                ))}
               <FormComponents.Select.Item
                 text="Informar Manualmente"
                 value="Informar Manualmente"
@@ -263,9 +290,7 @@ export function ReserveForm() {
                     Dados do cartão de crédito
                   </span>
                   <CredtiCard
-                    expirationDate={watch(
-                      "creditCard.expiry",
-                    )}
+                    expirationDate={watch("creditCard.expiry")}
                     name={watch("creditCard.cardName")}
                     number={watch("creditCard.cardNumber")}
                     securityCode={watch("creditCard.cardCVV")}
@@ -289,9 +314,7 @@ export function ReserveForm() {
                     pattern="[0-9]{16}"
                     value={creditCardNumberToDisplay}
                     register={register("creditCard.cardNumber")}
-                    errorMessage={
-                      errors?.creditCard?.cardNumber?.message
-                    }
+                    errorMessage={errors?.creditCard?.cardNumber?.message}
                     type="text"
                   />
 
@@ -300,9 +323,7 @@ export function ReserveForm() {
                     maxLength={5}
                     value={creditCardExpirationDateToDisplay}
                     register={register("creditCard.expiry")}
-                    errorMessage={
-                      errors?.creditCard?.expiry?.message
-                    }
+                    errorMessage={errors?.creditCard?.expiry?.message}
                     type="text"
                   />
 
@@ -310,9 +331,7 @@ export function ReserveForm() {
                     type="text"
                     placeholder="CVV"
                     className="w-28"
-                    errorMessage={
-                      errors?.creditCard?.cardCVV?.message
-                    }
+                    errorMessage={errors?.creditCard?.cardCVV?.message}
                     register={register("creditCard.cardCVV")}
                     maxLength={3}
                     onFocus={() => setDisplayCardBackside(true)}
@@ -333,9 +352,7 @@ export function ReserveForm() {
 
           <div className="mt-4 grid w-full grid-cols-1 gap-y-4 md:grid-cols-2">
             <CredtiCard
-              expirationDate={watch(
-                "creditCard.expiry",
-              )}
+              expirationDate={watch("creditCard.expiry")}
               name={watch("creditCard.cardName")}
               number={watch("creditCard.cardNumber")}
               securityCode={watch("creditCard.cardCVV")}
@@ -358,9 +375,7 @@ export function ReserveForm() {
                 pattern="[0-9]{16}"
                 value={creditCardNumberToDisplay}
                 register={register("creditCard.cardNumber")}
-                errorMessage={
-                  errors?.creditCard?.cardNumber?.message
-                }
+                errorMessage={errors?.creditCard?.cardNumber?.message}
                 type="text"
               />
 
@@ -369,9 +384,7 @@ export function ReserveForm() {
                 maxLength={5}
                 value={creditCardExpirationDateToDisplay}
                 register={register("creditCard.expiry")}
-                errorMessage={
-                  errors?.creditCard?.expiry?.message
-                }
+                errorMessage={errors?.creditCard?.expiry?.message}
                 type="text"
               />
 
@@ -379,9 +392,7 @@ export function ReserveForm() {
                 type="text"
                 placeholder="CVV"
                 className="w-28"
-                errorMessage={
-                  errors?.creditCard?.cardCVV?.message
-                }
+                errorMessage={errors?.creditCard?.cardCVV?.message}
                 register={register("creditCard.cardCVV")}
                 maxLength={3}
                 onFocus={() => setDisplayCardBackside(true)}
