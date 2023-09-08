@@ -4,7 +4,6 @@ interface CreditCardOptionProps {
   id: string
   name: string
   number: string
-  cvv: string
   flag: 'VISA' | 'MASTER CARD' | 'OTHER'
 }
 

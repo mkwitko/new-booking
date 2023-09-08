@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import type { ReservationFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMasks } from "@/hooks/useMasks";
-import { get } from "@/services/cache";
 
 export function useReservationForm() {
   const {
@@ -17,40 +16,31 @@ export function useReservationForm() {
   });
 
   const {
-    createCPFMask,
-    createCreditCardNumberMask,
     createExpirationDateMask,
   } = useMasks();
 
   const displayCreditCardNameField =
-    watch("payment.method") === "Cartão de Crédito";
+    watch("paymentMethod") === "Cartão de Crédito";
 
   const displayNewCreditCardForm =
-    watch("payment.selectedCreditCard") === "Informar Manualmente";
+    watch("selectCreditCard") === "Informar Manualmente";
 
   const displayGuaranteeForm = 
-    watch("payment.method") === "Direto ao Hotel"
+    watch("paymentMethod") === "Direto ao Hotel"
 
-  const creditCardNumberToDisplay = watch("creditCard.cardName")
-    ? createCreditCardNumberMask(watch("creditCard.cardName")) || ""
-    : "";
+  const displayIndividualCvvField = 
+    watch('selectCreditCard') !== 'Informar Manualmente' &&
+    watch("paymentMethod") === "Cartão de Crédito";
 
-  const creditCardExpirationDateToDisplay = watch("creditCard.expiry")
-    ? createExpirationDateMask(watch("creditCard.expiry")) ||
+  const creditCardExpirationDateToDisplay = watch("creditCard.plain.expireDate")
+    ? createExpirationDateMask(watch("creditCard.plain.expireDate")) ||
       ""
     : "";
 
-  const creditCardNameToDisplay = watch("creditCard.cardName")
-  ? watch("creditCard.cardName")?.toUpperCase()
+  const creditCardNameToDisplay = watch("creditCard.plain.cardName")
+  ? watch("creditCard.plain.cardName")?.toUpperCase()
   : "";
 
-  const guestIdToDisplay = (data: string | null | undefined): string => {
-    return data ? createCPFMask(data) || "" : "";
-  };
-
-  if (watch('payment.method') === 'Direto ao Hotel') {
-    setValue('payment.allowedExpenses', 'Direto ao Hotel')
-  }
 
   function submitForm(values: ReservationFormSchema) {
     console.log(values);
@@ -119,11 +109,10 @@ export function useReservationForm() {
     errors,
     register,
     creditCardExpirationDateToDisplay,
-    creditCardNumberToDisplay,
+    displayIndividualCvvField,
     creditCardNameToDisplay,
     displayNewCreditCardForm,
     displayCreditCardNameField,
-    guestIdToDisplay,
     displayGuaranteeForm,
     setValue,
     handleSubmit,

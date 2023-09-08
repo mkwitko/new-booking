@@ -24,6 +24,7 @@ export function middleware(request: NextRequest) {
       '/search',
       '/solicitations',
       '/search/details',
+      '/search/new',
     ]
     const hasLoggedRoute = loggedRoutes.some((route) => {
       return request.url.includes(route)

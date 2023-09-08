@@ -20,6 +20,8 @@ export default class HotelsChainClass extends CoreClass {
   async getHotelChain(): Promise<IHotelChainResponse> {
     const data: IHotelChainResponse =
       await this.setClass<IHotelChainResponse>(false)
+      
+    this.hook.setData(data)
     return data
   }
 }
