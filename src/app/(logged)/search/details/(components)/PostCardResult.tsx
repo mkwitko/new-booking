@@ -50,7 +50,6 @@ export default function PostResultCard({ room }: { room: any }) {
       </figure>
 
       <div className="flex flex-col items-start py-2 border-b border-borderColor/20">
-        {/* <span className="text-xs text-textSecondary">Apartamento</span> */}
         <span className="text-primary font-semibold">{room.description}</span>
 
         <div className="w-full flex items-center justify-start my-2">

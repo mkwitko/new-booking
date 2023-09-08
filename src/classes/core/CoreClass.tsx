@@ -84,7 +84,7 @@ export default class CoreClass {
     method?: typeof this.getMethods,
     custom: {
       url?: string
-      cachePath?: string
+      cachePath?: string,
     } | null = null,
   ) {
     const cache = await this.getCache()

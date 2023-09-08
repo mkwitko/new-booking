@@ -15,4 +15,10 @@ export const CACHE_PATH = {
     CURRENT_APARTAMENT_INDEX: "current_apartament_index",
     CURRENT_RATE_INDEX: "current_rate_index",
   },
-};
+  CUSTOMER: {
+    DEFAULT: "customer",
+  },
+  CARDS: {
+    DEFAULT: "cards",
+  },
+} as const;
