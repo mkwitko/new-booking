@@ -31,7 +31,7 @@ export const Schema = z
       cardCVV: z.string().nonempty('O CVV é obrigatório'),
       tokenized: z.string().nullable().default(null).optional(),
       plain: z.object({
-        cardName: z.string().nullable().default(null).optional(),
+        cardHolder: z.string().nullable().default(null).optional(),
         cardNumber: z.string().nullable().default(null).optional(),
         expireDate: z.string().nullable().default(null).optional(),
 
@@ -64,47 +64,46 @@ export const Schema = z
       }
     })
 
-    if (value.paymentMethod === 'Cartão de Crédito') {
-      if (value.selectCreditCard === 'Informar Manualmente') {
-        if (!value.creditCard?.plain?.cardName) {
-          context.addIssue({
-            code: 'custom',
-            message: 'O nome do cartão é obrigatório',
-            path: ['creditCard', 'plain', 'cardName'],
-          })
-        }
+    if ((value.paymentMethod === 'Cartão de Crédito' && value.selectCreditCard === 'Informar Manualmente') || value.paymentMethod === 'Direto ao Hotel') {
+      if (!value.creditCard?.plain?.cardHolder) {
+        context.addIssue({
+          code: 'custom',
+          message: 'O nome do cartão é obrigatório',
+          path: ['creditCard', 'plain', 'cardHolder'],
+        })
+      }
 
-        if (!value.creditCard?.plain?.cardNumber) {
-          context.addIssue({
-            code: 'custom',
-            message: 'O número do cartão é obrigatório',
-            path: ['creditCard', 'plain', 'cardNumber'],
-          })
-        }
+      if (!value.creditCard?.plain?.cardNumber) {
+        context.addIssue({
+          code: 'custom',
+          message: 'O número do cartão é obrigatório',
+          path: ['creditCard', 'plain', 'cardNumber'],
+        })
+      }
 
-        if (!value.creditCard?.plain?.expireDate) {
-          context.addIssue({
-            code: 'custom',
-            message: 'A data de expiração do cartão é obrigatória',
-            path: ['creditCard', 'plain', 'expireDate'],
-          })
-        }
+      if (!value.creditCard?.plain?.expireDate) {
+        context.addIssue({
+          code: 'custom',
+          message: 'A data de expiração do cartão é obrigatória',
+          path: ['creditCard', 'plain', 'expireDate'],
+        })
+      }
 
-        if (!value.creditCard.cardCVV) {
-          context.addIssue({
-            code: 'custom',
-            message: 'O CVV do cartão é obrigatório',
-            path: ['creditCard', 'cardCVV'],
-          })
-        }
-      } else {
-        if (!value.creditCard.tokenized) {
-          context.addIssue({
-            code: 'custom',
-            message: 'O cartão de crédito é obrigatório',
-            path: ['selectCreditCard'],
-          })
-        }
+      if (!value.creditCard.cardCVV) {
+        context.addIssue({
+          code: 'custom',
+          message: 'O CVV do cartão é obrigatório',
+          path: ['creditCard', 'cardCVV'],
+        })
+      }
+    }
+    if (value.paymentMethod === 'Cartão de Crédito' && value.selectCreditCard !== 'Informar Manualmente') {
+      if (!value.creditCard.tokenized) {
+        context.addIssue({
+          code: 'custom',
+          message: 'O cartão de crédito é obrigatório',
+          path: ['selectCreditCard'],
+        })
       }
     }
   })

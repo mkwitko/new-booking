@@ -6,8 +6,6 @@ import { UseFormRegisterReturn } from "react-hook-form";
 interface InputProps extends ComponentProps<"input"> {
   errorMessage?: string | undefined;
   register?: UseFormRegisterReturn<string>;
-  value?: any;
-  setValue: (value: number) => void
 }
 
 export function Input({
@@ -16,7 +14,6 @@ export function Input({
   register,
   errorMessage = undefined,
   value,
-  setValue,
   ...props
 }: InputProps) {
   return (
@@ -34,7 +31,6 @@ export function Input({
           className="w-full border-none bg-transparent p-0 text-small text-textPrimary outline-none placeholder:text-sm placeholder:text-textPrimary focus:outline-none focus:ring-0"
           {...register}
           {...props}
-          onChange={(e: any) => setValue(e.target.value)}
         />
       </div>
 

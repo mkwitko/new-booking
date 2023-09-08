@@ -19,7 +19,10 @@ export default class CardClass extends CoreClass {
   override deleteMethods = DeleteMethods
 
   async getCards(): Promise<any> {
-    const data = await this.setClass(true)
+    const data = await this.setClass(true, '', {
+      responsePath: 'cardList',
+    })
+
     this.hook.setData(data.cardList)
 
     return data.cardList

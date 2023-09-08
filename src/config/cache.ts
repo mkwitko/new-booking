@@ -22,6 +22,6 @@ export const CACHE_PATH = {
     DEFAULT: "customer",
   },
   CARDS: {
-    DEFAULT: "cards",
+    DEFAULT: "available-cards",
   },
 } as const;

@@ -7,7 +7,7 @@ import { LoggedContext } from "@/context/LoggedContext";
 import { useContext } from "react";
 import { B2BDatePicker } from "@/components/interactiveComponents/DatePicker";
 import { SolicitationsContext } from "@/context/SolicitationsContext";
-import * as FomCoponents from "@/components/formComponents";
+import * as FormCoponents from "@/components/formComponents";
 
 export default function SearchSolicitationsComponent() {
   const { user } = useContext(LoggedContext);
@@ -26,10 +26,10 @@ export default function SearchSolicitationsComponent() {
       >
         {solicitationsHook.solicitationSelected === '1' && (
           <InputContainer label="Localizador">
-            <FomCoponents.Input 
+            <FormCoponents.Input 
               type="number"
               id="locator"
-              setValue={(e) => solicitationsHook.setLocator(e)}
+              onChange={(e) => solicitationsHook.setLocator(e.target.value)}
               defaultValue={solicitationsHook.locator}
             />
         </InputContainer>

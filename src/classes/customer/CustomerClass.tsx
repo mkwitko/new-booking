@@ -21,7 +21,6 @@ export default class CustomerClass extends CoreClass {
     const data = await this.setClass(true)
     this.hook.setData(data.data)
 
-    console.log('customers =>', data.data)
     return data.data
   }
 }

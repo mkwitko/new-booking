@@ -40,7 +40,7 @@ export default function SearchReservesComponent() {
           <FomCoponents.Input
             type="number"
             id="locator"
-            setValue={(e) => reservesHook.setLocator(e)}
+            onChange={(e) => reservesHook.setLocator(e.target.value)}
           />
         </InputContainer>
 
