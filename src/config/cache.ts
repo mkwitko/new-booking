@@ -30,5 +30,6 @@ export const CACHE_PATH = {
   },
   BOOKING: {
     DEFAULT: "bookings",
+    BOOKING_QUERY: "booking_query",
   },
 } as const;

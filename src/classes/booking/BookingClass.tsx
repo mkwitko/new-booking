@@ -1,3 +1,4 @@
+import { IQueryGetBookings } from "@/DTO/reserves/ReservesDTO";
 import CoreClass from "../core/CoreClass";
 import useAvailabilityHook from "./hook/useBookingHook";
 import { DeleteMethods } from "./methods/delete";
@@ -20,6 +21,15 @@ export default class BookingClass extends CoreClass {
     const response = await this.postHttp({
       value: data,
     });
+    return response;
+  }
+
+  async findBookings(query: IQueryGetBookings) {
+    const response = await this.getHttp({
+      configs: {
+          params: query
+      }
+    })
     return response;
   }
 }
