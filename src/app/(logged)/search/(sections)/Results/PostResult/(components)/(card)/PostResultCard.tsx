@@ -138,13 +138,12 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
           ) : hotel.roomTypes[0].availability === "VIP" ? (
             <Link
               href={{
-                pathname: "/booking/payment",
+                pathname: "/search/new",
               }}
             >
               <Button
                 onClick={() => {
-                  // set('currentApartament', hotel.roomTypes[0]);
-                  // findAvail(hotel.id);
+                  hotels.hook.handleSetCurrentHotel(hotel);
                 }}
                 color="primary"
                 label="Reservar"

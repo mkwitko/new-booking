@@ -10,13 +10,13 @@ import { useContext, useState } from "react";
 import { LoggedContext } from "@/context/LoggedContext";
 
 export function useReservationForm() { 
-  const { peopleHook, hotelHook, dateHook } = useContext(SearchContext);
-  const { customer, card, booking } = useContext(LoggedContext)
+  const { peopleHook, dateHook } = useContext(SearchContext);
+  const { customer, card, booking, hotels } = useContext(LoggedContext)
 
   const [displayCardBackside, setDisplayCardBackside] =
   useState<boolean>(false);
   
-  const { currentHotel, currentRateIndex, currentApartamentIndex } = hotelHook
+  const { currentHotel, currentRateIndex, currentApartamentIndex } = hotels.hook
   const creditCards = card.hook.data
   const { billings } = currentHotel
   const numberOfGuests = peopleHook.numberOfGuests;
@@ -97,7 +97,7 @@ export function useReservationForm() {
       checkoutDate: dateHook.checkOut,
       rateId: currentHotel.rates[currentRateIndex].id,
       roomTypeId: currentHotel.roomTypes[currentApartamentIndex].id,
-      hotelId: hotelHook.currentHotel.id,
+      hotelId: currentHotel.id,
       bookingDetails: true,
       consumer: 'others',
       forceBooking: true,
@@ -171,7 +171,7 @@ export function useReservationForm() {
     submitForm,
     handleSubmit,
     customer,
-    hotelHook,
+    hotels,
     isSubmitting,
     handleChangePurchaseName,
     displayCardBackside,
