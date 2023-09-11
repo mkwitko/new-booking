@@ -18,6 +18,7 @@ export function ReserveForm() {
   const {
     errors,
     watch,
+    costCenter,
     hotelHook,
     handleSubmit,
     isSubmitting,
@@ -32,14 +33,18 @@ export function ReserveForm() {
     register,
     setValue,
     submitForm,
+    handleChangeCreditCardValue,
     displayGuaranteeForm,
     displayNewCreditCardForm,
     displayIndividualCvvField,
     displayCreditCardNameField,
-    creditCardExpirationDateToDisplay,
+    bookingAttributes,
     createExpirationDateMask,
     creditCardNameToDisplay,
+    creditCardExpirationDateToDisplay,
   } = useReservationForm();
+
+  console.log(errors)
 
   return (
     <form
@@ -83,22 +88,72 @@ export function ReserveForm() {
               id="allow-no-show-ensurance"
               register={register("chargeNoShow")}
             />
+          </div>  
+        </div>
+
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-1">
+          {costCenter && bookingAttributes && (
+            <span className="mt-10 block text-xs font-semibold uppercase text-textSecondary">
+              Informações gerenciais
+            </span>
+          )}  
+
+          {costCenter && (
+            <FormComponents.Select.Root placeholder="Centro de Custos" onValueChange={(value) => setValue('centerCost', value)}>
+              {costCenter.map((center: any) => (
+                <FormComponents.Select.Item
+                  key={center.costCenterDescription}
+                  text={center.costCenterDescription}
+                  value={center.costCenterDescription}
+                />
+              ))}
+            </FormComponents.Select.Root>
+          )}
+
+        </div>
+
+        {bookingAttributes && 
+        (
+          <div className="w-full space-y-4 mt-4">
+          {
+            bookingAttributes.map((attribute: any, index: number) => {
+              if (!attribute.options) {
+                return (
+                  <FormComponents.Input
+                    key={attribute.fieldName}
+                    type={attribute.type === 'numeric' ? 'number' : 'text'}
+                    placeholder={attribute.fieldName}
+                    // onChange={(e) => {
+                    //   setValue(`customFields.${index}`, {
+                    //     field: attribute.fieldName,
+                    //     value: e.target.value
+                    //   })
+                    // }}
+                  />
+                )
+              } else {
+                return (
+                  <FormComponents.Select.Root onValueChange={(e) => {
+                    // setValue(`customFields.${index}`, {
+                    //   field: attribute.fieldName,
+                    //   value: e
+                    //   })
+                  }} key={attribute.fieldName} placeholder={attribute.fieldName}>
+                    {attribute.options.map((option: any) => (
+                      <FormComponents.Select.Item
+                        key={option}
+                        text={option}
+                        value={option}
+                      />
+                    ))}
+                  </FormComponents.Select.Root>
+                )
+              }
+          })}
           </div>
-        </div>
+        )}
 
-        <span className="mt-10 block text-xs font-semibold uppercase text-textSecondary">
-          Informações gerenciais
-        </span>
 
-        <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-1">
-          {/* Combo box */}
-          <FormComponents.Input
-            type="text"
-            placeholder="Centro de Custos"
-            errorMessage={errors?.centerCost?.message}
-            register={register("centerCost")}
-          />
-        </div>
       </WhiteBox>
 
       <WhiteBox classes="gap-0 lg:gap-0">
@@ -114,13 +169,6 @@ export function ReserveForm() {
 
             <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
               <FormComponents.Input
-                type="email"
-                placeholder="Email (Opcional)"
-                register={register(`guests.${index}.email`)}
-                errorMessage={errors?.guests?.[index]?.email?.message}
-              />
-
-              <FormComponents.Input
                 type="text"
                 placeholder="Nome"
                 register={register(`guests.${index}.givenName`)}
@@ -132,6 +180,13 @@ export function ReserveForm() {
                 placeholder="Sobrenome"
                 register={register(`guests.${index}.surname`)}
                 errorMessage={errors?.guests?.[index]?.surname?.message}
+              />
+
+              <FormComponents.Input
+                type="email"
+                placeholder="Email (Opcional)"
+                register={register(`guests.${index}.email`)}
+                errorMessage={errors?.guests?.[index]?.email?.message}
               />
             </div>
           </>
@@ -204,31 +259,21 @@ export function ReserveForm() {
               disabled={!creditCards}
               placeholder="Informe o cartão de crédito"
               errorMessage={errors?.selectCreditCard?.message}
-              onValueChange={(value) => {
-                if (value === "Informar Manualmente") {
-                  setValue("selectCreditCard", "Informar Manualmente");
-                } else {
-                  setValue("selectCreditCard", value);
-                  setValue("creditCard.tokenized", value);
-                }
-              }}
+              onValueChange={(value) => handleChangeCreditCardValue(value)}
             >
               {creditCards &&
-                creditCards.map((card: any) => (
-                  <FormComponents.Select.Item
-                    key={card.tokenized}
-                    text={card.entity}
-                    value={card.tokenized}
-                    creditCard
-                  >
-                    <CreditCardOption
-                      flag={card.brand}
-                      id={card.tokenized}
-                      name={card.entity}
-                      number={card.cardNumber}
-                    />
-                  </FormComponents.Select.Item>
-                ))}
+                creditCards.map((card: any) => {
+                  return (
+                    <FormComponents.Select.Item
+                      key={card.tokenized}
+                      text={card.entity}
+                      value={card.typeCard === 'vcn' ? `vcn-${card.rcnToken}` : `token-${card.tokenized}`}
+                      creditCard
+                    >
+                      <CreditCardOption creditCard={card} />
+                    </FormComponents.Select.Item>
+                  )
+                })}
               <FormComponents.Select.Item
                 text="Informar Manualmente"
                 value="Informar Manualmente"
@@ -402,7 +447,8 @@ export function ReserveForm() {
           />
         </Link>
         <B2BButton
-          mergeClass="w-1/6"
+        mergeClass="w-auto px-3 py-2 transition-colors"
+          disabled={isSubmitting}
           buttonType="submit"
           label="Confirmar Reserva"
         />
