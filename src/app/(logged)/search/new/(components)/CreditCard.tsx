@@ -60,9 +60,6 @@ export function CredtiCard({
   return showBackside ? (
     <AnimatePresence>
       <m.div
-        // initial={{ rotateY: 180 }}
-        // animate={{ rotateY: 0 }}
-        // exit={{ rotateY: 180 }}
         transition={{ duration: 1 }}
         data-flag={creditCardFlag}
         className="bg-default-card data-[flag=MASTERCARD]:bg-master-card data-[flag=VISA]:bg-visa-card group flex aspect-[5/3] w-full max-w-[300px] flex-col rounded-lg py-8 text-white shadow-md transition-colors data-[flag=MASTERCARD]:text-textPrimary data-[flag=VISA]:text-textPrimary"
@@ -79,9 +76,6 @@ export function CredtiCard({
   ) : (
     <AnimatePresence>
       <m.div
-        // initial={{ rotateY: 0 }}
-        // animate={{ rotateY: 180 }}
-        // exit={{ rotateY: 0 }}
         transition={{ duration: 1 }}
         data-flag={creditCardFlag}
         className="bg-default-card data-[flag=MASTERCARD]:bg-master-card data-[flag=VISA]:bg-visa-card group flex aspect-[5/3] w-full max-w-[300px] flex-col rounded-lg px-6 py-4 text-white shadow-md transition-colors data-[flag=MASTERCARD]:text-textPrimary data-[flag=VISA]:text-textPrimary"

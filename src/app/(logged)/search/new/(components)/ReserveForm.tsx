@@ -10,19 +10,22 @@ import { PaymentMethods } from "../(data)";
 import { CreditCardOption } from "./CreditCardOption";
 import { NewCreditCardOption } from "./NewCreditCardOption";
 import { CredtiCard } from "./CreditCard";
-import { useContext, useEffect, useState } from "react";
 import B2BButton from "@/components/interactiveComponents/Button";
+
 import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { LoggedContext } from "@/context/LoggedContext";
 import { SearchContext } from "@/context/SearchContext";
 import { B2BApi } from "@/infra/api/B2BApi";
-import { LoggedContext } from "@/context/LoggedContext";
 
 export function ReserveForm() {
   const {
     errors,
     watch,
+    hotelHook,
     handleSubmit,
     isSubmitting,
+    numberOfGuests,
     register,
     setValue,
     submitForm,
@@ -31,6 +34,7 @@ export function ReserveForm() {
     displayIndividualCvvField,
     displayCreditCardNameField,
     creditCardExpirationDateToDisplay,
+    createExpirationDateMask,
     creditCardNameToDisplay,
   } = useReservationForm();
 
@@ -58,6 +62,7 @@ export function ReserveForm() {
   }
 
   useEffect(() => {
+    // FIXME: Botar em classe
     B2BApi.get("/cards", { headers: { "X-Company-Id": companyId } }).then(
       (res) => {
         setCreditCards(res.data.cardList);
@@ -71,7 +76,6 @@ export function ReserveForm() {
       onSubmit={handleSubmit(submitForm)}
       noValidate
     >
-      {/* Dados do Comprador */}
       <WhiteBox classes="gap-0 lg:gap-0">
         <span className="font-semibold uppercase text-primary-500">
           Dados do Comprador
@@ -131,7 +135,7 @@ export function ReserveForm() {
           Dados dos Hóspedes
         </span>
 
-        {Array.from({ length: NUMBER_OF_GUESTS }).map((_, index) => (
+        {Array.from({ length: numberOfGuests }).map((_, index) => (
           <>
             <span className="mt-4 block text-xs font-semibold uppercase text-textSecondary">
               Hóspede {index + 1}
@@ -282,7 +286,7 @@ export function ReserveForm() {
                   </span>
                   <CredtiCard
                     expirationDate={watch("creditCard.plain.expireDate")}
-                    name={watch("creditCard.plain.cardName")}
+                    name={watch("creditCard.plain.cardHolder")}
                     number={watch("creditCard.plain.cardNumber")}
                     securityCode={watch("creditCard.cardCVV")}
                     showBackside={displayCardBackside}
@@ -294,8 +298,10 @@ export function ReserveForm() {
                     placeholder="Nome no cartão"
                     maxLength={25}
                     value={creditCardNameToDisplay}
-                    register={register("creditCard.plain.cardName")}
-                    errorMessage={errors?.creditCard?.plain?.cardName?.message}
+                    register={register("creditCard.plain.cardHolder")}
+                    errorMessage={
+                      errors?.creditCard?.plain?.cardHolder?.message
+                    }
                     type="text"
                   />
 
@@ -303,7 +309,6 @@ export function ReserveForm() {
                     placeholder="Número do cartão"
                     maxLength={16}
                     pattern="[0-9]{16}"
-                    // value={creditCardNumberToDisplay}
                     register={register("creditCard.plain.cardNumber")}
                     errorMessage={
                       errors?.creditCard?.plain?.cardNumber?.message
@@ -314,7 +319,9 @@ export function ReserveForm() {
                   <FormComponents.Input
                     placeholder="Validade"
                     maxLength={5}
-                    value={creditCardExpirationDateToDisplay}
+                    value={createExpirationDateMask(
+                      watch("creditCard.plain.expireDate"),
+                    )}
                     register={register("creditCard.plain.expireDate")}
                     errorMessage={
                       errors?.creditCard?.plain?.expireDate?.message
@@ -348,7 +355,7 @@ export function ReserveForm() {
           <div className="mt-4 grid w-full grid-cols-1 gap-y-4 md:grid-cols-2">
             <CredtiCard
               expirationDate={watch("creditCard.plain.expireDate")}
-              name={watch("creditCard.plain.cardName")}
+              name={watch("creditCard.plain.cardHolder")}
               number={watch("creditCard.plain.cardNumber")}
               securityCode={watch("creditCard.cardCVV")}
               showBackside={displayCardBackside}
@@ -359,8 +366,8 @@ export function ReserveForm() {
                 placeholder="Nome no cartão"
                 maxLength={25}
                 value={creditCardNameToDisplay}
-                register={register("creditCard.plain.cardName")}
-                errorMessage={errors?.creditCard?.plain?.cardName?.message}
+                register={register("creditCard.plain.cardHolder")}
+                errorMessage={errors?.creditCard?.plain?.cardHolder?.message}
                 type="text"
               />
 

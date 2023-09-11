@@ -43,7 +43,7 @@ export function CreditCardOption({
 
       <span className="text-xs text-textPrimary md:text-sm">{name}</span>
 
-      <span className="text-xs text-textPrimary md:text-sm">
+      <span className="text-xs text-textPrimary hidden md:block">
         {creditCardFormatted(number)}
       </span>
     </div>

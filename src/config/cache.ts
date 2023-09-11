@@ -22,10 +22,13 @@ export const CACHE_PATH = {
     DEFAULT: "customer",
   },
   CARDS: {
-    DEFAULT: "cards",
+    DEFAULT: "available-cards",
   },
   HOTELS: {
     DEFAULT: "hotels",
     CURRENT_HOTEL_DETAILS: "current_hotel_details",
+  },
+  BOOKING: {
+    DEFAULT: "bookings",
   },
 } as const;

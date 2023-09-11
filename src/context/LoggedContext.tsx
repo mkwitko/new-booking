@@ -12,6 +12,7 @@ import AvailabilityClass from "@/classes/availability/AvailabilityClass";
 import CustomerClass from "@/classes/customer/CustomerClass";
 import CardClass from "@/classes/card/CardClass";
 import HotelsClass from "@/classes/hotels/HotelsClass";
+import BookingClass from "@/classes/booking/BookingClass";
 
 interface LoggedContextProps {
   user: UserClass;
@@ -19,6 +20,7 @@ interface LoggedContextProps {
   locale: LocalesClass;
   availability: AvailabilityClass;
   customer: CustomerClass;
+  booking: BookingClass;
   card: CardClass;
   hotels: HotelsClass;
 }
@@ -39,7 +41,9 @@ export function LoggedContextProvider({
     customer,
     card,
     hotels,
+    booking,
   }: {
+    booking: BookingClass;
     user: UserClass;
     hotelChain: HotelsChainClass;
     locale: LocalesClass;
@@ -55,7 +59,7 @@ export function LoggedContextProvider({
     user.getAgenciesStores();
     locale.getLocales();
     customer.getCustomers();
-    card.getCards();
+    // card.getCards();
   }, []);
 
   return (
@@ -64,6 +68,7 @@ export function LoggedContextProvider({
         user,
         hotelChain,
         locale,
+        booking,
         availability,
         customer,
         card,

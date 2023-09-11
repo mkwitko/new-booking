@@ -1,10 +1,26 @@
+'use client'
+
 import { Schema } from "./schema";
 import { useForm } from "react-hook-form";
 import type { ReservationFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMasks } from "@/hooks/useMasks";
+import { SearchContext } from "@/context/SearchContext";
+import { useContext, useState } from "react";
+import { LoggedContext } from "@/context/LoggedContext";
 
-export function useReservationForm() {
+export function useReservationForm() { 
+  const { peopleHook, hotelHook, dateHook } = useContext(SearchContext);
+  const { customer, card, booking } = useContext(LoggedContext)
+
+  const [displayCardBackside, setDisplayCardBackside] =
+  useState<boolean>(false);
+  
+  const { currentHotel, currentRateIndex, currentApartamentIndex } = hotelHook
+  const creditCards = card.hook.data
+  const { billings } = currentHotel
+  const numberOfGuests = peopleHook.numberOfGuests;
+
   const {
     register,
     setValue,
@@ -37,86 +53,139 @@ export function useReservationForm() {
       ""
     : "";
 
-  const creditCardNameToDisplay = watch("creditCard.plain.cardName")
-  ? watch("creditCard.plain.cardName")?.toUpperCase()
+  const creditCardNameToDisplay = watch("creditCard.plain.cardHolder")
+  ? watch("creditCard.plain.cardHolder")?.toUpperCase()
   : "";
 
+  async function submitForm(values: ReservationFormSchema) {
+    let objectToSubmit: any = {...values};
+    delete objectToSubmit.paymentMethod
+    delete objectToSubmit.selectCreditCard
 
-  function submitForm(values: ReservationFormSchema) {
-    console.log(values);
-    // const methodIsDirect = values.payment.method === "direto";
-    // const billing = JSON.parse(values.payment.allowedExpenses);
-    // values.payment.allowedExpenses = billing;
+    if (values.creditCard && values.creditCard.plain) {
+      const { month, year } = getExpireMonthAndExpireYear(values.creditCard.plain.expireDate!);
+      const cardBrand = defineCreditCardBrand(values.creditCard.plain.cardNumber!);
 
-    // values.purchaser.name = JSON.parse(values.purchaser.name);
+      objectToSubmit = {
+        ...objectToSubmit,
+        creditCard: {
+          cardCVV: values.creditCard.cardCVV,
+          plain: {
+            cardHolder: values.creditCard.plain.cardHolder,
+            cardNumber: values.creditCard.plain.cardNumber,
+            expireMonth: month,
+            expireYear: year,
+            cardBrand,
+          }
+        }
+      }
+    }
 
-    // const creditCard: any = values.payment.selectedCreditCard
-    //   ? AvailableCreditCards.find(
-    //       (card) => card.id === values.payment.selectedCreditCard,
-    //     )
-    //   : values.payment.newCreditCard;
+    if (values.creditCard.tokenized) {
+      objectToSubmit = {
+        ...objectToSubmit,
+        creditCard: {
+          tokenized: values.creditCard.tokenized,
+          cardCVV: values.creditCard.cardCVV,
+        }
+      }
+    }
 
-    // const creditCardData: any = {};
+    objectToSubmit = {
+      ...objectToSubmit,
+      checkinDate: dateHook.checkIn,
+      checkoutDate: dateHook.checkOut,
+      rateId: currentHotel.rates[currentRateIndex].id,
+      roomTypeId: currentHotel.roomTypes[currentApartamentIndex].id,
+      hotelId: hotelHook.currentHotel.id,
+      bookingDetails: true,
+      consumer: 'others',
+      forceBooking: true,
+      adultGuestCount: peopleHook.numberOfGuests,
+      guests: values.guests.map((guest) => {
+        return {
+          ...guest,
+          ageGroup: 'ADULT',
+        }
+      })
+    }
 
-    // if (Object.keys(creditCard).length > 0) {
-    //   const isVcn = !!creditCard.rcnToken;
-    //   if (methodIsDirect) {
-    //     creditCardData.plain = fillPlainCreditCardData(creditCard, values);
-    //   } else if (isVcn) {
-    //     creditCardData.rcnToken = creditCard.rcnToken;
-    //   } else {
-    //     creditCardData.tokenized = creditCard.tokenized;
-    //   }
-    // } else {
-    //   creditCardData.plain = fillPlainCreditCardData(creditCard, values, true);
-    // }
+    await booking.createBooking(objectToSubmit)
   }
 
-  //   const fillPlainCreditCardData = (creditCard, values: ReservationFormSchema, extractCardBrand = false) => {
-  //     const cardNumber = values.payment.newCreditCard?.number.replace(/\s/g, "");
-  //     const cardType = creditCardType(cardNumber);
+  function handleChangePurchaseName(value: string) {
+    const selectedCustomer = customer.hook.data?.find(
+      (customer: any) => customer.name === value,
+    );
 
-  //     return {
-  //       cardBrand: {
-  //         code:
-  //           extractCardBrand &&
-  //           cardType &&
-  //           transformCardBrand(cardType[0].niceType),
-  //       },
-  //       cardHolder: values.cardName,
-  //       cardNumber,
-  //       expireMonth: values.expiry.split("/")[0],
-  //       expireYear: values.expiry.split("/")[1],
-  //     };
-  //   };
+    setValue("customer", {
+      id: selectedCustomer?.alphaId,
+      name: selectedCustomer?.name,
+    });
+  }
 
-  //   function transformCardBrand(cardBrand: any) {
-  //     const brandTypes: any = {
-  //       Visa: "VI",
-  //       Mastercard: "MC",
-  //       "American Express": "AX",
-  //       "Diners Club": "DN",
-  //       Elo: "AL",
-  //       Hipercard: "HIP",
-  //       Discover: "DI",
-  //     };
+  const getExpireMonthAndExpireYear = (expireDate: string) => {
+    const [month, year] = expireDate.split("/");
 
-  //     return brandTypes[cardBrand];
-  //   }
+    return {
+      month,
+      year,
+    }
+  }
+
+  const defineCreditCardBrand = (cardNumber: string) => {
+    const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
+    const mastercardRegex = /^5[1-5][0-9]{14}$/;
+    const americanExpressRegex = /^3[47][0-9]{13}$/;
+
+    if (visaRegex.test(cardNumber)) {
+      return {
+        code: 'VI',
+      }
+    }
+
+    if (mastercardRegex.test(cardNumber)) {
+      return {
+        code: 'MC',
+      }
+    }
+
+    if (americanExpressRegex.test(cardNumber)) {
+      return {
+        code: 'AX',
+      }
+    }
+
+    return {
+      code: 'VI',
+    }
+  }
+
+  const disableAllowedExpensesField = displayGuaranteeForm
 
   return {
     watch,
     errors,
+    setValue,
     register,
-    creditCardExpirationDateToDisplay,
-    displayIndividualCvvField,
+    submitForm,
+    handleSubmit,
+    customer,
+    hotelHook,
+    isSubmitting,
+    handleChangePurchaseName,
+    displayCardBackside,
+    setDisplayCardBackside,
+    creditCards,
+    disableAllowedExpensesField,
+    billings,
+    numberOfGuests,
+    displayGuaranteeForm,
     creditCardNameToDisplay,
     displayNewCreditCardForm,
+    createExpirationDateMask,
+    displayIndividualCvvField,
     displayCreditCardNameField,
-    displayGuaranteeForm,
-    setValue,
-    handleSubmit,
-    submitForm,
-    isSubmitting,
+    creditCardExpirationDateToDisplay,
   };
 }
