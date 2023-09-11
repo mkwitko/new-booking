@@ -11,6 +11,7 @@ import UserClass from "@/classes/user/UserClass";
 import AvailabilityClass from "@/classes/availability/AvailabilityClass";
 import CustomerClass from "@/classes/customer/CustomerClass";
 import CardClass from "@/classes/card/CardClass";
+import HotelsClass from "@/classes/hotels/HotelsClass";
 
 interface LoggedContextProps {
   user: UserClass;
@@ -19,6 +20,7 @@ interface LoggedContextProps {
   availability: AvailabilityClass;
   customer: CustomerClass;
   card: CardClass;
+  hotels: HotelsClass;
 }
 
 export const LoggedContext = React.createContext({} as LoggedContextProps);
@@ -36,6 +38,7 @@ export function LoggedContextProvider({
     availability,
     customer,
     card,
+    hotels,
   }: {
     user: UserClass;
     hotelChain: HotelsChainClass;
@@ -44,6 +47,7 @@ export function LoggedContextProvider({
     coreClass: any;
     customer: CustomerClass;
     card: CardClass;
+    hotels: HotelsClass;
   } = classes;
 
   useEffect(() => {
@@ -63,6 +67,7 @@ export function LoggedContextProvider({
         availability,
         customer,
         card,
+        hotels,
       }}
     >
       {children}

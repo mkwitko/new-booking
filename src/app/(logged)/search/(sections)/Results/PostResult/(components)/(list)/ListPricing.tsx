@@ -1,6 +1,7 @@
 import { findRate, findRateName } from "@/app/(logged)/search/(utils)/Rates";
 import { Hotels } from "@/classes/availability/DTO/AvailabilityDTO";
 import B2BButton from "@/components/interactiveComponents/Button";
+import { LoggedContext } from "@/context/LoggedContext";
 import { SearchContext } from "@/context/SearchContext";
 import { fCurrency } from "@/utils/FinanceUtil";
 import Image from "next/image";
@@ -26,7 +27,9 @@ export default function ListPricing({
   const comissioned = findRate(hotel, roomIndex, rateIndex)?.commissioned;
   const defaultClasses =
     "flex justify-between w-full md:flex-col items-end gap-2";
-  const { hotelHook, quotationHook } = useContext(SearchContext);
+
+  const { hotels } = useContext(LoggedContext);
+  const { quotationHook } = useContext(SearchContext);
   return (
     <div
       className={`${
@@ -84,7 +87,11 @@ export default function ListPricing({
             <Link href="/search/new">
               <B2BButton
                 onClick={() => {
-                  hotelHook.handleSetCurrentHotel(hotel, roomIndex, rateIndex);
+                  hotels.hook.handleSetCurrentHotel(
+                    hotel,
+                    roomIndex,
+                    rateIndex,
+                  );
                 }}
                 label="Reservar"
               />

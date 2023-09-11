@@ -39,14 +39,12 @@ export function ReserveForm() {
 
   const [creditCards, setCreditCards] = useState<any[] | null>(null);
 
-  const { hotelHook, peopleHook } = useContext(SearchContext);
-  const { customer, card } = useContext(LoggedContext);
+  const { peopleHook } = useContext(SearchContext);
+  const { hotels, customer, card } = useContext(LoggedContext);
   const disableAllowedExpensesField = displayGuaranteeForm;
-  const { billings, companyId } = hotelHook.currentHotel;
+  const { billings, companyId } = hotels.hook.currentHotel;
 
   const NUMBER_OF_GUESTS = peopleHook.numberOfGuests;
-
-  console.log("cards -> ", card.hook.data);
 
   function handleChangePurchaseName(value: string) {
     const selectedCustomer = customer.hook.data?.find(
@@ -66,8 +64,6 @@ export function ReserveForm() {
       },
     );
   }, [companyId]);
-
-  console.log("customers -> ", errors);
 
   return (
     <form
@@ -423,7 +419,7 @@ export function ReserveForm() {
         <Link href="/search">
           <B2BButton
             onClick={() => {
-              hotelHook.resetCurrentHotel();
+              hotels.hook.resetCurrentHotel();
             }}
             label="Descartar"
             color="disabled"

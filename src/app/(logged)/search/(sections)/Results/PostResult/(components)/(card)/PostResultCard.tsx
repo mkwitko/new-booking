@@ -18,9 +18,11 @@ import { SearchContext } from "@/context/SearchContext";
 import { BiSolidAddToQueue } from "react-icons/bi";
 import { MdOutlinePlaylistRemove } from "react-icons/md";
 import { integratedSistems } from "@/utils/IntegratedSystems";
+import { LoggedContext } from "@/context/LoggedContext";
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
-  const { hotelHook, quotationHook } = useContext(SearchContext);
+  const { hotels } = useContext(LoggedContext);
+  const { quotationHook } = useContext(SearchContext);
   const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
   const imageToShow = image || "icons/withoutResult.svg";
 
@@ -70,10 +72,9 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
               pathname: "/search/details",
             }}
           >
-            {/* FIXME - Utilizar cacheamento em serviço e a key utilizar do CACHE PATH */}
             <Button
               onClick={() => {
-                localStorage.setItem("current_hotel", JSON.stringify(hotel));
+                hotels.hook.handleSetCurrentHotel(hotel);
               }}
               color="light"
               label="Ver hotel"
@@ -128,7 +129,7 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
             >
               <Button
                 onClick={() => {
-                  hotelHook.handleSetCurrentHotel(hotel);
+                  hotels.hook.handleSetCurrentHotel(hotel);
                 }}
                 color="primary"
                 label="Reservar"

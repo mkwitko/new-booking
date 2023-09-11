@@ -21,7 +21,9 @@ export default function TotalAmountAfterTax({
   return (
     condition > 0 && (
       <div className="flex items-center justify-center gap-2">
-        <p className="text-normal font-semibold text-primary">{text}</p>
+        <p className="text-end text-normal font-semibold text-primary">
+          {text}
+        </p>
         <div
           className={`${
             comissioned ? "bg-blue-300" : "bg-green-300"

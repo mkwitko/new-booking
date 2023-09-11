@@ -79,20 +79,26 @@ export default class CoreClass {
       });
   }
 
-  async setClass<T>(
+  async setClass<T>({
     shouldUpdate = true,
-    method?: typeof this.getMethods,
-    custom: {
-      url?: string;
-      cachePath?: string;
-    } | null = null,
-  ) {
-    const cache = await this.getCache();
-    const request = this.isCustomRequest(custom);
+    method = "",
+    url = "",
+    cachePath,
+    customReturn,
+  }: {
+    shouldUpdate?: boolean;
+    method?: string;
+    url?: string;
+    cachePath?: string;
+    customReturn?: string;
+  }) {
+    const cache = await this.getCache(cachePath ? cachePath : this.cachePath);
+    const request = this.isCustomRequest({ url, cachePath });
     if (!cache || !this.hasObject(cache) || shouldUpdate) {
       const response = await this.getHttp<T>(method || "", request.url);
-      await this.setCache(response.data, shouldUpdate, request.cachePath);
-      return response;
+      const toReturn = customReturn ? response[customReturn] : response.data;
+      await this.setCache(toReturn, shouldUpdate, request.cachePath);
+      return toReturn;
     } else {
       return cache;
     }

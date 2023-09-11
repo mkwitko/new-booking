@@ -6,7 +6,6 @@ import Title from "@/components/text/Title";
 
 import { AiFillInfoCircle } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
-import { StarRating } from "./(components)/StarRating";
 import { ReserveForm } from "./(components)/ReserveForm";
 import { useContext, useState } from "react";
 import { SearchContext } from "@/context/SearchContext";
@@ -23,13 +22,13 @@ import { Checkbox } from "@/components/formComponents";
 import { GeneralB2BDatePicker } from "@/components/interactiveComponents/GeneralDatePicker.tsx/GeneralDatePicker";
 import CardDate from "../(sections)/Search/PostSearch/components/CardDate";
 import { LoggedContext } from "@/context/LoggedContext";
+import { StarRating } from "@/components/nonInteractiveComponents/StarRating";
 
 export default function Reserves() {
-  const { availability } = useContext(LoggedContext);
-  const { hotelHook, dateHook, peopleHook, roomsHook, Search } =
-    useContext(SearchContext);
-  const currentHotel: Hotels = hotelHook.currentHotel;
-  const { currentApartamentIndex, currentRateIndex } = hotelHook;
+  const { hotels, availability } = useContext(LoggedContext);
+  const { dateHook, peopleHook, roomsHook, Search } = useContext(SearchContext);
+  const currentHotel: Hotels = hotels.hook.currentHotel;
+  const { currentApartamentIndex, currentRateIndex } = hotels.hook;
 
   const [openDatePicker, setOpenDatePicker] = useState(false);
   const [seeMoreTaxes, setSeeMoreTaxes] = useState(false);
@@ -43,7 +42,7 @@ export default function Reserves() {
       const currentHotelUpdated = response.hotels.find(
         (e: Hotels) => e.hotelAlphaId === currentHotel.hotelAlphaId,
       );
-      hotelHook.setCurrentHotel(currentHotelUpdated);
+      hotels.hook.setCurrentHotel(currentHotelUpdated);
       setIsSearching(false);
     });
   };
@@ -234,7 +233,7 @@ export default function Reserves() {
                   <Checkbox
                     checked={currentRateIndex === i}
                     onChange={() => {
-                      hotelHook.setCurrentRateIndex(i);
+                      hotels.hook.setCurrentRateIndex(i);
                     }}
                   />
                   <Taxes

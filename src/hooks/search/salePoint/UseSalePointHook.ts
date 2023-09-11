@@ -19,7 +19,6 @@ export default function UseSalePointHook() {
 
   const findSalePointById = (id: string | number) => {
     const salesPoints = user.hook.data;
-    console.log(salesPoints);
     const salePoint = salesPoints.find(
       (salePoint: any) => salePoint.companyId.toString() === id.toString(),
     );

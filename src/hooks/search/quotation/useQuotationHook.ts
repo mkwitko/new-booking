@@ -57,8 +57,6 @@ export default function UseQuotationHook() {
           occupancy,
       */
       const toAdd = prev ? [...prev, obj] : [obj];
-
-      console.log("quotation - ", toAdd);
       return toAdd;
     });
   };

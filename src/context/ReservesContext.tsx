@@ -14,7 +14,7 @@ interface ReservesContextProps {
   cityHook: any;
   dateHook: any;
   reservesHook: any;
-  customerHook: any
+  customerHook: any;
   Search: () => void;
 }
 
@@ -25,7 +25,6 @@ export function ReservesContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-
   const salePointHook = UseSalePointHook();
 
   const cityHook = UseCityHook();
@@ -40,24 +39,24 @@ export function ReservesContextProvider({
     "0": "CONFIRMED",
     "1": "CANCELED",
     "2": "MODIFIED",
-  } as const
+  } as const;
 
-  type BookingStatusType = keyof typeof bookingStatus
+  type BookingStatusType = keyof typeof bookingStatus;
 
   const bookingDateType = {
     "0": "CHECKIN",
     "1": "CHECKOUT",
     "2": "CANCELED",
     "3": "ISSUANCE",
-  } as const
+  } as const;
 
-  type BookingDateType = keyof typeof bookingDateType
+  type BookingDateType = keyof typeof bookingDateType;
 
   async function Search() {
-    let data: IQueryGetBookings = {}
+    let data: IQueryGetBookings = {};
 
     if (reservesHook.locator) {
-      data = { channelReservationNumber: reservesHook.locator }
+      data = { channelReservationNumber: reservesHook.locator };
     } else {
       data = {
         dateType: bookingDateType[reservesHook.dateType as BookingDateType],
@@ -65,16 +64,14 @@ export function ReservesContextProvider({
         startDate: `${dateHook.checkIn.getFullYear()}-${dateHook.checkIn.getMonth()}-${dateHook.checkIn.getDay()}`,
       };
 
-      if (salePointHook.salePoint)
-        data.posCompanyIds = salePointHook.salePoint
+      if (salePointHook.salePoint) data.posCompanyIds = salePointHook.salePoint;
 
-      if (reservesHook.statusSelected !== 'ALL')
-        data.status = bookingStatus[reservesHook.statusSelected as BookingStatusType]
+      if (reservesHook.statusSelected !== "ALL")
+        data.status =
+          bookingStatus[reservesHook.statusSelected as BookingStatusType];
     }
 
-    console.log('data - ', data)
-
-  // const response = availability.searchAvail(data);
+    // const response = availability.searchAvail(data);
 
     // set(CACHE_PATH.AVAILABILITY.SEARCH_QUERY, {
     //   ...data,
