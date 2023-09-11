@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import CoreClass from "../core/CoreClass";
-import { Hotels, IAvailResponse, availPayload } from "./DTO/AvailabilityDTO";
+import { Hotels, IAvailResponse, IAvailVipQuery, IAvailVipResponse, availPayload } from "./DTO/AvailabilityDTO";
 import useAvailabilityHook from "./hook/useAvailabilityHook";
 import { DeleteMethods } from "./methods/delete";
 import { GetMethods } from "./methods/get";
@@ -48,6 +48,19 @@ export default class AvailabilityClass extends CoreClass {
     this.hook.setData(response);
     this.setCache(response, true);
     return response;
+  }
+
+  async getAvailVip(query: IAvailVipQuery) {
+    const response = await this.getHttp({
+      method: 'vip',
+      configs: {
+          params: query.query,
+          headers: {
+            'X-Company-Id': query.companyId,
+          },
+      },
+    })
+    return response.data as IAvailVipResponse;
   }
 
   private sortingByAvailability = (a: Hotels, b: Hotels) => {

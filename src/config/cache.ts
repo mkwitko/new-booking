@@ -32,4 +32,7 @@ export const CACHE_PATH = {
     DEFAULT: "bookings",
     BOOKING_QUERY: "booking_query",
   },
+  SOLICITATION: {
+    SOLICITATION_QUERY: "solicitation_query"
+  }
 } as const;

@@ -5,6 +5,7 @@ import { DeleteMethods } from "./methods/delete";
 import { GetMethods } from "./methods/get";
 import { PostMethods } from "./methods/post";
 import { PutMethods } from "./methods/put";
+import { IRequestQuery, IAvailVipResponse } from "../availability/DTO/AvailabilityDTO";
 
 export default class BookingClass extends CoreClass {
   override url = "bookings";
@@ -31,5 +32,21 @@ export default class BookingClass extends CoreClass {
       }
     })
     return response;
+  }
+
+  async searchRequesties(query: IRequestQuery) {
+    const response = await this.getHttp({
+      method: 'policies/find',
+      configs: {
+          params: query.query,
+          headers: query.companyId ? 
+          {
+            'X-Company-Id': query.companyId,
+          } :
+          undefined,
+      },
+    });
+
+    return response.data as IAvailVipResponse;
   }
 }
