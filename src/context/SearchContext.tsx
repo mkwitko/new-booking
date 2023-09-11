@@ -15,7 +15,8 @@ import { set } from "@/services/cache";
 import { CACHE_PATH } from "@/config/cache";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
 import useQuotationHook from "@/hooks/search/quotation/useQuotationHook";
-import UseMapHook from "@/hooks/search/map/UseMapHook";
+import useHotelHook from "@/classes/hotels/hook/useHotelsHook";
+import UseMapHook from "@/hooks/search/map/useMapHook";
 
 interface SearchContextProps {
   salePointHook: any;
@@ -25,6 +26,7 @@ interface SearchContextProps {
   roomsHook: any;
   mapHook: any;
   quotationHook: any;
+  hotelHook: any;
   Search: (checkin?: Date, checkout?: Date) => Promise<IAvailResponse>;
 }
 
@@ -55,6 +57,8 @@ export function SearchContextProvider({
 
   const quotationHook = useQuotationHook();
 
+  const hotelHook = useHotelHook();
+
   async function Search(checkIn?: any, checkOut?: any) {
     const data: availPayload = {
       checkinDate: checkIn ? checkIn : dateHook.checkIn,
@@ -66,7 +70,6 @@ export function SearchContextProvider({
       companyId: +salePointHook.salePoint,
     };
 
-    //
     if (mapHook.mapLatLng && mapHook.mapLatLng.lat) {
       data.position = {
         latitude: String(mapHook.mapLatLng.lat),
@@ -98,6 +101,7 @@ export function SearchContextProvider({
         roomsHook,
         mapHook,
         quotationHook,
+        hotelHook,
         Search,
       }}
     >
