@@ -17,7 +17,9 @@ export default class BookingClass extends CoreClass {
   override deleteMethods = DeleteMethods;
 
   async createBooking(data: any) {
-    const response = await this.postHttp("", data);
+    const response = await this.postHttp({
+      value: data,
+    });
     return response;
   }
 }

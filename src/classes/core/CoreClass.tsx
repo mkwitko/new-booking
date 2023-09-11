@@ -35,8 +35,16 @@ export default class CoreClass {
       set(key || this.cachePath, value);
   }
 
-  async getHttp<T>(method: typeof this.getMethods, url?: string) {
-    return B2BApi.get<T>(this.makeUrl(method, url || undefined))
+  async getHttp<T>({
+    method = "",
+    url = "",
+    configs = {},
+  }: {
+    method: string;
+    url?: string;
+    configs?: AxiosRequestConfig;
+  }) {
+    return B2BApi.get<T>(this.makeUrl(method, url || undefined), configs)
       .then((response) => {
         const { data } = response;
         return data;
@@ -47,12 +55,17 @@ export default class CoreClass {
       });
   }
 
-  async postHttp(
-    method: typeof this.postMethods,
-    value: any,
-    url?: string,
-    configs: AxiosRequestConfig = {},
-  ) {
+  async postHttp({
+    method = "",
+    value = {},
+    url = "",
+    configs = {},
+  }: {
+    method?: string;
+    value: any;
+    url?: string;
+    configs?: AxiosRequestConfig;
+  }) {
     return B2BApi.post(this.makeUrl(method, url || undefined), value, configs)
       .then((response) => {
         return response.data;
@@ -63,13 +76,18 @@ export default class CoreClass {
       });
   }
 
-  async putHttp(
-    method: typeof this.putMethods,
-    value: any,
-    url?: string,
-    config?: any,
-  ) {
-    return B2BApi.put(this.makeUrl(method, url || undefined), value, config)
+  async putHttp({
+    method = "",
+    value = {},
+    url = "",
+    configs = {},
+  }: {
+    method?: string;
+    value: any;
+    url?: string;
+    configs?: AxiosRequestConfig;
+  }) {
+    return B2BApi.put(this.makeUrl(method, url || undefined), value, configs)
       .then((response) => {
         return response.data;
       })
@@ -95,7 +113,10 @@ export default class CoreClass {
     const cache = await this.getCache(cachePath ? cachePath : this.cachePath);
     const request = this.isCustomRequest({ url, cachePath });
     if (!cache || !this.hasObject(cache) || shouldUpdate) {
-      const response = await this.getHttp<T>(method || "", request.url);
+      const response = await this.getHttp<T>({
+        method: method || "",
+        url: request.url,
+      });
       const toReturn = customReturn ? response[customReturn] : response.data;
       await this.setCache(toReturn, shouldUpdate, request.cachePath);
       return toReturn;

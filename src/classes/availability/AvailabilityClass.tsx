@@ -23,9 +23,12 @@ export default class AvailabilityClass extends CoreClass {
 
     const companyId = data.companyId;
     delete data.companyId;
-    const response: IAvailResponse = await this.postHttp("", data, "", {
-      headers: {
-        "X-Company-Id": companyId,
+    const response: IAvailResponse = await this.postHttp({
+      value: data,
+      configs: {
+        headers: {
+          "X-Company-Id": companyId,
+        },
       },
     });
 
