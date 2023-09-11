@@ -109,9 +109,9 @@ export function useMasks() {
 
   function createExpirationDateMask(
     data: string | null | undefined,
-  ): string | null {
+  ): string {
     if (!data) {
-      return null
+      return ''
     }
 
     const date = data.replace(/\D/g, '')

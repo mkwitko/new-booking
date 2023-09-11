@@ -10,18 +10,25 @@ import { PaymentMethods } from "../(data)";
 import { CreditCardOption } from "./CreditCardOption";
 import { NewCreditCardOption } from "./NewCreditCardOption";
 import { CredtiCard } from "./CreditCard";
-import { useContext, useState } from "react";
 import B2BButton from "@/components/interactiveComponents/Button";
+
 import Link from "next/link";
-import { SearchContext } from "@/context/SearchContext";
-import { LoggedContext } from "@/context/LoggedContext";
 
 export function ReserveForm() {
   const {
     errors,
     watch,
+    hotelHook,
     handleSubmit,
     isSubmitting,
+    numberOfGuests,
+    customer,
+    billings,
+    creditCards,
+    disableAllowedExpensesField,
+    displayCardBackside,
+    handleChangePurchaseName,
+    setDisplayCardBackside,
     register,
     setValue,
     submitForm,
@@ -30,30 +37,9 @@ export function ReserveForm() {
     displayIndividualCvvField,
     displayCreditCardNameField,
     creditCardExpirationDateToDisplay,
+    createExpirationDateMask,
     creditCardNameToDisplay,
   } = useReservationForm();
-
-  const [displayCardBackside, setDisplayCardBackside] =
-    useState<boolean>(false);
-
-  const { hotelHook, peopleHook } = useContext(SearchContext);
-  const { customer, card } = useContext(LoggedContext)
-  const disableAllowedExpensesField = displayGuaranteeForm
-  const { billings } = hotelHook.currentHotel
-
-  const NUMBER_OF_GUESTS = peopleHook.numberOfGuests;
-  const creditCards = card.hook.data
-
-  function handleChangePurchaseName(value: string) {
-    const selectedCustomer = customer.hook.data?.find(
-      (customer: any) => customer.name === value,
-    );
-
-    setValue("customer", {
-      id: selectedCustomer?.alphaId,
-      name: selectedCustomer?.name,
-    });
-  }
 
   return (
     <form
@@ -61,7 +47,6 @@ export function ReserveForm() {
       onSubmit={handleSubmit(submitForm)}
       noValidate
     >
-      {/* Dados do Comprador */}
       <WhiteBox classes="gap-0 lg:gap-0">
         <span className="font-semibold uppercase text-primary-500">
           Dados do Comprador
@@ -121,7 +106,7 @@ export function ReserveForm() {
           Dados dos Hóspedes
         </span>
 
-        {Array.from({ length: NUMBER_OF_GUESTS }).map((_, index) => (
+        {Array.from({ length: numberOfGuests }).map((_, index) => (
           <>
             <span className="mt-4 block text-xs font-semibold uppercase text-textSecondary">
               Hóspede {index + 1}
@@ -293,7 +278,6 @@ export function ReserveForm() {
                     placeholder="Número do cartão"
                     maxLength={16}
                     pattern="[0-9]{16}"
-                    // value={creditCardNumberToDisplay}
                     register={register("creditCard.plain.cardNumber")}
                     errorMessage={
                       errors?.creditCard?.plain?.cardNumber?.message
@@ -304,7 +288,7 @@ export function ReserveForm() {
                   <FormComponents.Input
                     placeholder="Validade"
                     maxLength={5}
-                    value={creditCardExpirationDateToDisplay}
+                    value={createExpirationDateMask(watch('creditCard.plain.expireDate'))}
                     register={register("creditCard.plain.expireDate")}
                     errorMessage={
                       errors?.creditCard?.plain?.expireDate?.message

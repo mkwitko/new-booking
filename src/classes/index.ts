@@ -5,6 +5,7 @@ import HotelsChainClass from './hotelsChain/HotelsChainClass'
 import LocalesClass from './locales/LocalesClass'
 import UserClass from './user/UserClass'
 import CardClass from './card/CardClass'
+import BookingClass from './booking/BookingClass'
 
 export default function Classes() {
   const user = new UserClass()
@@ -14,6 +15,7 @@ export default function Classes() {
   const coreClass = new CoreClass()
   const customer = new CustomerClass()
   const card = new CardClass()
+  const booking = new BookingClass()
 
   return {
     user,
@@ -23,5 +25,6 @@ export default function Classes() {
     coreClass,
     customer,
     card,
+    booking,
   }
 }

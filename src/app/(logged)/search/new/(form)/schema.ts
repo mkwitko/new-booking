@@ -28,7 +28,7 @@ export const Schema = z
     selectCreditCard: z.string({ required_error: 'Selecione um cartão de crédito' }).nullable().default(null).optional(),
 
     creditCard: z.object({
-      cardCVV: z.string().nonempty('O CVV é obrigatório'),
+      cardCVV: z.string().nonempty('O CVV é obrigatório').min(3, 'O CVV é inválido').max(4, 'O CVV é inválido').optional(),
       tokenized: z.string().nullable().default(null).optional(),
       plain: z.object({
         cardHolder: z.string().nullable().default(null).optional(),
@@ -81,10 +81,29 @@ export const Schema = z
         })
       }
 
+      // Validação da Data de expiração
       if (!value.creditCard?.plain?.expireDate) {
         context.addIssue({
           code: 'custom',
           message: 'A data de expiração do cartão é obrigatória',
+          path: ['creditCard', 'plain', 'expireDate'],
+        })
+      }
+
+      const currentYear = new Date().getFullYear()
+      const month = Number(value.creditCard?.plain?.expireDate?.split('/')[0])
+      const year = Number('20' + value.creditCard?.plain?.expireDate?.split('/')[1])
+
+      const isValidMonth = month >= 1 && month <= 12
+
+      const isYearExpired = year < currentYear
+      const isMonthExpired = month < new Date().getMonth() + 1 && year === currentYear
+
+      if (!isValidMonth || isYearExpired || isMonthExpired) {
+        console.log('entrou')
+        context.addIssue({
+          code: 'custom',
+          message: 'A data de expiração do cartão é inválida',
           path: ['creditCard', 'plain', 'expireDate'],
         })
       }
@@ -97,6 +116,7 @@ export const Schema = z
         })
       }
     }
+
     if (value.paymentMethod === 'Cartão de Crédito' && value.selectCreditCard !== 'Informar Manualmente') {
       if (!value.creditCard.tokenized) {
         context.addIssue({

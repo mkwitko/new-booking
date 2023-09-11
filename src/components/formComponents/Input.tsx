@@ -1,3 +1,5 @@
+'use client'
+
 import { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -13,7 +15,6 @@ export function Input({
   disabled = false,
   register,
   errorMessage = undefined,
-  value,
   ...props
 }: InputProps) {
   return (

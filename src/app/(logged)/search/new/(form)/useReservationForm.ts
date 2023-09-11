@@ -6,14 +6,20 @@ import type { ReservationFormSchema } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMasks } from "@/hooks/useMasks";
 import { SearchContext } from "@/context/SearchContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { LoggedContext } from "@/context/LoggedContext";
 
-export function useReservationForm() {
+export function useReservationForm() { 
+  const { peopleHook, hotelHook, dateHook } = useContext(SearchContext);
+  const { customer, card, booking } = useContext(LoggedContext)
 
-  const { peopleHook, hotelHook, dateHook, salePointHook } = useContext(SearchContext);
+  const [displayCardBackside, setDisplayCardBackside] =
+  useState<boolean>(false);
+  
   const { currentHotel, currentRateIndex, currentApartamentIndex } = hotelHook
-
-  console.log('salespoint hook => ', salePointHook)
+  const creditCards = card.hook.data
+  const { billings } = currentHotel
+  const numberOfGuests = peopleHook.numberOfGuests;
 
   const {
     register,
@@ -51,8 +57,10 @@ export function useReservationForm() {
   ? watch("creditCard.plain.cardHolder")?.toUpperCase()
   : "";
 
-  function submitForm(values: ReservationFormSchema) {
+  async function submitForm(values: ReservationFormSchema) {
     let objectToSubmit: any = {...values};
+    delete objectToSubmit.paymentMethod
+    delete objectToSubmit.selectCreditCard
 
     if (values.creditCard && values.creditCard.plain) {
       const { month, year } = getExpireMonthAndExpireYear(values.creditCard.plain.expireDate!);
@@ -102,10 +110,18 @@ export function useReservationForm() {
       })
     }
 
-    console.log({
-      companyId: +salePointHook.salePoint,
-      bookingData: objectToSubmit,
-    })
+    await booking.createBooking(objectToSubmit)
+  }
+
+  function handleChangePurchaseName(value: string) {
+    const selectedCustomer = customer.hook.data?.find(
+      (customer: any) => customer.name === value,
+    );
+
+    setValue("customer", {
+      id: selectedCustomer?.alphaId,
+      name: selectedCustomer?.name,
+    });
   }
 
   const getExpireMonthAndExpireYear = (expireDate: string) => {
@@ -145,19 +161,31 @@ export function useReservationForm() {
     }
   }
 
+  const disableAllowedExpensesField = displayGuaranteeForm
+
   return {
     watch,
     errors,
+    setValue,
     register,
-    creditCardExpirationDateToDisplay,
-    displayIndividualCvvField,
+    submitForm,
+    handleSubmit,
+    customer,
+    hotelHook,
+    isSubmitting,
+    handleChangePurchaseName,
+    displayCardBackside,
+    setDisplayCardBackside,
+    creditCards,
+    disableAllowedExpensesField,
+    billings,
+    numberOfGuests,
+    displayGuaranteeForm,
     creditCardNameToDisplay,
     displayNewCreditCardForm,
+    createExpirationDateMask,
+    displayIndividualCvvField,
     displayCreditCardNameField,
-    displayGuaranteeForm,
-    setValue,
-    handleSubmit,
-    submitForm,
-    isSubmitting,
+    creditCardExpirationDateToDisplay,
   };
 }
