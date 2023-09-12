@@ -1,4 +1,4 @@
-import { IQueryGetBookings } from "@/DTO/reserves/ReservesDTO";
+import { IGetBookingResponse, IQueryGetBookings } from "@/DTO/reserves/ReservesDTO";
 import CoreClass from "../core/CoreClass";
 import useAvailabilityHook from "./hook/useBookingHook";
 import { DeleteMethods } from "./methods/delete";
@@ -31,7 +31,7 @@ export default class BookingClass extends CoreClass {
           params: query
       }
     })
-    return response;
+    return response.data as IGetBookingResponse;
   }
 
   async searchRequesties(query: IRequestQuery) {

@@ -86,6 +86,8 @@ export function ReservesContextProvider({
       response,
     });
 
+    reservesHook.setReserves(response)
+
     return response;
   }
 
