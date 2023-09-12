@@ -150,8 +150,10 @@ module.exports = {
         textLight: '#FFFFFF',
         textDisabled: '#BDBDBD',
         borderColor: '#8C8C8C',
+        backgroundDefault:'#F4F7FA',
       },
       fontSize: {
+        xlarge: '1.875rem',
         large: '1.5rem',
         normal: '1rem',
         small: '0.75rem',

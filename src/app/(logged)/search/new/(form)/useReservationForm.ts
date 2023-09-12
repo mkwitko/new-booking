@@ -8,11 +8,13 @@ import { useMasks } from "@/hooks/useMasks";
 import { SearchContext } from "@/context/SearchContext";
 import { useContext, useState } from "react";
 import { LoggedContext } from "@/context/LoggedContext";
+import { toast } from "react-toastify";
 
 export function useReservationForm() { 
   const { peopleHook, hotelHook, dateHook } = useContext(SearchContext);
   const { customer, card, booking } = useContext(LoggedContext)
 
+  const [isBookingCreatedSuccessfully, setIsBookingCreatedSuccessfully] = useState<any>(null)
 
   const { costCenter, bookingAttributes } = customer.hook.data;
   const [displayCardBackside, setDisplayCardBackside] =
@@ -143,6 +145,8 @@ export function useReservationForm() {
 
   async function submitForm(values: ReservationFormSchema) {
     let objectToSubmit: any = {...values};
+    const paymentMethod = values.paymentMethod;
+
     delete objectToSubmit.paymentMethod
     delete objectToSubmit.selectCreditCard
 
@@ -205,11 +209,25 @@ export function useReservationForm() {
     }
 
     // console.log(objectToSubmit)
-    await booking.createBooking(objectToSubmit)
+    try {
+      const createdBooking = await booking.createBooking(objectToSubmit)
+      setIsBookingCreatedSuccessfully({
+        bookingId: createdBooking.bookingId,
+        createdAt: createdBooking.timestamp,
+        paymentMethod,
+        ...createdBooking.bookingDetails.data[0],
+        creditCard: {
+          cardNumber: values.creditCard.plain?.cardNumber || null,
+          vcnId: values.creditCard.rcnToken || null,
+        }
+      })
+    } catch (error: any) {
+      setIsBookingCreatedSuccessfully(null)
+      toast.error(error.message)
+    }
   }
 
   const disableAllowedExpensesField = displayGuaranteeForm
-  console.log(costCenter)
 
   return {
     watch,
@@ -237,6 +255,8 @@ export function useReservationForm() {
     displayCreditCardNameField,
     disableAllowedExpensesField,
     handleChangeCreditCardValue,
+    isBookingCreatedSuccessfully,
+    setIsBookingCreatedSuccessfully,
     creditCardExpirationDateToDisplay,
   };
 }
