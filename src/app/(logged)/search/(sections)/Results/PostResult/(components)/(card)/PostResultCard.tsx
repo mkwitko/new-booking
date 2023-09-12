@@ -13,18 +13,21 @@ import TotalTaxes from "@/app/(logged)/search/(components)/(finance)/TotalTaxes"
 import AmountBeforeTax from "@/app/(logged)/search/(components)/(finance)/AmountBeforeTax";
 import TotalAmountAfterTax from "@/app/(logged)/search/(components)/(finance)/TotalAmountAfterTax";
 import TextLimmiter from "@/components/text/TextLimitter";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SearchContext } from "@/context/SearchContext";
 import { BiSolidAddToQueue } from "react-icons/bi";
 import { MdOutlinePlaylistRemove } from "react-icons/md";
 import { integratedSistems } from "@/utils/IntegratedSystems";
 import { LoggedContext } from "@/context/LoggedContext";
+import * as B2BModal from "@/components/nonInteractiveComponents/Modal";
+import AvailVip from "../(AvailVip)/AvailVip";
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
   const { hotels } = useContext(LoggedContext);
   const { quotationHook } = useContext(SearchContext);
   const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
   const imageToShow = image || "icons/withoutResult.svg";
+  const [openModalSolicitationVip, setOpenModalSolicitationVip] = useState(false);
 
   return (
     <div className="flex h-[35rem] flex-col justify-around rounded-b2b border border-borderColor/20 bg-white p-4">
@@ -152,7 +155,8 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
           ) : (
             <Button
               onClick={() => {
-                //   setReservationVipModalData(hotel.roomTypes[0], hotel, availQuery.checkIn, availQuery.checkOut);
+                  hotels.hook.handleSetCurrentHotel(hotel);
+                  setOpenModalSolicitationVip(true)
               }}
               color="outlined"
               label="Solicitar"
@@ -160,6 +164,13 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
           )}
         </div>
       </div>
+
+      <B2BModal.Modal open={openModalSolicitationVip} setOpen={setOpenModalSolicitationVip}>
+        <B2BModal.ModalContent mergeClasses="-translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 max-w-[40rem] h-[38rem] rounded-lg px-4">
+          <AvailVip setOpen={setOpenModalSolicitationVip} />
+        </B2BModal.ModalContent>
+      </B2BModal.Modal>
+
     </div>
   );
 }
