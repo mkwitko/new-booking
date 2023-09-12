@@ -9,13 +9,26 @@ import { B2BDatePicker } from "@/components/interactiveComponents/DatePicker";
 import { SolicitationsContext } from "@/context/SolicitationsContext";
 import * as FormCoponents from "@/components/formComponents";
 
-export default function SearchSolicitationsComponent() {
+export default function SearchSolicitations({
+  setHasSearched,
+  isSearching,
+  setIsSearching,
+}: {
+  setHasSearched: (bool: boolean) => void;
+  isSearching: boolean;
+  setIsSearching: (bool: boolean) => void;
+}) {
   const { user } = useContext(LoggedContext);
 
   const { salePointHook, dateHook, solicitationsHook, Search } = useContext(SolicitationsContext);
 
   const handleSearch = () => {
-    Search()
+    setIsSearching(true)
+    Search().then((response: any) => {
+      setIsSearching(false)
+      if (response && response?.length > 0)
+        setHasSearched(true)
+    });
   };
 
   return (
@@ -96,8 +109,10 @@ export default function SearchSolicitationsComponent() {
             textClass="text-textDisabled"
             color="light"
             mergeClass="px-0"
+            disabled={isSearching}
           />
           <Button
+            loading={isSearching}
             label="Buscar"
             mergeClass="px-0"
             onClick={handleSearch}

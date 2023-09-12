@@ -6,7 +6,7 @@ import UseSalePointHook from "@/hooks/search/salePoint/UseSalePointHook";
 import React, { useContext } from "react";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
 import UseReservesHook from "@/hooks/reserves/UseReservesHook";
-import { IQueryGetBookings } from "@/DTO/reserves/ReservesDTO";
+import { IGetBookingResponse, IQueryGetBookings } from "@/DTO/reserves/ReservesDTO";
 import UseCustomersHook from "@/hooks/search/customer/UseCustomerHook";
 import { LoggedContext } from "./LoggedContext";
 import { format } from "date-fns";
@@ -19,7 +19,7 @@ interface ReservesContextProps {
   dateHook: any;
   reservesHook: any;
   customerHook: any;
-  Search: () => void;
+  Search: () => Promise<IGetBookingResponse>;
 }
 
 export const ReservesContext = React.createContext({} as ReservesContextProps);
@@ -83,7 +83,7 @@ export function ReservesContextProvider({
     set(CACHE_PATH.BOOKING.BOOKING_QUERY, {
       ...data,
       companyId: +salePointHook.salePoint,
-      response,
+      reserves: response,
     });
 
     reservesHook.setReserves(response)
