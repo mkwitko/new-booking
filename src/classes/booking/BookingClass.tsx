@@ -49,4 +49,17 @@ export default class BookingClass extends CoreClass {
 
     return response.data as IAvailVipResponse;
   }
+
+  async editBookingRequest( 
+    data 
+  : { 
+    observation: string, reservationNumber: string, type: string 
+  }): Promise<any> {
+    try {
+      const response = await this.postHttp({ url: 'bookings/policies', value: data });
+      return response
+    } catch (error: any) {
+      throw new Error(error)
+    }
+  }
 }
