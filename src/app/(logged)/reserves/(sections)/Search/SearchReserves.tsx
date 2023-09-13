@@ -11,7 +11,15 @@ import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { ReservesContext } from "@/context/ReservesContext";
 import { customerResponseData } from "@/DTO/customers/CustomerDTO";
 
-export default function SearchReservesComponent() {
+export default function SearchReserves({
+  setHasSearched,
+  isSearching,
+  setIsSearching,
+}: {
+  setHasSearched: (bool: boolean) => void;
+  isSearching: boolean;
+  setIsSearching: (bool: boolean) => void;
+}) {
   const { user, locale } = useContext(LoggedContext);
 
   const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false);
@@ -27,7 +35,12 @@ export default function SearchReservesComponent() {
   } = useContext(ReservesContext);
 
   const handleSearch = () => {
-    Search();
+    setIsSearching(true)
+    Search().then((response: any) => {
+      setIsSearching(false)
+      if (response && response?.length > 0)
+        setHasSearched(true)
+    });
   };
  
   return (
@@ -136,8 +149,14 @@ export default function SearchReservesComponent() {
             textClass="text-textDisabled"
             color="light"
             mergeClass="px-0"
+            disabled={isSearching}
           />
-          <Button label="Buscar" mergeClass="px-0" onClick={handleSearch} />
+          <Button
+            label="Buscar"
+            mergeClass="px-0"
+            onClick={handleSearch}
+            loading={isSearching}
+          />
         </div>
       </div>
 

@@ -19,7 +19,7 @@ interface SolicitationsContextProps {
   salePointHook: any;
   dateHook: any;
   solicitationsHook: any;
-  Search: () => void;
+  Search: () => Promise<IAvailVipResponse>;
 }
 
 export const SolicitationsContext = React.createContext(
@@ -103,7 +103,7 @@ export function SolicitationsContextProvider({
     set(CACHE_PATH.SOLICITATION.SOLICITATION_QUERY, {
       ...data,
       companyId: +salePointHook.salePoint,
-      response,
+      solicitation: response,
     });
 
     return response;
