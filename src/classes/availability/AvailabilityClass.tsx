@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import CoreClass from "../core/CoreClass";
-import { Hotels, IAvailResponse, availPayload } from "./DTO/AvailabilityDTO";
+import { Hotels, IAvailResponse, IAvailVipPayload, IAvailVipQuery, IAvailVipResponse, availPayload } from "./DTO/AvailabilityDTO";
 import useAvailabilityHook from "./hook/useAvailabilityHook";
 import { DeleteMethods } from "./methods/delete";
 import { GetMethods } from "./methods/get";
@@ -32,8 +32,7 @@ export default class AvailabilityClass extends CoreClass {
       },
     });
 
-    const filteredHotels = response.hotels
-      .filter((hotel: Hotels) => {
+    const filteredHotels = response.hotels?.filter((hotel: Hotels) => {
         return (
           hotel.roomTypes &&
           hotel.roomTypes.length > 0 &&
@@ -48,6 +47,33 @@ export default class AvailabilityClass extends CoreClass {
     this.hook.setData(response);
     this.setCache(response, true);
     return response;
+  }
+
+  async getAvailVip(query: IAvailVipQuery) {
+    const response = await this.getHttp({
+      method: 'vip',
+      configs: {
+          params: query.query,
+          headers: {
+            'X-Company-Id': query.companyId,
+          },
+      },
+    })
+    return response.data as IAvailVipResponse;
+  }
+
+  async saveAvailVip(query: IAvailVipPayload) {
+    const { companyId } = query;
+    delete query.companyId;
+    const headers = companyId ? { 'X-Company-Id': companyId } : undefined;
+    const response = await this.postHttp({
+      method: 'vip',
+      value: query,
+      configs: {
+        headers: headers,
+      }
+    })
+    return response.data as IAvailVipResponse;
   }
 
   private sortingByAvailability = (a: Hotels, b: Hotels) => {

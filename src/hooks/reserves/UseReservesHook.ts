@@ -1,3 +1,4 @@
+import { IGetBookingResponse } from '@/DTO/reserves/ReservesDTO'
 import { useState } from 'react'
 
 export default function UseReservesHook() {
@@ -25,6 +26,9 @@ export default function UseReservesHook() {
   // Client
   const [client, setClient] = useState<any>()
 
+  // Reserves
+  const [reserves, setReserves] = useState<IGetBookingResponse>()
+
   return {
     statusList,
     statusSelected,
@@ -36,5 +40,7 @@ export default function UseReservesHook() {
     setDateType,
     client,
     setClient,
+    reserves, 
+    setReserves
   }
 }

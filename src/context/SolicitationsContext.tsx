@@ -2,20 +2,24 @@
 
 import {
   IAvailVipQuery,
+  IAvailVipResponse,
   IRequestQuery,
 } from "@/classes/availability/DTO/AvailabilityDTO";
-import UseReservesHook from "@/hooks/reserves/UseReservesHook";
 import UseDateHook from "@/hooks/search/date/UseDateHook";
 import UseSalePointHook from "@/hooks/search/salePoint/UseSalePointHook";
 import UseSolicitationsHook from "@/hooks/solicitations/UseSolicitationsHook";
 import { format } from "date-fns";
-import React from "react";
+import React, { useContext } from "react";
+import { LoggedContext } from "./LoggedContext";
+import { data } from "autoprefixer";
+import { CACHE_PATH } from "@/config/cache";
+import { set } from "@/services/cache";
 
 interface SolicitationsContextProps {
   salePointHook: any;
   dateHook: any;
   solicitationsHook: any;
-  Search: () => void;
+  Search: () => Promise<IAvailVipResponse>;
 }
 
 export const SolicitationsContext = React.createContext(
@@ -27,6 +31,9 @@ export function SolicitationsContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+
+  const { availability, booking } = useContext(LoggedContext);
+
   const salePointHook = UseSalePointHook();
 
   const dateHook = UseDateHook();
@@ -50,8 +57,9 @@ export function SolicitationsContextProvider({
   type BookingDateType = keyof typeof bookingDateType;
 
   async function Search() {
+    let response: IAvailVipResponse
+
     if (solicitationsHook.solicitationSelected === "0") {
-      // faz request no /availability/vip
       let data: IAvailVipQuery | any = {};
 
       data = {
@@ -61,8 +69,10 @@ export function SolicitationsContextProvider({
         },
         companyId: salePointHook.salePoint,
       };
+
+      response = await availability.getAvailVip(data)
+
     } else {
-      // faz request no /bookings/policies/find
       let data: IRequestQuery | any = {};
 
       if (solicitationsHook.locator) {
@@ -85,17 +95,18 @@ export function SolicitationsContextProvider({
             ];
         }
       }
+
+      response = await booking.searchRequesties(data)
+
     }
 
-    // const response = availability.searchAvail(data);
+    set(CACHE_PATH.SOLICITATION.SOLICITATION_QUERY, {
+      ...data,
+      companyId: +salePointHook.salePoint,
+      solicitation: response,
+    });
 
-    //   set(CACHE_PATH.AVAILABILITY.SEARCH_QUERY, {
-    //     ...data,
-    //     companyId: +salePointHook.salePoint,
-    //     hotelCity,
-    //   });
-
-    //   return response;
+    return response;
   }
 
   return (

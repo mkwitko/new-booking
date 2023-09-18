@@ -11,8 +11,8 @@ import { LoggedContext } from "@/context/LoggedContext";
 import { toast } from "react-toastify";
 
 export function useReservationForm() {
-  const { peopleHook, hotelHook, dateHook } = useContext(SearchContext);
-  const { customer, card, booking } = useContext(LoggedContext);
+  const { peopleHook, dateHook } = useContext(SearchContext);
+  const { customer, card, booking, hotels } = useContext(LoggedContext);
 
   const [isBookingCreatedSuccessfully, setIsBookingCreatedSuccessfully] =
     useState<any>(null);
@@ -24,6 +24,7 @@ export function useReservationForm() {
   const { currentHotel, currentRateIndex, currentApartamentIndex } =
     hotels.hook;
   const creditCards = card.hook.data;
+  const { billings } = currentHotel;
   const numberOfGuests = peopleHook.numberOfGuests;
 
   const {
@@ -197,7 +198,7 @@ export function useReservationForm() {
       checkoutDate: dateHook.checkOut,
       rateId: currentHotel.rates[currentRateIndex].id,
       roomTypeId: currentHotel.roomTypes[currentApartamentIndex].id,
-      hotelId: hotelHook.currentHotel.id,
+      hotelId: hotels.hook.currentHotel.id,
       bookingDetails: true,
       consumer: "others",
       forceBooking: true,
@@ -237,25 +238,25 @@ export function useReservationForm() {
     setValue,
     customer,
     register,
+    hotels,
+    isSubmitting,
+    handleChangePurchaseName,
+    displayCardBackside,
+    setDisplayCardBackside,
+    creditCards,
+    disableAllowedExpensesField,
     billings,
-    hotelHook,
     costCenter,
     submitForm,
-    creditCards,
-    isSubmitting,
     handleSubmit,
     numberOfGuests,
     bookingAttributes,
-    displayCardBackside,
     displayGuaranteeForm,
-    setDisplayCardBackside,
     creditCardNameToDisplay,
     displayNewCreditCardForm,
-    handleChangePurchaseName,
     createExpirationDateMask,
     displayIndividualCvvField,
     displayCreditCardNameField,
-    disableAllowedExpensesField,
     handleChangeCreditCardValue,
     isBookingCreatedSuccessfully,
     setIsBookingCreatedSuccessfully,

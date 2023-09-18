@@ -40,7 +40,7 @@ export default class CoreClass {
     url = "",
     configs = {},
   }: {
-    method: string;
+    method?: string;
     url?: string;
     configs?: AxiosRequestConfig;
   }) {

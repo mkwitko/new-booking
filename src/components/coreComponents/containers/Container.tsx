@@ -10,7 +10,7 @@ export default function Container({
   return (
     <div
       className={twMerge(
-        "mx-8 my-12 flex flex-col items-start justify-end sm:mx-8 lg:mx-12 xl:mx-16",
+        "mx-auto px-8 max-w-[1264px] w-full my-12 flex flex-col items-start justify-end overflow-hidden",
         classes,
       )}
     >

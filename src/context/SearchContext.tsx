@@ -15,7 +15,7 @@ import { set } from "@/services/cache";
 import { CACHE_PATH } from "@/config/cache";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
 import useQuotationHook from "@/hooks/search/quotation/useQuotationHook";
-import UseMapHook from "@/hooks/search/map/UseMapHook";
+import UseMapHook from "@/hooks/search/map/useMapHook";
 
 interface SearchContextProps {
   salePointHook: any;
@@ -66,7 +66,6 @@ export function SearchContextProvider({
       companyId: +salePointHook.salePoint,
     };
 
-    //
     if (mapHook.mapLatLng && mapHook.mapLatLng.lat) {
       data.position = {
         latitude: String(mapHook.mapLatLng.lat),

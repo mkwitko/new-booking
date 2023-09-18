@@ -30,8 +30,12 @@ export const CACHE_PATH = {
   },
   BOOKING: {
     DEFAULT: "bookings",
+    BOOKING_QUERY: "booking_query",
   },
   BOOKING_ATTRIBUTES: {
     DEFAULT: "custom-attributes",
+  },
+  SOLICITATION: {
+    SOLICITATION_QUERY: "solicitation_query",
   },
 } as const;
