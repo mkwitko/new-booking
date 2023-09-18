@@ -33,12 +33,11 @@ export default class CardClass extends CoreClass {
   override putMethods = PutMethods;
   override deleteMethods = DeleteMethods;
 
-  async getCards(): Promise<any> {
-    const data = await this.setClass({
-      shouldUpdate: false,
-      customReturn: "cardList",
-    });
-    this.hook.setData(data);
-    return data;
+  async getCustomerCards(customerId: string): Promise<any> {
+    const { cardList, vcnList } = await this.getHttp({
+      url: `cards?customerAlphaId=${customerId}`
+    })
+
+    this.hook.setData([...cardList, ...vcnList]);
   }
 }

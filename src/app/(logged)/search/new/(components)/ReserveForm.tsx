@@ -33,6 +33,7 @@ export function ReserveForm() {
     setDisplayCardBackside,
     register,
     setValue,
+    isSubmitting,
     submitForm,
     handleChangeCreditCardValue,
     displayGuaranteeForm,
@@ -68,7 +69,7 @@ export function ReserveForm() {
 
           <div className="mt-6 grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
             <div className="mt-auto w-full">
-              {customer.hook.data && (
+              {/* {customer.hook.data && (
                 <FormComponents.Combobox
                   items={customer.hook.data}
                   comboBoxValue={watch("customer.name")}
@@ -76,11 +77,23 @@ export function ReserveForm() {
                   costumLabel="name"
                   costumValue="name"
                 />
-              )}
+              )} */}
+
+              <FormComponents.Select.Root onValueChange={handleChangePurchaseName} placeholder="Selecione um cliente">
+                {customer.hook.data && customer.hook.data.map((item: any) => {
+                  return (
+                    <FormComponents.Select.Item 
+                      key={item.alphaId}
+                      text={item.name}
+                      value={item.name}
+                    />
+                  )
+                })}
+              </FormComponents.Select.Root>
 
               {errors.consumer && (
                 <p className="mt-2 text-xs text-red-500">
-                  {errors.consumer?.message}
+                  {errors.customer?.message}
                 </p>
               )}
             </div>

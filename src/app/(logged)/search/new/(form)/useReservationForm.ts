@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 export function useReservationForm() {
   const { peopleHook, dateHook } = useContext(SearchContext);
   const { customer, card, booking, hotels } = useContext(LoggedContext);
+  const { hook: hotelHook } = hotels
 
   const [isBookingCreatedSuccessfully, setIsBookingCreatedSuccessfully] =
     useState<any>(null);
@@ -97,6 +98,7 @@ export function useReservationForm() {
     await Promise.all([
       customer.findBookingAttributes(selectedCustomer?.alphaId),
       customer.findCostCenter(selectedCustomer?.alphaId),
+      card.getCustomerCards(selectedCustomer?.alphaId),
     ]);
 
     setValue("customer", {
@@ -245,6 +247,7 @@ export function useReservationForm() {
     setDisplayCardBackside,
     creditCards,
     disableAllowedExpensesField,
+    hotelHook,
     billings,
     costCenter,
     submitForm,

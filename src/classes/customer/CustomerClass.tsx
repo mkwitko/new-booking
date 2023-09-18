@@ -24,7 +24,9 @@ export default class CustomerClass extends CoreClass {
   }
 
   async findBookingAttributes(customerId: string): Promise<void> {
-    const { data } = await this.getHttp(`${customerId}/booking-attributes`)
+    const { data } = await this.getHttp({
+      url: `customers/${customerId}/booking-attributes`
+    })
     if (data) {
       this.hook.setBookingAttributes(this.treatData(data))
     }
@@ -39,7 +41,9 @@ export default class CustomerClass extends CoreClass {
   }))}
 
   async findCostCenter(customerId: string): Promise<void> {
-    const { data } = await this.getHttp(`${customerId}/cost-center`)
+    const { data } = await this.getHttp({
+      url:`customers/${customerId}/cost-center`
+    })
     this.hook.setCostCenter(data);
   }
 }
