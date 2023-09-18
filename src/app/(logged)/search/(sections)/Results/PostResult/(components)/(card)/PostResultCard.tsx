@@ -1,8 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import {
-  AverageRates,
-  Hotels,
-} from "@/classes/availability/DTO/AvailabilityDTO";
+import { Hotels } from "@/classes/availability/DTO/AvailabilityDTO";
 import Badge from "../Badge";
 import Link from "next/link";
 import Button from "@/components/interactiveComponents/Button";

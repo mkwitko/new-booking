@@ -13,7 +13,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="mt-[70px] flex">
         <LoggedContextProvider>
           <SideBar open={open} setOpen={setOpen} />
-          <div className="w-full sm:ml-16">{children}</div>
+          <div className="w-full sm:ml-16 sm:w-[calc(100%-4rem)]">
+            {children}
+          </div>
         </LoggedContextProvider>
       </div>
     </div>

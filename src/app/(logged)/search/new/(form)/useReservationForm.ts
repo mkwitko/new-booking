@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Schema } from "./schema";
 import { useForm } from "react-hook-form";
@@ -9,16 +9,16 @@ import { SearchContext } from "@/context/SearchContext";
 import { useContext, useState } from "react";
 import { LoggedContext } from "@/context/LoggedContext";
 
-export function useReservationForm() { 
-  const { peopleHook, hotelHook, dateHook } = useContext(SearchContext);
-  const { customer, card, booking } = useContext(LoggedContext)
+export function useReservationForm() {
+  const { peopleHook, dateHook } = useContext(SearchContext);
+  const { customer, card, booking, hotels } = useContext(LoggedContext);
 
   const [displayCardBackside, setDisplayCardBackside] =
-  useState<boolean>(false);
-  
-  const { currentHotel, currentRateIndex, currentApartamentIndex } = hotelHook
-  const creditCards = card.hook.data
-  const { billings } = currentHotel
+    useState<boolean>(false);
+
+  const { currentHotel, currentRateIndex, currentApartamentIndex } =
+    hotels.hook;
+  const creditCards = card.hook.data;
   const numberOfGuests = peopleHook.numberOfGuests;
 
   const {
@@ -31,9 +31,7 @@ export function useReservationForm() {
     resolver: zodResolver(Schema),
   });
 
-  const {
-    createExpirationDateMask,
-  } = useMasks();
+  const { createExpirationDateMask } = useMasks();
 
   const displayCreditCardNameField =
     watch("paymentMethod") === "Cartão de Crédito";
@@ -41,30 +39,32 @@ export function useReservationForm() {
   const displayNewCreditCardForm =
     watch("selectCreditCard") === "Informar Manualmente";
 
-  const displayGuaranteeForm = 
-    watch("paymentMethod") === "Direto ao Hotel"
+  const displayGuaranteeForm = watch("paymentMethod") === "Direto ao Hotel";
 
-  const displayIndividualCvvField = 
-    watch('selectCreditCard') !== 'Informar Manualmente' &&
+  const displayIndividualCvvField =
+    watch("selectCreditCard") !== "Informar Manualmente" &&
     watch("paymentMethod") === "Cartão de Crédito";
 
   const creditCardExpirationDateToDisplay = watch("creditCard.plain.expireDate")
-    ? createExpirationDateMask(watch("creditCard.plain.expireDate")) ||
-      ""
+    ? createExpirationDateMask(watch("creditCard.plain.expireDate")) || ""
     : "";
 
   const creditCardNameToDisplay = watch("creditCard.plain.cardHolder")
-  ? watch("creditCard.plain.cardHolder")?.toUpperCase()
-  : "";
+    ? watch("creditCard.plain.cardHolder")?.toUpperCase()
+    : "";
 
   async function submitForm(values: ReservationFormSchema) {
-    let objectToSubmit: any = {...values};
-    delete objectToSubmit.paymentMethod
-    delete objectToSubmit.selectCreditCard
+    let objectToSubmit: any = { ...values };
+    delete objectToSubmit.paymentMethod;
+    delete objectToSubmit.selectCreditCard;
 
     if (values.creditCard && values.creditCard.plain) {
-      const { month, year } = getExpireMonthAndExpireYear(values.creditCard.plain.expireDate!);
-      const cardBrand = defineCreditCardBrand(values.creditCard.plain.cardNumber!);
+      const { month, year } = getExpireMonthAndExpireYear(
+        values.creditCard.plain.expireDate!,
+      );
+      const cardBrand = defineCreditCardBrand(
+        values.creditCard.plain.cardNumber!,
+      );
 
       objectToSubmit = {
         ...objectToSubmit,
@@ -76,9 +76,9 @@ export function useReservationForm() {
             expireMonth: month,
             expireYear: year,
             cardBrand,
-          }
-        }
-      }
+          },
+        },
+      };
     }
 
     if (values.creditCard.tokenized) {
@@ -87,8 +87,8 @@ export function useReservationForm() {
         creditCard: {
           tokenized: values.creditCard.tokenized,
           cardCVV: values.creditCard.cardCVV,
-        }
-      }
+        },
+      };
     }
 
     objectToSubmit = {
@@ -97,20 +97,20 @@ export function useReservationForm() {
       checkoutDate: dateHook.checkOut,
       rateId: currentHotel.rates[currentRateIndex].id,
       roomTypeId: currentHotel.roomTypes[currentApartamentIndex].id,
-      hotelId: hotelHook.currentHotel.id,
+      hotelId: hotels.hook.currentHotel.id,
       bookingDetails: true,
-      consumer: 'others',
+      consumer: "others",
       forceBooking: true,
       adultGuestCount: peopleHook.numberOfGuests,
       guests: values.guests.map((guest) => {
         return {
           ...guest,
-          ageGroup: 'ADULT',
-        }
-      })
-    }
+          ageGroup: "ADULT",
+        };
+      }),
+    };
 
-    await booking.createBooking(objectToSubmit)
+    await booking.createBooking(objectToSubmit);
   }
 
   function handleChangePurchaseName(value: string) {
@@ -130,8 +130,8 @@ export function useReservationForm() {
     return {
       month,
       year,
-    }
-  }
+    };
+  };
 
   const defineCreditCardBrand = (cardNumber: string) => {
     const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/;
@@ -140,28 +140,28 @@ export function useReservationForm() {
 
     if (visaRegex.test(cardNumber)) {
       return {
-        code: 'VI',
-      }
+        code: "VI",
+      };
     }
 
     if (mastercardRegex.test(cardNumber)) {
       return {
-        code: 'MC',
-      }
+        code: "MC",
+      };
     }
 
     if (americanExpressRegex.test(cardNumber)) {
       return {
-        code: 'AX',
-      }
+        code: "AX",
+      };
     }
 
     return {
-      code: 'VI',
-    }
-  }
+      code: "VI",
+    };
+  };
 
-  const disableAllowedExpensesField = displayGuaranteeForm
+  const disableAllowedExpensesField = displayGuaranteeForm;
 
   return {
     watch,
@@ -171,14 +171,12 @@ export function useReservationForm() {
     submitForm,
     handleSubmit,
     customer,
-    hotelHook,
     isSubmitting,
     handleChangePurchaseName,
     displayCardBackside,
     setDisplayCardBackside,
     creditCards,
     disableAllowedExpensesField,
-    billings,
     numberOfGuests,
     displayGuaranteeForm,
     creditCardNameToDisplay,

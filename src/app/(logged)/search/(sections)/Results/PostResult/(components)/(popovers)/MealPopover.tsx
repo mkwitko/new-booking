@@ -1,23 +1,26 @@
-import { getMealIncludedValue } from '@/app/(logged)/search/(utils)/MealIncluded'
-import { Hotels } from '@/classes/availability/DTO/AvailabilityDTO'
-import Image from 'next/image'
-import { useState } from 'react'
+import { getMealIncludedValue } from "@/app/(logged)/search/(utils)/MealIncluded";
+import { Hotels } from "@/classes/availability/DTO/AvailabilityDTO";
+import Image from "next/image";
+import { useState } from "react";
 import {
   B2BPopover,
   B2BPopoverContent,
   B2BPopoverTrigger,
-} from '@/components/nonInteractiveComponents/Popover'
+} from "@/components/nonInteractiveComponents/Popover";
 
 export default function MealPopover({
   hotel,
   mealTitle = false,
+  rateIndex = 0,
 }: {
-  hotel: Hotels
-  mealTitle?: boolean
+  hotel: Hotels;
+  mealTitle?: boolean;
+  rateIndex?: number;
 }) {
-  const [mealPopover, setMealPopover] = useState(false)
+  const [mealPopover, setMealPopover] = useState(false);
   const mealIncluded =
-    hotel.rates && getMealIncludedValue(hotel.rates[0].mealIncluded.code)
+    hotel.rates &&
+    getMealIncludedValue(hotel.rates[rateIndex].mealIncluded.code);
   return (
     mealIncluded && (
       <>
@@ -26,10 +29,10 @@ export default function MealPopover({
             <button
               type="button"
               onMouseEnter={() => {
-                if (!mealTitle) setMealPopover(true)
+                if (!mealTitle) setMealPopover(true);
               }}
               onMouseLeave={() => {
-                if (!mealTitle) setMealPopover(false)
+                if (!mealTitle) setMealPopover(false);
               }}
             >
               <div className="flex items-center gap-2">
@@ -41,7 +44,7 @@ export default function MealPopover({
                   />
                 </div>
                 {mealTitle && (
-                  <p className="hidden sm:block text-small font-[400] capitalize text-textPrimary">
+                  <p className="hidden text-small font-[400] capitalize text-textPrimary sm:block">
                     {mealIncluded.name.toLowerCase()}
                   </p>
                 )}
@@ -54,5 +57,5 @@ export default function MealPopover({
         </B2BPopover>
       </>
     )
-  )
+  );
 }

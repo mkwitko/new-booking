@@ -194,9 +194,9 @@ export default function Page() {
               index="left"
             />
             <CardDate
-              day={dateHook?.checkInDay || new Date().getDate()}
-              month={dateHook?.checkInMonth || "Set"}
-              weekDay={dateHook?.checkInWeekDay || "seg"}
+              day={dateHook?.checkOutDay || new Date().getDate()}
+              month={dateHook?.checkOutMonth || "Set"}
+              weekDay={dateHook?.checkOutWeekDay || "seg"}
               index="right"
             />
           </div>
@@ -247,7 +247,12 @@ export default function Page() {
                 key={item.roomTypeId}
               />
             ) : (
-              <PostLineResult room={item} key={item.roomTypeId} />
+              <PostLineResult
+                hotel={hotels.hook.currentHotel}
+                room={item}
+                roomIndex={i}
+                key={item.roomTypeId}
+              />
             );
           })}
         </div>

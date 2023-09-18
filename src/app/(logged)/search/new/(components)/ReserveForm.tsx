@@ -22,9 +22,7 @@ export function ReserveForm() {
   const {
     errors,
     watch,
-    hotelHook,
     handleSubmit,
-    isSubmitting,
     numberOfGuests,
     register,
     setValue,

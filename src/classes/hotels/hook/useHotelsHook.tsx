@@ -10,8 +10,6 @@ export default function useHotelHook() {
     get(CACHE_PATH.USER_INTERACTION.CURRENT_HOTEL) || null,
   );
 
-  console.log("current hotel - ", currentHotel);
-
   const [currentApartamentIndex, setCurrentApartamentIndex] = useState<number>(
     +get(CACHE_PATH.USER_INTERACTION.CURRENT_APARTAMENT_INDEX) || 0,
   );
