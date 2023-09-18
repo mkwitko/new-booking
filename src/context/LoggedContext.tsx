@@ -59,7 +59,7 @@ export function LoggedContextProvider({
     user.getAgenciesStores();
     locale.getLocales();
     customer.getCustomers();
-    // card.getCards();
+    card.getCards();
   }, []);
 
   return (

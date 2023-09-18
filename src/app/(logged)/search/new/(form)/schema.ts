@@ -24,11 +24,17 @@ export const Schema = z
       }),
     ),
 
+    // customFields: z.array(z.object({
+    //   value: z.string().nullable().default(null).optional(),
+    //   field: z.string().nullable().default(null).optional(),
+    // }).nullable().default(null).optional()),
+
     paymentMethod: z.string({ required_error: 'O método de pagamento é obrigatório' }).nonempty('O método de pagamento é obrigatório'),
     selectCreditCard: z.string({ required_error: 'Selecione um cartão de crédito' }).nullable().default(null).optional(),
 
     creditCard: z.object({
-      cardCVV: z.string().nonempty('O CVV é obrigatório').min(3, 'O CVV é inválido').max(4, 'O CVV é inválido').optional(),
+      rcnToken: z.string().nullable().default(null).optional(),
+      cardCVV: z.string().nullable().default(null).optional(),
       tokenized: z.string().nullable().default(null).optional(),
       plain: z.object({
         cardHolder: z.string().nullable().default(null).optional(),
@@ -63,8 +69,25 @@ export const Schema = z
         })
       }
     })
+    if ((value.paymentMethod === 'Cartão de Crédito') && (!value.creditCard.rcnToken)) {
+      if (!value.creditCard.cardCVV || value.creditCard.cardCVV === '') {
+        context.addIssue({
+          code: 'custom',
+          message: 'O CVV é obrigatório',
+          path: ['creditCard', 'plain', 'cardCVV'],
+        })
+      }
+    }
 
     if ((value.paymentMethod === 'Cartão de Crédito' && value.selectCreditCard === 'Informar Manualmente') || value.paymentMethod === 'Direto ao Hotel') {
+      if (!value.creditCard.cardCVV || value.creditCard.cardCVV === '') {
+        context.addIssue({
+          code: 'custom',
+          message: 'O CVV é obrigatório',
+          path: ['creditCard', 'plain', 'cardCVV'],
+        })
+      }
+
       if (!value.creditCard?.plain?.cardHolder) {
         context.addIssue({
           code: 'custom',
@@ -117,7 +140,7 @@ export const Schema = z
       }
     }
 
-    if (value.paymentMethod === 'Cartão de Crédito' && value.selectCreditCard !== 'Informar Manualmente') {
+    if (value.paymentMethod === 'Cartão de Crédito' && value.selectCreditCard !== 'Informar Manualmente' && !value.creditCard.rcnToken) {
       if (!value.creditCard.tokenized) {
         context.addIssue({
           code: 'custom',

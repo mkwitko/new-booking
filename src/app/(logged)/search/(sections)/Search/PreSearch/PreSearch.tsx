@@ -97,8 +97,8 @@ export default function PreSearch({
           mergeClass="xl:max-w-[25%]"
         >
           <B2BDatePicker
-            checkIn={checkIn}
-            setCheckIn={checkOut}
+            checkIn={dateHook.checkIn}
+            setCheckIn={dateHook.setCheckIn}
             checkOut={dateHook.checkOut}
             setCheckOut={dateHook.setCheckOut}
           />

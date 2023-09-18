@@ -22,4 +22,24 @@ export default class CustomerClass extends CoreClass {
     this.hook.setData(data);
     return data;
   }
+
+  async findBookingAttributes(customerId: string): Promise<void> {
+    const { data } = await this.getHttp(`${customerId}/booking-attributes`)
+    if (data) {
+      this.hook.setBookingAttributes(this.treatData(data))
+    }
+  }
+
+  treatData(data: any) { 
+    return data.map((item: any) => ({
+    fieldName: item.attributeDescription,
+    required: item.mandatory,
+    type: item.bookingAttributesDomain.type,
+    options: item.validation ? [...item.validation] : null,
+  }))}
+
+  async findCostCenter(customerId: string): Promise<void> {
+    const { data } = await this.getHttp(`${customerId}/cost-center`)
+    this.hook.setCostCenter(data);
+  }
 }

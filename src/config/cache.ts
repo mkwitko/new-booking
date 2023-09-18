@@ -31,4 +31,7 @@ export const CACHE_PATH = {
   BOOKING: {
     DEFAULT: "bookings",
   },
+  BOOKING_ATTRIBUTES: {
+    DEFAULT: "custom-attributes",
+  },
 } as const;

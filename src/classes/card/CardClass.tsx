@@ -7,6 +7,21 @@ import { PutMethods } from "./methods/put";
 
 import useCardHook from "./hook/useCardHook";
 
+type CardListType = {
+  brand: string;
+  cardNumber: string;
+  entity: string;
+  lastModified: string;
+  tokenized: string;
+  typecard: string;
+};
+
+type VcnList = {
+  rcnToken: string;
+  typecard: string;
+  entity: string;
+};
+
 export default class CardClass extends CoreClass {
   override url = "cards";
   override cachePath = this.CACHE_PATH.CARDS.DEFAULT;
