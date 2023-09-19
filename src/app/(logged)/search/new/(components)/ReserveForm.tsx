@@ -1,5 +1,6 @@
 "use client";
 
+import { useContext } from "react";
 import WhiteBox from "@/components/coreComponents/containers/WhiteBox";
 import * as FormComponents from "@/components/formComponents";
 import { useReservationForm } from "../(form)/useReservationForm";
@@ -14,28 +15,25 @@ import B2BButton from "@/components/interactiveComponents/Button";
 
 import Link from "next/link";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { LoggedContext } from "@/context/LoggedContext";
 
 export function ReserveForm() {
   const {
     errors,
     watch,
     costCenter,
-    hotelHook,
     handleSubmit,
     numberOfGuests,
-    customer,
     billings,
     creditCards,
     disableAllowedExpensesField,
     displayCardBackside,
-    handleChangePurchaseName,
     isBookingCreatedSuccessfully,
     setDisplayCardBackside,
     register,
     setValue,
     isSubmitting,
     submitForm,
-    handleChangeCreditCardValue,
     displayGuaranteeForm,
     displayNewCreditCardForm,
     displayIndividualCvvField,
@@ -48,6 +46,49 @@ export function ReserveForm() {
   } = useReservationForm();
 
   console.log(errors);
+
+  const { customer, card, booking, hotels } = useContext(LoggedContext);
+
+  function resetCreditCardValues() {
+    setValue("creditCard", {
+      plain: null,
+      cardCVV: null,
+      rcnToken: null,
+      tokenized: null,
+    });
+  }
+
+  function handleChangeCreditCardValue(value: string) {
+    resetCreditCardValues();
+    if (value === "Informar Manualmente") {
+      setValue("selectCreditCard", "Informar Manualmente");
+    } else {
+      setValue("selectCreditCard", value);
+
+      if (value.includes("token")) {
+        setValue("creditCard.tokenized", value.split("-")[1]);
+      } else {
+        setValue("creditCard.rcnToken", value.split("-")[1]);
+      }
+    }
+  }
+
+  async function handleChangePurchaseName(value: string) {
+    const selectedCustomer = customer.hook.data?.find(
+      (customer: any) => customer.name === value,
+    );
+
+    await Promise.all([
+      customer.findBookingAttributes(selectedCustomer?.alphaId),
+      customer.findCostCenter(selectedCustomer?.alphaId),
+      card.getCustomerCards(selectedCustomer?.alphaId),
+    ]);
+
+    setValue("customer", {
+      id: selectedCustomer?.alphaId,
+      name: selectedCustomer?.name,
+    });
+  }
 
   return (
     <>
@@ -237,7 +278,7 @@ export function ReserveForm() {
                 setValue("paymentMethod", value);
               }}
             >
-              {PaymentMethods.map((method) => (
+              {PaymentMethods.map((method: any) => (
                 <FormComponents.Select.Item
                   key={method}
                   text={method}
@@ -473,7 +514,7 @@ export function ReserveForm() {
           <Link href="/search">
             <B2BButton
               onClick={() => {
-                hotelHook.resetCurrentHotel();
+                hotels.hook.resetCurrentHotel();
               }}
               label="Descartar"
               color="disabled"

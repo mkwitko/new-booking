@@ -1,6 +1,14 @@
-import { Hotels, RoomType } from '@/classes/availability/DTO/AvailabilityDTO'
-import { fCurrency } from '@/utils/FinanceUtil'
-import { twMerge } from 'tailwind-merge'
+import { Hotels, RoomType } from "@/classes/availability/DTO/AvailabilityDTO";
+import { fCurrency } from "@/utils/FinanceUtil";
+import { twMerge } from "tailwind-merge";
+
+interface AmountBeforeTaxProps {
+  hotel?: Hotels;
+  room?: RoomType;
+  roomIndex?: number;
+  rateIndex?: number;
+  mergeClasses?: string;
+}
 
 export default function AmountBeforeTax({
   hotel,
@@ -8,18 +16,12 @@ export default function AmountBeforeTax({
   roomIndex = 0,
   rateIndex = 0,
   mergeClasses,
-}: {
-  hotel?: Hotels
-  room?: RoomType
-  roomIndex?: number
-  rateIndex?: number
-  mergeClasses?: string
-}) {
-  const classes = 'text-small text-textSecondary font-[400]'
+}: AmountBeforeTaxProps) {
+  const classes = "text-small text-textSecondary font-[400]";
   const condition = hotel
     ? hotel.roomTypes[roomIndex].averageRates[rateIndex].totalAmountAfterTax
-    : room!.averageRates[rateIndex].totalAmountAfterTax
-  const text = fCurrency(condition)
+    : room!.averageRates[rateIndex].totalAmountAfterTax;
+  const text = fCurrency(condition);
   return (
     condition > 0 && (
       <p
@@ -28,5 +30,5 @@ export default function AmountBeforeTax({
         {text} por diária
       </p>
     )
-  )
+  );
 }

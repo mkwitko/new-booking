@@ -23,8 +23,6 @@ export default function ConfirmationDialog({
 
   if (!content) return null;
 
-  console.log(content)
-
   return (
     <Modal.Modal open={open} setOpen={setOpen}>
       <Modal.ModalContent mergeClasses="-translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 flex flex-col gap-0 max-w-[90%] md:max-w-[750px] p-0 z-[60] overflow-hidden rounded-b2b">

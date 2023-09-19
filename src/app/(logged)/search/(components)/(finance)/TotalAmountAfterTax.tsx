@@ -2,17 +2,19 @@ import { Hotels, RoomType } from "@/classes/availability/DTO/AvailabilityDTO";
 import { fCurrency } from "@/utils/FinanceUtil";
 import { findRate } from "../../(utils)/Rates";
 
+interface TotalAmountAfterTaxProps {
+  hotel: Hotels;
+  room?: RoomType;
+  roomIndex?: number;
+  rateIndex?: number;
+}
+
 export default function TotalAmountAfterTax({
   hotel,
   room,
   roomIndex = 0,
   rateIndex = 0,
-}: {
-  hotel: Hotels;
-  room?: RoomType;
-  roomIndex?: number;
-  rateIndex?: number;
-}) {
+}: TotalAmountAfterTaxProps) {
   const comissioned = findRate(hotel, roomIndex, rateIndex)?.commissioned;
   const condition = hotel
     ? hotel.roomTypes[roomIndex].averageRates[rateIndex].totalAmountAfterTax

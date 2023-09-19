@@ -66,47 +66,6 @@ export function useReservationForm() {
     ? creditCardCurrentValue?.plain?.cardHolder?.toUpperCase()
     : "";
 
-  function handleChangeCreditCardValue(value: string) {
-    resetCreditCardValues();
-    if (value === "Informar Manualmente") {
-      setValue("selectCreditCard", "Informar Manualmente");
-    } else {
-      setValue("selectCreditCard", value);
-
-      if (value.includes("token")) {
-        setValue("creditCard.tokenized", value.split("-")[1]);
-      } else {
-        setValue("creditCard.rcnToken", value.split("-")[1]);
-      }
-    }
-  }
-
-  function resetCreditCardValues() {
-    setValue("creditCard", {
-      plain: null,
-      cardCVV: null,
-      rcnToken: null,
-      tokenized: null,
-    });
-  }
-
-  async function handleChangePurchaseName(value: string) {
-    const selectedCustomer = customer.hook.data?.find(
-      (customer: any) => customer.name === value,
-    );
-
-    await Promise.all([
-      customer.findBookingAttributes(selectedCustomer?.alphaId),
-      customer.findCostCenter(selectedCustomer?.alphaId),
-      card.getCustomerCards(selectedCustomer?.alphaId),
-    ]);
-
-    setValue("customer", {
-      id: selectedCustomer?.alphaId,
-      name: selectedCustomer?.name,
-    });
-  }
-
   const getExpireMonthAndExpireYear = (expireDate: string) => {
     const [month, year] = expireDate.split("/");
 
@@ -240,27 +199,24 @@ export function useReservationForm() {
     setValue,
     customer,
     register,
-    hotels,
-    isSubmitting,
-    handleChangePurchaseName,
-    displayCardBackside,
-    setDisplayCardBackside,
-    creditCards,
-    disableAllowedExpensesField,
-    hotelHook,
     billings,
+    hotelHook,
     costCenter,
     submitForm,
+    creditCards,
     handleSubmit,
+    isSubmitting,
     numberOfGuests,
     bookingAttributes,
+    displayCardBackside,
     displayGuaranteeForm,
+    setDisplayCardBackside,
     creditCardNameToDisplay,
     displayNewCreditCardForm,
     createExpirationDateMask,
     displayIndividualCvvField,
     displayCreditCardNameField,
-    handleChangeCreditCardValue,
+    disableAllowedExpensesField,
     isBookingCreatedSuccessfully,
     setIsBookingCreatedSuccessfully,
     creditCardExpirationDateToDisplay,

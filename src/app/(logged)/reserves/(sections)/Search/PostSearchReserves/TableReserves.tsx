@@ -85,7 +85,7 @@ export default function TableReserves() {
               detailBtn
               showExport={false}
               hasCheckbox={false}
-              tableContainerSx={{ maxHeight: 440, maxWidth: 1150, minWidth: 1150 }}
+              tableContainerSx={{ maxHeight: 440, maxWidth: 1150, width: '100%' }}
               labels={{
                 export: "Exportar",
                 filter: "Filtrar",

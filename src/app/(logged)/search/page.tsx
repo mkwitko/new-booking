@@ -41,9 +41,7 @@ export default function Search() {
         />
       </WhiteBox>
       {hasSearched && <PostResult />}
-      {hasSearched && searchingResult.hotels?.length > 0 ? (
-        <></>
-      ) : (
+      {hasSearched && searchingResult.hotels?.length > 0 && (
         <FeedbackSearch
           type={getFeedbackSearchType()}
           complementaryText={`${

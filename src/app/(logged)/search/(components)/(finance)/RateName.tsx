@@ -2,6 +2,15 @@ import { Hotels, RoomType } from "@/classes/availability/DTO/AvailabilityDTO";
 import { findRateName } from "../../(utils)/Rates";
 import { twMerge } from "tailwind-merge";
 
+interface RateNameProps  {
+  hotel: Hotels;
+  room?: RoomType;
+  roomIndex?: number;
+  rateIndex?: number;
+  rateId?: number;
+  mergeClasses?: string;
+}
+
 export default function RateName({
   hotel,
   room,
@@ -9,14 +18,7 @@ export default function RateName({
   rateIndex = 0,
   rateId,
   mergeClasses,
-}: {
-  hotel: Hotels;
-  room?: RoomType;
-  roomIndex?: number;
-  rateIndex?: number;
-  rateId?: number;
-  mergeClasses?: string;
-}) {
+}: RateNameProps) {
   const classes =
     "text-small text-end text-textSecondary font-normal capitalize ";
   const text = findRateName(
