@@ -25,10 +25,10 @@ import { Textarea } from "@/components/formComponents";
 
 export default function TableReserves() {
   const { reservesHook } = useContext(ReservesContext);
-  const { booking } = useContext(LoggedContext)
+  const { booking } = useContext(LoggedContext);
   const [bookingData, setBookingData] = useState<any>();
   const [openCancelEditModal, setOpenCancelEditModal] = useState(false);
-  const [, setRowsSelected] = useState([]);
+  const [rowsSelected, setRowsSelected] = useState([]);
 
   const { register, control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
@@ -52,10 +52,10 @@ export default function TableReserves() {
 
     try {
       await booking.editBookingRequest(payload);
-      setOpenCancelEditModal(false)
-      toast.success('Solicitação enviada com sucesso!')
-    } catch(error) {
-      toast.error('Erro ao enviar solicitação')
+      setOpenCancelEditModal(false);
+      toast.success("Solicitação enviada com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao enviar solicitação");
     }
   }
 
@@ -78,14 +78,18 @@ export default function TableReserves() {
             </p>
           </div>
 
-          <WhiteBox className="w-full max-w-[1200px] mx-auto overflow-x-auto overflow-y-hidden">
+          <WhiteBox className="mx-auto w-full max-w-[1200px] overflow-x-auto overflow-y-hidden">
             <B2BDatatable
               showOptions
               getRowsSelected={(selected: any) => setRowsSelected(selected)}
               detailBtn
               showExport={false}
               hasCheckbox={false}
-              tableContainerSx={{ maxHeight: 440, maxWidth: 1150, width: '100%' }}
+              tableContainerSx={{
+                maxHeight: 440,
+                maxWidth: 1150,
+                width: "100%",
+              }}
               labels={{
                 export: "Exportar",
                 filter: "Filtrar",
@@ -267,15 +271,13 @@ export default function TableReserves() {
             sx={{ padding: 3 }}
             onSubmit={handleSubmit(prepareRequestCancelEditBooking)}
           >
-            <h4 className="font-medium text-2xl uppercase text-primary-500">
+            <h4 className="text-2xl font-medium uppercase text-primary-500">
               SOLICITAR EDIÇÃO OU CANCELAMENTO
             </h4>
 
             <FormControl fullWidth>
-              <span className="text-base text-textSecondary">
-                Solicitação
-              </span>
-              <Input  
+              <span className="text-base text-textSecondary">Solicitação</span>
+              {/* <Input
                 type="radio"
                 control={control}
                 name="requestType"
@@ -290,11 +292,11 @@ export default function TableReserves() {
                     value: "CANCEL",
                   },
                 ]}
-              />
+              /> */}
             </FormControl>
 
-            <Textarea 
-              register={register('observation')}
+            <Textarea
+              register={register("observation")}
               placeholder="Observações"
               className="mt-4"
             />

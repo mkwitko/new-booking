@@ -1,11 +1,9 @@
-import { CACHE_PATH } from '@/config/cache'
-import { get } from '@/services/cache'
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function useCustomerHook() {
-  const [data, setData] = useState<any>([])
-  const [bookingAttributes, setBookingAttributes] = useState<any>(null)
-  const [costCenter, setCostCenter] = useState<any>(null)
+  const [data, setData] = useState<any>([]);
+  const [bookingAttributes, setBookingAttributes] = useState<any>(null);
+  const [costCenter, setCostCenter] = useState<any>(null);
 
   return {
     data,
@@ -14,5 +12,5 @@ export default function useCustomerHook() {
     setBookingAttributes,
     costCenter,
     setCostCenter,
-  }
+  };
 }

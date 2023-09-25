@@ -2,8 +2,6 @@ import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
-import { twMerge } from "tailwind-merge";
-
 interface CheckboxProps extends ComponentProps<"input"> {
   label?: string;
   register?: UseFormRegisterReturn<string>;

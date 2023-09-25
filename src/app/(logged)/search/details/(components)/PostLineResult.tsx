@@ -29,8 +29,6 @@ export default function PostLineResult({
   const { hotels } = useContext(LoggedContext);
   const [displayAllOption, setDisplayAllOption] = useState(false);
 
-  console.log("room - ", room);
-
   return (
     <div
       className="flex w-full flex-col items-center rounded-b2b border border-borderColor/20 bg-white px-6 py-4"

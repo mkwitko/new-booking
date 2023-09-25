@@ -14,17 +14,18 @@ import { useContext, useState } from "react";
 import { SearchContext } from "@/context/SearchContext";
 import { BiSolidAddToQueue } from "react-icons/bi";
 import { MdOutlinePlaylistRemove } from "react-icons/md";
-import { integratedSistems } from "@/utils/IntegratedSystems";
 import { LoggedContext } from "@/context/LoggedContext";
 import * as B2BModal from "@/components/nonInteractiveComponents/Modal";
 import AvailVip from "../(AvailVip)/AvailVip";
+import { integratedSistems } from "@/utils/integratedSystem";
 
 export default function PostResultCard({ hotel }: { hotel: Hotels }) {
   const { hotels } = useContext(LoggedContext);
   const { quotationHook } = useContext(SearchContext);
   const image = `${process.env.NEXT_PUBLIC_HOTEL_IMAGES_URL}${hotel?.exteriorViewImageURL}`;
   const imageToShow = image || "icons/withoutResult.svg";
-  const [openModalSolicitationVip, setOpenModalSolicitationVip] = useState(false);
+  const [openModalSolicitationVip, setOpenModalSolicitationVip] =
+    useState(false);
 
   return (
     <div className="flex h-[35rem] flex-col justify-around rounded-b2b border border-borderColor/20 bg-white p-4">
@@ -111,14 +112,6 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
               </button>
             </div>
           </div>
-          {/* {currencyRates.rates && findRate && (
-              <p className="text-small">
-                {fCurrency(
-                  hotel.roomTypes[0].averageRates[0].totalAmountAfterTaxBase,
-                  findRate.currencyCode
-                )}
-              </p>
-            )} */}
         </>
         <div className="mt-2 w-full">
           {hotel.roomTypes[0].availability === "PUB" ? (
@@ -152,8 +145,8 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
           ) : (
             <Button
               onClick={() => {
-                  hotels.hook.handleSetCurrentHotel(hotel);
-                  setOpenModalSolicitationVip(true)
+                hotels.hook.handleSetCurrentHotel(hotel);
+                setOpenModalSolicitationVip(true);
               }}
               color="outlined"
               label="Solicitar"
@@ -162,12 +155,14 @@ export default function PostResultCard({ hotel }: { hotel: Hotels }) {
         </div>
       </div>
 
-      <B2BModal.Modal open={openModalSolicitationVip} setOpen={setOpenModalSolicitationVip}>
+      <B2BModal.Modal
+        open={openModalSolicitationVip}
+        setOpen={setOpenModalSolicitationVip}
+      >
         <B2BModal.ModalContent mergeClasses="-translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 max-w-[40rem] h-[38rem] rounded-lg px-4">
           <AvailVip setOpen={setOpenModalSolicitationVip} />
         </B2BModal.ModalContent>
       </B2BModal.Modal>
-
     </div>
   );
 }

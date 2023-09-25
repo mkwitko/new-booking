@@ -40,22 +40,10 @@ export default function UseQuotationHook() {
           "icons/withoutResult.svg",
         hotelAddress: hotel.location.address,
         occupancy: hotel.roomTypes[roomIndex].maxOccupancy,
-
         rate: hotel.roomTypes[roomIndex].averageRates[rateIndex],
-        // checked: true,
         roomName: hotel.roomTypes[roomIndex].description,
       };
 
-      /* 
- averageRates: rate[rateIndex],
-          hotelName,
-          roomName,
-          availability,
-          rateId: `${roomName}-${rate[rateIndex].rateId}`,
-          hotelImg: `${hotelImagePath}${hotelImg}` || withoutResult,
-          hotelAddress,
-          occupancy,
-      */
       const toAdd = prev ? [...prev, obj] : [obj];
       return toAdd;
     });

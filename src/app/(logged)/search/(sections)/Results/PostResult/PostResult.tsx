@@ -56,23 +56,25 @@ export default function PostResult() {
 
         {/* Alterar visualização */}
         <div className="flex gap-4">
-          <button
-            onClick={() => {
-              //   rate.setSelectedRates([]);
-              setCardShowing(!cardShowing);
-            }}
-            type="button"
-          >
-            <div className="relative h-4 w-4 md:h-6 md:w-6">
-              <Image
-                fill
-                src={`/icons${
-                  !cardShowing ? "/viewList.svg" : "/viewCard.svg"
-                }`}
-                alt="Change between card and list view"
-              />
-            </div>
-          </button>
+          <div className="relative flex items-center">
+            <div className="absolute h-full w-full animate-ping rounded-full bg-primary-200 p-2 opacity-25"></div>
+            <button
+              onClick={() => {
+                setCardShowing(!cardShowing);
+              }}
+              type="button"
+            >
+              <div className="relative h-4 w-4 md:h-6 md:w-6">
+                <Image
+                  fill
+                  src={`/icons${
+                    !cardShowing ? "/viewList.svg" : "/viewCard.svg"
+                  }`}
+                  alt="Change between card and list view"
+                />
+              </div>
+            </button>
+          </div>
         </div>
       </div>
 

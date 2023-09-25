@@ -1,1 +1,3 @@
-export enum GetMethods {}
+export enum GetMethods {
+  "policiesFind" = "policies/find",
+}

@@ -1,24 +1,24 @@
-import { CACHE_PATH } from '@/config/cache'
-import CardDate from './components/CardDate'
-import { get } from '@/services/cache'
-import { useContext } from 'react'
-import { SearchContext } from '@/context/SearchContext'
+import { CACHE_PATH } from "@/config/cache";
+import CardDate from "./components/CardDate";
+import { get } from "@/services/cache";
+import { useContext } from "react";
+import { SearchContext } from "@/context/SearchContext";
 
-import { BiSolidBed, BiFilter } from 'react-icons/bi'
-import { GiPerson } from 'react-icons/gi'
-import { ImLocation } from 'react-icons/im'
-import { availPayload } from '@/classes/availability/DTO/AvailabilityDTO'
-import { localeCitiesData } from '@/classes/locales/DTO/LocaleDTO'
+import { BiSolidBed, BiFilter } from "react-icons/bi";
+import { GiPerson } from "react-icons/gi";
+import { ImLocation } from "react-icons/im";
+import { availPayload } from "@/classes/availability/DTO/AvailabilityDTO";
+import { localeCitiesData } from "@/classes/locales/DTO/LocaleDTO";
 
 export default function PostSearch({
   setHasSearched,
 }: {
-  setHasSearched: any
+  setHasSearched: any;
 }) {
   const searchingQuery: availPayload & {
-    hotelCity: localeCitiesData
-  } = get(CACHE_PATH.AVAILABILITY.SEARCH_QUERY)
-  const { roomsHook, peopleHook, dateHook } = useContext(SearchContext)
+    hotelCity: localeCitiesData;
+  } = get(CACHE_PATH.AVAILABILITY.SEARCH_QUERY);
+  const { roomsHook, peopleHook, dateHook } = useContext(SearchContext);
 
   return (
     <div
@@ -44,19 +44,19 @@ export default function PostSearch({
         />
       </div>
       <div
-        className="flex flex-wrap items-center justify-center gap-4 text-primary
-      md:justify-start text-small md:text-[1rem]"
+        className="flex flex-wrap items-center justify-center gap-4 text-small
+      text-primary md:justify-start md:text-[1rem]"
       >
         <div className="flex items-center gap-2">
-          <BiSolidBed className="h-4 w-4  md:h-5 md:w-5" />
+          <BiSolidBed className="h-4 w-4 md:h-5 md:w-5" />
           <p>{roomsHook.textRoom}</p>
         </div>
         <div className="flex items-center gap-2">
-          <GiPerson className="h-4 w-4  md:h-5 md:w-5" />
+          <GiPerson className="h-4 w-4 md:h-5 md:w-5" />
           <p>{peopleHook.textAdult}</p>
         </div>
         <div className="flex items-center gap-2 capitalize">
-          <ImLocation className="h-4 w-4  md:h-5 md:w-5" />
+          <ImLocation className="h-4 w-4 md:h-5 md:w-5" />
           <p>{`${searchingQuery.hotelCity.cityName.toLowerCase()}, ${
             searchingQuery.hotelCity.stateSymbol
           }`}</p>
@@ -69,7 +69,7 @@ export default function PostSearch({
         <Filter setHasSearched={setHasSearched} />
       </div>
     </div>
-  )
+  );
 }
 
 const Filter = ({ setHasSearched }: any) => {
@@ -78,16 +78,16 @@ const Filter = ({ setHasSearched }: any) => {
       type="button"
       onClick={() =>
         setHasSearched((prevState: boolean) => {
-          return !prevState
+          return !prevState;
         })
       }
     >
       <span className="flex flex-row items-center">
-        <p className="mr-1 font-light text-textSecondary hidden lg:block">
+        <p className="mr-1 hidden font-light text-textSecondary lg:block">
           Clique para abrir o filtro
         </p>
-        <BiFilter className='w-6 h-6' />
+        <BiFilter className="h-6 w-6" />
       </span>
     </button>
-  )
-}
+  );
+};

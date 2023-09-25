@@ -15,7 +15,7 @@ import { set } from "@/services/cache";
 import { CACHE_PATH } from "@/config/cache";
 import UseCityHook from "@/hooks/search/city/UseCityHook";
 import useQuotationHook from "@/hooks/search/quotation/useQuotationHook";
-import UseMapHook from "@/hooks/search/map/useMapHook";
+import UseMapHook from "@/hooks/search/map/UseMapHook";
 
 interface SearchContextProps {
   salePointHook: any;

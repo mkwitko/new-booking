@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 export function useReservationForm() {
   const { peopleHook, dateHook } = useContext(SearchContext);
   const { customer, card, booking, hotels } = useContext(LoggedContext);
-  const { hook: hotelHook } = hotels
 
   const [isBookingCreatedSuccessfully, setIsBookingCreatedSuccessfully] =
     useState<any>(null);
@@ -25,7 +24,6 @@ export function useReservationForm() {
   const { currentHotel, currentRateIndex, currentApartamentIndex } =
     hotels.hook;
   const creditCards = card.hook.data;
-  const { billings } = currentHotel;
   const numberOfGuests = peopleHook.numberOfGuests;
 
   const {
@@ -194,31 +192,29 @@ export function useReservationForm() {
   const disableAllowedExpensesField = displayGuaranteeForm;
 
   return {
-    watch,
     errors,
-    setValue,
-    customer,
-    register,
-    billings,
-    hotelHook,
+    watch,
     costCenter,
-    submitForm,
-    creditCards,
     handleSubmit,
-    isSubmitting,
     numberOfGuests,
-    bookingAttributes,
+    currentHotel,
+    creditCards,
+    disableAllowedExpensesField,
     displayCardBackside,
-    displayGuaranteeForm,
+    isBookingCreatedSuccessfully,
     setDisplayCardBackside,
-    creditCardNameToDisplay,
+    register,
+    setValue,
+    isSubmitting,
+    submitForm,
+    displayGuaranteeForm,
     displayNewCreditCardForm,
-    createExpirationDateMask,
     displayIndividualCvvField,
     displayCreditCardNameField,
-    disableAllowedExpensesField,
-    isBookingCreatedSuccessfully,
-    setIsBookingCreatedSuccessfully,
+    bookingAttributes,
+    createExpirationDateMask,
+    creditCardNameToDisplay,
     creditCardExpirationDateToDisplay,
+    setIsBookingCreatedSuccessfully,
   };
 }

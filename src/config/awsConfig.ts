@@ -1,18 +1,18 @@
-import { Amplify, Auth } from 'aws-amplify'
+import { Amplify, Auth } from "aws-amplify";
 
 const AWS = {
   api: {
     test: {
-      url: 'https://gwvcj8y7e9.execute-api.us-west-2.amazonaws.com/homolog/emitters',
+      url: "https://gwvcj8y7e9.execute-api.us-west-2.amazonaws.com/homolog/emitters",
     },
   },
   cognito: {
-    appClientId: 'qe617fek7o0k1b4fkb77g3l2h',
-    identityPoolId: '',
-    region: 'us-west-2',
-    userPoolId: 'us-west-2_3JnM0YuLi',
+    appClientId: "qe617fek7o0k1b4fkb77g3l2h",
+    identityPoolId: "",
+    region: "us-west-2",
+    userPoolId: "us-west-2_3JnM0YuLi",
   },
-}
+};
 
 export const AWSConfig = {
   userPoolId: AWS.cognito.userPoolId,
@@ -20,17 +20,19 @@ export const AWSConfig = {
   identityPoolId: AWS.cognito.identityPoolId,
   region: AWS.cognito.region,
   mandatorySignIn: false,
+  //   cookieStorage: {
+  //     domain:
+  //       process.env.NODE_ENV === 'development'
+  //         ? 'localhost'
+  //         : '.b2breservas.com.br',
   cookieStorage: {
-    domain:
-      process.env.NODE_ENV === 'development'
-        ? 'localhost'
-        : '.b2breservas.com.br',
-    path: '/',
+    domain: "localhost",
+    path: "/",
     expires: 1,
     secure: true,
   },
   endpoint: AWS.api.test.url,
-}
+};
 Amplify.configure({
   API: {
     endpoints: [
@@ -41,10 +43,10 @@ Amplify.configure({
             Authorization: (await Auth.currentSession())
               .getIdToken()
               .getJwtToken(),
-          }
+          };
         },
         endpoint: AWS.api.test.url,
-        name: 'test',
+        name: "test",
       },
     ],
   },
@@ -55,13 +57,14 @@ Amplify.configure({
     userPoolId: AWS.cognito.userPoolId,
     userPoolWebClientId: AWS.cognito.appClientId,
     cookieStorage: {
-      domain:
-        process.env.NODE_ENV === 'development'
-          ? 'localhost'
-          : '.b2breservas.com.br',
-      path: '/',
+      //   domain:
+      //     process.env.NODE_ENV === "development"
+      //       ? "localhost"
+      //       : ".b2breservas.com.br",
+      domain: "localhost",
+      path: "/",
       expires: 1,
       secure: true,
     },
   },
-})
+});

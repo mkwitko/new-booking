@@ -20,7 +20,7 @@ export default class UserClass extends CoreClass {
   async getAgenciesStores(): Promise<ISalesPointResponse> {
     const data: ISalesPointResponse = await this.setClass<ISalesPointResponse>({
       shouldUpdate: false,
-      method: this.getMethods["agencies-stores"],
+      method: this.getMethods.agenciesStores,
     });
     this.hook.setData(data);
     return data;

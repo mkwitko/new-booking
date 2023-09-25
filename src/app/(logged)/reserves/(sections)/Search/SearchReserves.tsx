@@ -5,7 +5,7 @@ import Button from "@/components/interactiveComponents/Button";
 import { B2BCombobox } from "@/components/interactiveComponents/ComboBox";
 import { LoggedContext } from "@/context/LoggedContext";
 import { useContext, useState } from "react";
-import * as FomCoponents from "@/components/formComponents";
+import * as FormComponents from "@/components/formComponents";
 import { B2BDatePicker } from "@/components/interactiveComponents/DatePicker";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { ReservesContext } from "@/context/ReservesContext";
@@ -24,7 +24,6 @@ export default function SearchReserves({
 
   const [seeMoreFilters, setSeeMoreFilters] = useState<boolean>(false);
 
-  //   FIXME - Hooks que forem repetidos, vamos passar para o loggedContext
   const {
     salePointHook,
     cityHook,
@@ -35,14 +34,13 @@ export default function SearchReserves({
   } = useContext(ReservesContext);
 
   const handleSearch = () => {
-    setIsSearching(true)
+    setIsSearching(true);
     Search().then((response: any) => {
-      setIsSearching(false)
-      if (response && response?.length > 0)
-        setHasSearched(true)
+      setIsSearching(false);
+      if (response && response?.length > 0) setHasSearched(true);
     });
   };
- 
+
   return (
     <>
       <div
@@ -50,7 +48,7 @@ export default function SearchReserves({
       xl:flex-row"
       >
         <InputContainer label="Localizador">
-          <FomCoponents.Input
+          <FormComponents.Input
             type="number"
             id="locator"
             onChange={(e) => reservesHook.setLocator(e.target.value)}
@@ -127,7 +125,7 @@ export default function SearchReserves({
               options={
                 customerHook.agencyCustomers
                   ? customerHook.agencyCustomers.map(
-                      (prop: customerResponseData, index: number) => ({
+                      (prop: customerResponseData) => ({
                         value: prop.alphaId,
                         label: prop.name,
                       }),
@@ -160,7 +158,7 @@ export default function SearchReserves({
         </div>
       </div>
 
-      <div className="flex w-full justify-center border-t-[0.06rem] border-borderColor">
+      <div className="flex w-full justify-center border-t border-borderColor/20">
         <div className="mt-6 flex cursor-pointer">
           {seeMoreFilters ? (
             <AiOutlineArrowUp className="h-auto w-4 text-primary" />

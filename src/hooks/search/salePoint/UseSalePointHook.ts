@@ -10,6 +10,7 @@ export default function UseSalePointHook() {
   const searchingQuery: availPayload & {
     hotelCity: localeCitiesData;
   } = get(CACHE_PATH.AVAILABILITY.SEARCH_QUERY);
+
   // Sale Point
   const [salePoint, setSalePoint] = useState<string>(
     searchingQuery && searchingQuery.companyId

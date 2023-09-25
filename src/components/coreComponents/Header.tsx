@@ -1,51 +1,51 @@
-'use client'
+"use client";
 
-import logo from '@/assets/b2b/logo.svg'
+import logo from "@/assets/b2b/logo.svg";
 
-import { useState } from 'react'
+import { useState } from "react";
 
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-import { motion as m } from 'framer-motion'
+import { motion as m } from "framer-motion";
 
-import { AiOutlineMenu } from 'react-icons/ai'
-import { BiSolidUser } from 'react-icons/bi'
+import { AiOutlineMenu } from "react-icons/ai";
+import { BiSolidUser } from "react-icons/bi";
 
-import { AuthApi } from '@/services/auth/auth-service'
+import { AuthApi } from "@/services/auth/auth-service";
 
 interface HeaderProps {
-  showRouteIcons: boolean
-  setOpen?: any
+  showRouteIcons: boolean;
+  setOpen?: any;
 }
 
 export default function Header({
   showRouteIcons = false,
   setOpen,
 }: HeaderProps) {
-  const router = useRouter()
+  const router = useRouter();
   const [isLogOutButtonVisible, setIsLogOutButtonVisible] =
-    useState<boolean>(false)
+    useState<boolean>(false);
 
   const handleLogout = async () => {
     try {
-      await logout()
-      router.refresh()
+      await logout();
+      router.refresh();
     } catch (err: any) {
-      console.log(err.message)
+      console.log(err.message);
     }
-  }
+  };
 
-  const { logout } = AuthApi()
+  const { logout } = AuthApi();
 
   function handleOpenLogOutButton() {
-    setIsLogOutButtonVisible(true)
+    setIsLogOutButtonVisible(true);
   }
 
   async function handleCloseLogOutButton() {
     await setTimeout(() => {
-      setIsLogOutButtonVisible(false)
-    }, 100)
+      setIsLogOutButtonVisible(false);
+    }, 100);
   }
 
   return (
@@ -56,7 +56,7 @@ export default function Header({
             <button
               type="button"
               onClick={() => {
-                setOpen((prevState: any) => !prevState)
+                setOpen((prevState: any) => !prevState);
               }}
             >
               <AiOutlineMenu />
@@ -64,7 +64,7 @@ export default function Header({
           )}
           <Image
             src={logo}
-            alt="Hub"
+            alt="Logo"
             width={112}
             height={16}
             className="w-[10rem]"
@@ -86,7 +86,7 @@ export default function Header({
                 onClick={handleLogout}
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ ease: 'easeInOut', duration: 0.1 }}
+                transition={{ ease: "easeInOut", duration: 0.1 }}
                 type="button"
                 className="group absolute right-0 top-8 rounded-b2bSmall bg-white px-6 py-2 shadow-lg transition-colors hover:bg-zinc-200"
               >
@@ -97,5 +97,5 @@ export default function Header({
         )}
       </div>
     </header>
-  )
+  );
 }

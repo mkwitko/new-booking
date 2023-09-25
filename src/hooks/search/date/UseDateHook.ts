@@ -2,22 +2,18 @@ import { availPayload } from "@/classes/availability/DTO/AvailabilityDTO";
 import { localeCitiesData } from "@/classes/locales/DTO/LocaleDTO";
 import { CACHE_PATH } from "@/config/cache";
 import { get } from "@/services/cache";
-import { format } from "date-fns";
+import { isDateValid } from "@/utils/Dateutils";
+import { addDays, format, isAfter } from "date-fns";
 import { useState } from "react";
 
 export default function UseDateHook() {
-  const isDateValid = (date: Date) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date >= today;
-  };
-
   const searchingQuery: availPayload & {
     hotelCity: localeCitiesData;
   } = get(CACHE_PATH.AVAILABILITY.SEARCH_QUERY);
+
   // Checkin and Checkout
-  const checkoutDate = new Date();
-  checkoutDate.setDate(checkoutDate.getDate() + 1);
+  const checkoutDate = addDays(new Date(), 1);
+
   const [checkIn, setCheckIn] = useState<Date>(
     searchingQuery &&
       searchingQuery.checkinDate &&
@@ -28,7 +24,13 @@ export default function UseDateHook() {
   const [checkOut, setCheckOut] = useState<Date>(
     searchingQuery &&
       searchingQuery.checkoutDate &&
-      isDateValid(new Date(searchingQuery.checkoutDate))
+      isDateValid(new Date(searchingQuery.checkoutDate)) &&
+      isAfter(
+        new Date(searchingQuery.checkoutDate).setHours(0, 0, 0, 0),
+        isDateValid(new Date(searchingQuery.checkinDate))
+          ? new Date(searchingQuery.checkinDate).setHours(0, 0, 0, 0)
+          : new Date().setHours(0, 0, 0, 0),
+      )
       ? new Date(searchingQuery.checkoutDate)
       : checkoutDate,
   );

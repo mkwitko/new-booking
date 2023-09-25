@@ -1,1 +1,3 @@
-export enum PostMethods {}
+export enum PostMethods {
+  "vip" = "vip",
+}

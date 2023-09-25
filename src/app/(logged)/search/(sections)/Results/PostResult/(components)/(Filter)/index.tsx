@@ -5,9 +5,7 @@ import * as FormComponents from "@/components/formComponents";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import B2BButton from "@/components/interactiveComponents/Button";
 import { useFilterForm } from "./useFilterForm";
-import { integratedSistems } from "@/utils/IntegratedSystems";
-import { get } from "@/services/cache";
-import { CACHE_PATH } from "@/config/cache";
+import { integratedSistems } from "@/utils/integratedSystem";
 
 export function Filter({
   open,

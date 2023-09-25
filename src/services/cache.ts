@@ -5,7 +5,6 @@ export function set(key: string, value?: any): void {
     if (value) {
       const limit = 20000;
       if (value.length > limit) {
-        console.log("too big - ", value);
         localforage.setItem(key, value);
       } else localStorage.setItem(key, JSON.stringify(value));
     } else {

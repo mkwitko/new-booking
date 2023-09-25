@@ -11,8 +11,6 @@ import {
 import ListPricing from "./ListPricing";
 import AmountBeforeTax from "@/app/(logged)/search/(components)/(finance)/AmountBeforeTax";
 import TotalTaxes from "@/app/(logged)/search/(components)/(finance)/TotalTaxes";
-import RateName from "@/app/(logged)/search/(components)/(finance)/RateName";
-import MealPopover from "../(popovers)/MealPopover";
 import Taxes from "./Taxes";
 
 export default function Rooms({

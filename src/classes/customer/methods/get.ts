@@ -1,1 +1,4 @@
-export enum GetMethods {}
+export enum GetMethods {
+  "costCenter" = "cost-center",
+  "bookingAttributes" = "booking-attributes",
+}

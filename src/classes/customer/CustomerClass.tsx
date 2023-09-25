@@ -1,10 +1,10 @@
-import { toast } from "react-toastify";
 import CoreClass from "../core/CoreClass";
 import { DeleteMethods } from "./methods/delete";
 import { GetMethods } from "./methods/get";
 import { PostMethods } from "./methods/post";
 import { PutMethods } from "./methods/put";
 import useCustomerHook from "./hook/useCustomerHook";
+import { treatData } from "./Helpers/CustomerHelper";
 
 export default class CustomerClass extends CoreClass {
   override url = "customers";
@@ -25,25 +25,17 @@ export default class CustomerClass extends CoreClass {
 
   async findBookingAttributes(customerId: string): Promise<void> {
     const { data } = await this.getHttp({
-      url: `customers/${customerId}/booking-attributes`
-    })
+      method: `${customerId}/${this.getMethods.bookingAttributes}`,
+    });
     if (data) {
-      this.hook.setBookingAttributes(this.treatData(data))
+      this.hook.setBookingAttributes(treatData(data));
     }
   }
 
-  treatData(data: any) { 
-    return data.map((item: any) => ({
-    fieldName: item.attributeDescription,
-    required: item.mandatory,
-    type: item.bookingAttributesDomain.type,
-    options: item.validation ? [...item.validation] : null,
-  }))}
-
   async findCostCenter(customerId: string): Promise<void> {
     const { data } = await this.getHttp({
-      url:`customers/${customerId}/cost-center`
-    })
+      method: `${customerId}/${this.getMethods.costCenter}`,
+    });
     this.hook.setCostCenter(data);
   }
 }
