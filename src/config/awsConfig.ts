@@ -26,7 +26,7 @@ export const AWSConfig = {
   //         ? 'localhost'
   //         : '.b2breservas.com.br',
   cookieStorage: {
-    domain: "localhost",
+    domain: ".vercel.app",
     path: "/",
     expires: 1,
     secure: true,
@@ -61,7 +61,7 @@ Amplify.configure({
       //     process.env.NODE_ENV === "development"
       //       ? "localhost"
       //       : ".b2breservas.com.br",
-      domain: "localhost",
+      domain: ".vercel.app",
       path: "/",
       expires: 1,
       secure: true,
