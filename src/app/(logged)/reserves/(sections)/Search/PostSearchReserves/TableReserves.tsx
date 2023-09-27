@@ -2,21 +2,8 @@
 
 import WhiteBox from "@/components/coreComponents/containers/WhiteBox";
 import { ReservesContext } from "@/context/ReservesContext";
-import { labelSystemIdentity } from "@/utils/integratedSystem";
-import { Block, BorderColor, Circle } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { format, isAfter } from "date-fns";
+import { Box, Button, FormControl } from "@mui/material";
 import { useContext, useState } from "react";
-import { B2BDatatable } from "react-components";
-import { Input } from "./(components)/input";
 import { ModalB2b } from "./(components)/Modal";
 import { useForm } from "react-hook-form";
 import { LoggedContext } from "@/context/LoggedContext";
