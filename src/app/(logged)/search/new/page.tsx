@@ -149,7 +149,7 @@ export default function Reserves() {
 
           {isSearching ? (
             <div className="w-full max-w-[15rem]">
-              <div className="flex animate-pulse space-x-4">
+              <div className="flex space-x-4">
                 <div className="flex-1 space-y-6 py-1">
                   <div className="h-2 rounded bg-primary/30"></div>
                   <div className="space-y-3">

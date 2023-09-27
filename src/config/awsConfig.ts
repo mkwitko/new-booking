@@ -20,13 +20,12 @@ export const AWSConfig = {
   identityPoolId: AWS.cognito.identityPoolId,
   region: AWS.cognito.region,
   mandatorySignIn: false,
-  //   cookieStorage: {
-  //     domain:
-  //       process.env.NODE_ENV === 'development'
-  //         ? 'localhost'
-  //         : '.b2breservas.com.br',
   cookieStorage: {
-    domain: ".new-booking-git-master-mkwitko.vercel.app",
+    domain:
+      process.env.NODE_ENV === "development"
+        ? "localhost"
+        : ".new-booking-git-master-mkwitko.vercel.app",
+    // : ".b2breservas.com.br",
     path: "/",
     expires: 1,
     secure: true,
@@ -57,11 +56,11 @@ Amplify.configure({
     userPoolId: AWS.cognito.userPoolId,
     userPoolWebClientId: AWS.cognito.appClientId,
     cookieStorage: {
-      //   domain:
-      //     process.env.NODE_ENV === "development"
-      //       ? "localhost"
-      //       : ".b2breservas.com.br",
-      domain: ".new-booking-git-master-mkwitko.vercel.app",
+      domain:
+        process.env.NODE_ENV === "development"
+          ? "localhost"
+          : ".new-booking-git-master-mkwitko.vercel.app",
+      // : ".b2breservas.com.br",
       path: "/",
       expires: 1,
       secure: true,
