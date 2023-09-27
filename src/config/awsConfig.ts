@@ -24,7 +24,7 @@ export const AWSConfig = {
     domain:
       process.env.NODE_ENV === "development"
         ? "localhost"
-        : ".new-booking-git-master-mkwitko.vercel.app",
+        : ".new-booking-mkwitko.vercel.app",
     // : ".b2breservas.com.br",
     path: "/",
     expires: 1,
@@ -59,7 +59,7 @@ Amplify.configure({
       domain:
         process.env.NODE_ENV === "development"
           ? "localhost"
-          : ".new-booking-git-master-mkwitko.vercel.app",
+          : ".new-booking-mkwitko.vercel.app",
       // : ".b2breservas.com.br",
       path: "/",
       expires: 1,
