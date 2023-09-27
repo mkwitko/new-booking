@@ -79,7 +79,7 @@ export default function TableReserves() {
           </div>
 
           <WhiteBox className="mx-auto w-full max-w-[1200px] overflow-x-auto overflow-y-hidden">
-            <B2BDatatable
+            {/* <B2BDatatable
               showOptions
               getRowsSelected={(selected: any) => setRowsSelected(selected)}
               detailBtn
@@ -253,7 +253,7 @@ export default function TableReserves() {
                   </>
                 );
               }}
-            />
+            /> */}
           </WhiteBox>
         </div>
       )}

@@ -50,7 +50,6 @@
     "numeral": "^2.0.6",
     "postcss": "8.4.27",
     "react": "18.2.0",
-    "react-components": "^1.0.26",
     "react-day-picker": "^8.8.0",
     "react-dom": "18.2.0",
     "react-google-places-autocomplete": "^4.0.1",
