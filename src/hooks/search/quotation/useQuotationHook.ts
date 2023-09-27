@@ -15,11 +15,14 @@ export default function UseQuotationHook() {
   const handleAddQuotation = (hotel: Hotels, roomIndex = 0, rateIndex = 0) => {
     setQuotation((prev: any) => {
       const found = prev.filter((e: any, i: number) => {
+        console.log(+e.rate.rateId);
+        console.log(+hotel.roomTypes[roomIndex].averageRates[rateIndex].rateId);
         return (
-          e.identifier ===
-          hotel.roomTypes[roomIndex].averageRates[rateIndex].rateId
+          +e.rate.rateId ===
+          +hotel.roomTypes[roomIndex].averageRates[rateIndex].rateId
         );
       });
+      console.log("found - ", found);
       const index = prev.indexOf(found[0]);
 
       if (index > -1) {

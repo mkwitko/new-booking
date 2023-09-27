@@ -13,13 +13,22 @@ export function useHotelDetails() {
     hotels.getHotelDetails();
   }, []);
 
-  const hotelImages = hotels.hook.currentHotelDetails && [
+  let hotelImages = hotels.hook.currentHotelDetails && [
     ...hotels.hook.currentHotelDetails.images.frontageImages,
-    ...hotels.hook.currentHotelDetails.images.infrastructureImages,
   ];
+
+  if (
+    hotels.hook.currentHotelDetails &&
+    hotels.hook.currentHotelDetails.images.infrastructureImages
+  )
+    hotelImages = [
+      ...hotelImages,
+      ...hotels.hook.currentHotelDetails.images.infrastructureImages,
+    ];
 
   const hotelWebSite =
     hotels.hook.currentHotelDetails &&
+    hotels.hook.currentHotelDetails.socialNetworks &&
     hotels.hook.currentHotelDetails.socialNetworks.filter((item: any) => {
       if (item.type === "SITE") return true;
     })[0];
