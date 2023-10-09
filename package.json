@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
+    "deploy": "next export && aws s3 rm s3://testenextbooking --recursive && aws s3 sync out/ s3://testenextbooking",
     "start": "next start",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix"

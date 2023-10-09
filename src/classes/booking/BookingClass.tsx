@@ -26,7 +26,7 @@ export default class BookingClass extends CoreClass {
 
   async createBooking(data: any) {
     const response = await this.postHttp({
-      value: data,
+      body: data,
     });
     return response;
   }
@@ -46,7 +46,7 @@ export default class BookingClass extends CoreClass {
       configs: {
         params: query.query,
         headers: query.companyId
-          ? { "X-Company-Id": query.companyId }
+          ? { "X-Company-Id": query.companyId.toString() }
           : undefined,
       },
     });
@@ -62,7 +62,7 @@ export default class BookingClass extends CoreClass {
     try {
       const response = await this.postHttp({
         method: this.postMethods.policies,
-        value: data,
+        body: data,
       });
       return response;
     } catch (error: any) {

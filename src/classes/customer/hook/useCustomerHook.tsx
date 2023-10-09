@@ -5,6 +5,8 @@ export default function useCustomerHook() {
   const [bookingAttributes, setBookingAttributes] = useState<any>(null);
   const [costCenter, setCostCenter] = useState<any>(null);
 
+  console.log('cost center from hook - ', costCenter);
+
   return {
     data,
     setData,

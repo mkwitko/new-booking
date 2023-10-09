@@ -36,6 +36,7 @@ export default class CustomerClass extends CoreClass {
     const { data } = await this.getHttp({
       method: `${customerId}/${this.getMethods.costCenter}`,
     });
+    console.log('data - ', data);
     this.hook.setCostCenter(data);
   }
 }

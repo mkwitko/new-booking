@@ -21,7 +21,6 @@ export function ReserveForm() {
   const {
     errors,
     watch,
-    costCenter,
     handleSubmit,
     numberOfGuests,
     currentHotel,
@@ -38,7 +37,6 @@ export function ReserveForm() {
     displayNewCreditCardForm,
     displayIndividualCvvField,
     displayCreditCardNameField,
-    bookingAttributes,
     createExpirationDateMask,
     creditCardNameToDisplay,
     creditCardExpirationDateToDisplay,
@@ -160,18 +158,18 @@ export function ReserveForm() {
             </div>
 
             <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-1">
-              {costCenter && bookingAttributes && (
+              {customer.hook.costCenter && customer.hook.bookingAttributes && (
                 <span className="mt-10 block text-xs font-semibold uppercase text-textSecondary">
                   Informações gerenciais
                 </span>
               )}
 
-              {costCenter && (
+              {customer.hook.costCenter && (
                 <FormComponents.Select.Root
                   placeholder="Centro de Custos"
                   onValueChange={(value) => setValue("centerCost", value)}
                 >
-                  {costCenter.map((center: any) => (
+                  {customer.hook.costCenter.map((center: any) => (
                     <FormComponents.Select.Item
                       key={center.costCenterDescription}
                       text={center.costCenterDescription}
@@ -182,9 +180,9 @@ export function ReserveForm() {
               )}
             </div>
 
-            {bookingAttributes && (
+            {customer.hook.bookingAttributes && (
               <div className="mt-4 w-full space-y-4">
-                {bookingAttributes.map((attribute: any, index: number) => {
+                {customer.hook.bookingAttributes.map((attribute: any, index: number) => {
                   if (!attribute.options) {
                     return (
                       <FormComponents.Input

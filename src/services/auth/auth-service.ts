@@ -10,8 +10,11 @@ export function AuthApi() {
     password: string
   }) => {
     try {
-      await Auth.signIn(username, password)
+      await Auth.signIn(username, password).then((res) => {
+        console.log(res);
+      })
     } catch (err) {
+        console.log('err - ', err);
       throw new Error('Credenciais Inválidas')
     }
   }

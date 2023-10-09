@@ -32,12 +32,13 @@ export default class AvailabilityClass extends CoreClass {
     validateSearchAvail(data);
 
     const companyId = data.companyId;
+    console.log('company id - ', companyId);
     delete data.companyId;
     const response: IAvailResponse = await this.postHttp({
-      value: data,
+      body: data,
       configs: {
         headers: {
-          "X-Company-Id": companyId,
+          "X-Company-Id": companyId!.toString(),
         },
       },
     });
@@ -64,10 +65,10 @@ export default class AvailabilityClass extends CoreClass {
     const response = await this.getHttp({
       method: this.getMethods.vip,
       configs: {
-        params: query.query,
         headers: {
-          "X-Company-Id": query.companyId,
+            "X-Company-Id": query.companyId.toString(),
         },
+        params: query.query,
       },
     });
     return response.data as IAvailVipResponse;
@@ -76,12 +77,13 @@ export default class AvailabilityClass extends CoreClass {
   async saveAvailVip(query: IAvailVipPayload) {
     const { companyId } = query;
     delete query.companyId;
-    const headers = companyId ? { "X-Company-Id": companyId } : undefined;
     const response = await this.postHttp({
       method: this.postMethods.vip,
-      value: query,
+      body: query,
       configs: {
-        headers: headers,
+        headers: {
+            'X-Company-Id': companyId?.toString() || '',
+        },
       },
     });
     return response.data as IAvailVipResponse;

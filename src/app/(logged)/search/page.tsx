@@ -23,7 +23,12 @@ export default function Search() {
       return "processing";
     }
     if (hasSearched) {
-      if (searchingResult && searchingResult.hotels && searchingResult.hotels.length === 0) return "noResults";
+      if (
+        searchingResult &&
+        searchingResult.hotels &&
+        searchingResult.hotels.length === 0
+      )
+        return "noResults";
     }
     return "default";
   };
