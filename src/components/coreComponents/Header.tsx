@@ -31,6 +31,7 @@ export default function Header({
     try {
       await logout();
       router.refresh();
+      router.push('/auth');
     } catch (err: any) {
       console.log(err.message);
     }

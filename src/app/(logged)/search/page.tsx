@@ -6,7 +6,7 @@ import Title from "@/components/text/Title";
 import "@/config/awsConfig";
 import SearchIndex from "./(sections)/Search";
 import PostResult from "./(sections)/Results/PostResult/PostResult";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FeedbackSearch from "./(components)/(feedback)/SearchFeedback";
 import { IAvailResponse } from "@/classes/availability/DTO/AvailabilityDTO";
 import { CACHE_PATH } from "@/config/cache";

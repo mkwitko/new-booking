@@ -40,8 +40,6 @@ export default function Page() {
   const { dateHook, roomsHook, peopleHook } = useContext(SearchContext);
   const { sliderRef, thumbnailRef } = useKeenSlider();
 
-  console.log("2 - ", hotels.hook.currentHotel);
-
   return hotels.hook.currentHotelDetails ? (
     <>
       <div className="flex h-[23rem] items-center justify-center bg-textPrimary">

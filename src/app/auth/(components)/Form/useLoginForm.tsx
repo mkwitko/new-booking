@@ -27,7 +27,7 @@ export default function useLoginForm() {
 
     try {
       await login({ username, password })
-      push('/')
+      push('/search')
     } catch (err: any) {
       toast.error(err.message)
     }

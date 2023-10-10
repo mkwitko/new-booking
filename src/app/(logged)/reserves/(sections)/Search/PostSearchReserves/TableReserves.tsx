@@ -2,13 +2,17 @@
 
 import WhiteBox from "@/components/coreComponents/containers/WhiteBox";
 import { ReservesContext } from "@/context/ReservesContext";
-import { Box, Button, FormControl } from "@mui/material";
+import { Box, Button, FormControl, IconButton, Tooltip } from "@mui/material";
 import { useContext, useState } from "react";
 import { ModalB2b } from "./(components)/Modal";
 import { useForm } from "react-hook-form";
 import { LoggedContext } from "@/context/LoggedContext";
 import { toast } from "react-toastify";
 import { Textarea } from "@/components/formComponents";
+import { format, isAfter } from "date-fns";
+import { labelSystemIdentity } from "@/utils/integratedSystem";
+import { Block, BorderColor, Circle } from "@mui/icons-material";
+import { B2BDatatable } from "react-components";
 
 export default function TableReserves() {
   const { reservesHook } = useContext(ReservesContext);
@@ -66,7 +70,7 @@ export default function TableReserves() {
           </div>
 
           <WhiteBox className="mx-auto w-full max-w-[1200px] overflow-x-auto overflow-y-hidden">
-            {/* <B2BDatatable
+            <B2BDatatable
               showOptions
               getRowsSelected={(selected: any) => setRowsSelected(selected)}
               detailBtn
@@ -188,8 +192,7 @@ export default function TableReserves() {
                 },
               ]}
               data={reservesHook.reserves}
-              renderRowActions={({ original }) => {
-                console.log("original", original);
+              renderRowActions={({ original }: any) => {
                 original.isDeadline = isAfter(
                   new Date(original.cancellationLimit),
                   new Date(),
@@ -240,7 +243,7 @@ export default function TableReserves() {
                   </>
                 );
               }}
-            /> */}
+            />
           </WhiteBox>
         </div>
       )}
