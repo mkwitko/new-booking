@@ -92,6 +92,7 @@ export default class CoreClass {
             body: JSON.stringify(body),
             method: 'POST',
         }).then((response) => {
+            console.log(response)
             const data = response.json();
             return data;
         }).catch((err) => {

@@ -271,6 +271,7 @@ export function ReserveForm() {
                 placeholder="Método de Pagamento"
                 errorMessage={errors?.paymentMethod?.message}
                 onValueChange={(value) => {
+                  resetCreditCardValues();
                   if (value === "Direto ao Hotel") {
                     setValue("billing", {
                       id: 746,
@@ -335,7 +336,9 @@ export function ReserveForm() {
                   disabled={!creditCards}
                   placeholder="Informe o cartão de crédito"
                   errorMessage={errors?.selectCreditCard?.message}
-                  onValueChange={(value) => handleChangeCreditCardValue(value)}
+                  onValueChange={(value) => {
+                    handleChangeCreditCardValue(value)
+                  }}
                 >
                   {creditCards &&
                     creditCards.map((card: any) => {
